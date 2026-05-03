@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Un overview de DDD Estratégico: espacios de problema y solución, subdominios, Bounded Contexts, lenguaje ubicuo y Context Maps." />
+  <meta name="description" content="Un overview de DDD Estratégico: subdominios, Bounded Contexts, lenguaje ubicuo y Context Maps desde una perspectiva práctica." />
   <meta name="author" content="Felipe Pabón" />
   <title>DDD Estratégico: Un Overview — Felipe Pabón</title>
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
 
-  <!-- ── Nav ──────────────────────────────────────────────── -->
   <nav>
     <div class="nav-inner">
       <a href="../" class="nav-logo">fp.</a>
@@ -26,7 +25,7 @@
       <a href="../blog/" class="back-link">← <span data-es="Volver al Blog" data-en="Back to Blog">Volver al Blog</span></a>
     </div>
 
-    <!-- ── Article Header ────────────────────────────────────── -->
+    <!-- Article Header -->
     <header class="article-header">
       <div class="container">
         <div class="article-header-meta">
@@ -39,9 +38,9 @@
           DDD Estratégico: Un Overview
         </h1>
         <p class="article-subtitle"
-           data-es="Subdominios, Bounded Contexts, lenguaje ubicuo y Context Maps — los pilares del DDD Estratégico explicados desde una perspectiva práctica."
-           data-en="Subdomains, Bounded Contexts, ubiquitous language, and Context Maps — the pillars of Strategic DDD explained from a practical perspective.">
-          Subdominios, Bounded Contexts, lenguaje ubicuo y Context Maps — los pilares del DDD Estratégico explicados desde una perspectiva práctica.
+           data-es="Subdominios, Bounded Contexts, lenguaje ubicuo y Context Maps — los pilares del DDD Estratégico desde una perspectiva práctica."
+           data-en="Subdomains, Bounded Contexts, ubiquitous language, and Context Maps — the pillars of Strategic DDD from a practical perspective.">
+          Subdominios, Bounded Contexts, lenguaje ubicuo y Context Maps — los pilares del DDD Estratégico desde una perspectiva práctica.
         </p>
         <div class="article-byline">
           <span>Felipe Pabón</span>
@@ -50,335 +49,457 @@
       </div>
     </header>
 
-    <!-- ══════════════════════════════════════════════════════
-         SPANISH CONTENT
-    ═══════════════════════════════════════════════════════ -->
-    <div class="lang-block lang-es">
+    <!-- ══ ESPAÑOL ══════════════════════════════════════════ -->
+    <div class="lang-es">
       <div class="container article-body">
 
-        <p>Domain-Driven Design (DDD) es mucho más que un conjunto de patrones técnicos. Es un enfoque holístico para el diseño de software que va más allá de los aspectos técnicos y aborda los aspectos culturales y organizacionales de un equipo de desarrollo. En este artículo hago un recorrido por los conceptos fundamentales del <strong>DDD Estratégico</strong>: desde el problema de comunicación entre negocio y tecnología, hasta los patrones de Context Maps y su relación con las estructuras de equipo.</p>
+        <p>Domain-Driven Design (DDD) es mucho más que patrones técnicos. Es un enfoque holístico que aborda los aspectos culturales y organizacionales del desarrollo de software. En este artículo recorro los conceptos del <strong>DDD Estratégico</strong>: desde el problema de comunicación entre negocio y tecnología, hasta los patrones de Context Maps y su relación con los equipos.</p>
 
         <h2>El problema de comunicación</h2>
-
-        <p>Uno de los mayores desafíos en el desarrollo de software es la brecha entre el lenguaje del negocio y el lenguaje técnico. El negocio habla de "clientes", "pedidos" y "aprobaciones". Los desarrolladores hablan de <code>CustomerEntityImpl</code>, <code>OrderProcessorFactory</code> y <code>ApprovalWorkflowSingleton</code>.</p>
-
-        <p>Esta desconexión no es trivial. Cuando los nombres no reflejan la realidad del negocio, los modelos se vuelven difíciles de entender, mantener y evolucionar. Y lo más peligroso: dos personas pueden decir que están de acuerdo sin realmente estarlo, porque cada una entiende algo diferente bajo el mismo término.</p>
-
-        <p>DDD propone que el <strong>lenguaje</strong> sea el puente entre ambos mundos. No se trata de que los desarrolladores aprendan el vocabulario del negocio, sino de construir un lenguaje común y preciso — el llamado <em>Lenguaje Ubicuo</em> — que elimine esa ambigüedad.</p>
+        <p>Uno de los mayores desafíos es la brecha entre el lenguaje del negocio y el lenguaje técnico. El negocio habla de "clientes" y "aprobaciones". Los desarrolladores crean <code>CustomerEntityImpl</code> y <code>ApprovalWorkflowSingleton</code>. Esta desconexión genera modelos difíciles de mantener y, lo más peligroso, dos personas que creen estar de acuerdo sin realmente estarlo.</p>
+        <p>DDD propone que el <strong>lenguaje</strong> sea el puente: construir un vocabulario preciso y compartido — el <em>Lenguaje Ubicuo</em> — que elimine esa ambigüedad en su origen.</p>
 
         <h2>Espacio del Problema vs. Espacio de la Solución</h2>
+        <p>DDD separa claramente dos espacios que las organizaciones suelen confundir: el espacio del <strong>Problema</strong> (qué queremos resolver — dominios y subdominios) y el espacio de la <strong>Solución</strong> (cómo lo resolvemos — Bounded Contexts). La clave está en que debe existir alineación entre ambos. Cuanto mayor sea esa alineación, mejor será el diseño resultante.</p>
 
-        <p>DDD separa claramente dos espacios que a menudo se confunden:</p>
-
-        <ul>
-          <li><strong>Espacio del Problema</strong>: representa la arquitectura de negocio. Aquí viven los dominios y subdominios. Es el <em>"qué queremos resolver"</em>.</li>
-          <li><strong>Espacio de la Solución</strong>: representa la arquitectura de software. Aquí viven los Bounded Contexts. Es el <em>"cómo lo resolvemos"</em>.</li>
-        </ul>
-
-        <p>La clave está en que debe existir alineación entre ambos espacios. Cuanto mayor sea esa alineación, mejor será el diseño resultante. Sin embargo, la perfección es inalcanzable — el objetivo es maximizar esa correspondencia de forma iterativa, a través del aprendizaje continuo y el modelado colaborativo.</p>
+        <figure class="diagram">
+          <svg viewBox="0 0 660 230" xmlns="http://www.w3.org/2000/svg">
+            <!-- Problem Space box -->
+            <rect x="4" y="4" width="276" height="222" rx="10" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <text x="142" y="28" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="2">PROBLEM SPACE</text>
+            <text x="142" y="45" fill="#475569" font-size="9.5" text-anchor="middle" font-family="sans-serif">Qué queremos resolver</text>
+            <!-- Domain -->
+            <rect x="22" y="58" width="240" height="154" rx="7" fill="#111827" stroke="#1e2d4a"/>
+            <text x="38" y="78" fill="#94a3b8" font-size="10" font-weight="600" font-family="sans-serif">Domain</text>
+            <!-- Subdomains -->
+            <circle cx="46" cy="103" r="5" fill="#f87171"/>
+            <text x="58" y="107" fill="#f1f5f9" font-size="10" font-family="sans-serif">Core Subdomain</text>
+            <circle cx="46" cy="130" r="5" fill="#fbbf24"/>
+            <text x="58" y="134" fill="#f1f5f9" font-size="10" font-family="sans-serif">Supporting Subdomain</text>
+            <circle cx="46" cy="157" r="5" fill="#34d399"/>
+            <text x="58" y="161" fill="#f1f5f9" font-size="10" font-family="sans-serif">Generic Subdomain</text>
+            <!-- Alignment label and arrows -->
+            <text x="330" y="103" fill="#475569" font-size="9" text-anchor="middle" font-family="monospace">Alineación</text>
+            <line x1="294" y1="115" x2="366" y2="115" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <polygon points="366,111 374,115 366,119" fill="#38bdf8"/>
+            <polygon points="294,111 286,115 294,119" fill="#38bdf8"/>
+            <!-- Solution Space box -->
+            <rect x="380" y="4" width="276" height="222" rx="10" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <text x="518" y="28" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="2">SOLUTION SPACE</text>
+            <text x="518" y="45" fill="#475569" font-size="9.5" text-anchor="middle" font-family="sans-serif">Cómo lo resolvemos</text>
+            <!-- Bounded Contexts -->
+            <rect x="398" y="62" width="240" height="46" rx="6" fill="#111827" stroke="#1e2d4a"/>
+            <text x="416" y="82" fill="#7dd3fc" font-size="10" font-family="monospace">BC: Credit Scoring</text>
+            <text x="416" y="97" fill="#475569" font-size="9" font-family="sans-serif">scoring · risk model</text>
+            <rect x="398" y="118" width="240" height="46" rx="6" fill="#111827" stroke="#1e2d4a"/>
+            <text x="416" y="138" fill="#7dd3fc" font-size="10" font-family="monospace">BC: Loan Applications</text>
+            <text x="416" y="153" fill="#475569" font-size="9" font-family="sans-serif">application · applicant</text>
+            <rect x="398" y="174" width="240" height="46" rx="6" fill="#111827" stroke="#1e2d4a"/>
+            <text x="416" y="194" fill="#7dd3fc" font-size="10" font-family="monospace">BC: Contracting</text>
+            <text x="416" y="209" fill="#475569" font-size="9" font-family="sans-serif">contract · proposal</text>
+          </svg>
+          <figcaption>FIG 1 — El espacio del problema (arquitectura de negocio) debe alinearse con el espacio de la solución (arquitectura de software)</figcaption>
+        </figure>
 
         <h2>Subdominios y su clasificación</h2>
+        <p>Un dominio se divide en subdominios — capacidades de negocio de menor nivel. Clasificarlos no es un ejercicio académico: es una decisión estratégica que impacta en cómo invertimos, cómo armamos equipos y cómo construimos software.</p>
 
-        <p>Un dominio puede dividirse en subdominios, que son capacidades de negocio de menor nivel. Identificar los subdominios no es un ejercicio académico — es una decisión estratégica que impacta directamente en cómo invertimos, cómo armamos equipos y cómo construimos software.</p>
-
-        <table class="subdomain-table">
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>Descripción</th>
-              <th>Estrategia</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="badge-core">Core Subdomain</span></td>
-              <td>El corazón del negocio. Aquí está la diferenciación competitiva.</td>
-              <td>Desarrollo in-house, mejores equipos, sin offshore, sin COTS.</td>
-            </tr>
-            <tr>
-              <td><span class="badge-support">Supporting Subdomain</span></td>
-              <td>Vital para el core, pero sin relevancia estratégica directa frente a la competencia.</td>
-              <td>In-house con apoyo externo, nearshore posible, COTS con customizaciones menores.</td>
-            </tr>
-            <tr>
-              <td><span class="badge-generic">Generic Subdomain</span></td>
-              <td>Funcionalidad necesaria pero no crítica. "Necesitamos una solución para el problema X."</td>
-              <td>SaaS o COTS, outsourcing, foco en vendor management.</td>
-            </tr>
-          </tbody>
-        </table>
+        <figure class="diagram">
+          <svg viewBox="0 0 660 195" xmlns="http://www.w3.org/2000/svg">
+            <!-- Core -->
+            <rect x="4" y="4" width="204" height="187" rx="10" fill="#0b111c" stroke="#f87171" stroke-width="2"/>
+            <rect x="4" y="4" width="204" height="8" rx="5" fill="#f87171"/>
+            <text x="106" y="34" fill="#f87171" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="2">CORE</text>
+            <text x="106" y="53" fill="#f1f5f9" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">Core Subdomain</text>
+            <text x="106" y="73" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">Ventaja competitiva.</text>
+            <text x="106" y="88" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">El corazón del negocio.</text>
+            <line x1="24" y1="103" x2="188" y2="103" stroke="#1a2540" stroke-width="1"/>
+            <text x="106" y="122" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Mejores equipos in-house</text>
+            <text x="106" y="140" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Sin nearshore / offshore</text>
+            <text x="106" y="158" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Sin software estándar (COTS)</text>
+            <text x="106" y="176" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">Ej: algoritmo de scoring</text>
+            <!-- Supporting -->
+            <rect x="228" y="4" width="204" height="187" rx="10" fill="#0b111c" stroke="#fbbf24" stroke-width="2"/>
+            <rect x="228" y="4" width="204" height="8" rx="5" fill="#fbbf24"/>
+            <text x="330" y="34" fill="#fbbf24" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="1">SUPPORTING</text>
+            <text x="330" y="53" fill="#f1f5f9" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">Supporting Subdomain</text>
+            <text x="330" y="73" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">Vital para el core.</text>
+            <text x="330" y="88" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">Sin diferenciación directa.</text>
+            <line x1="248" y1="103" x2="412" y2="103" stroke="#1a2540" stroke-width="1"/>
+            <text x="330" y="122" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ In-house + apoyo externo</text>
+            <text x="330" y="140" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Nearshore como opción</text>
+            <text x="330" y="158" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ COTS con customizaciones menores</text>
+            <text x="330" y="176" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">Ej: gestión documental</text>
+            <!-- Generic -->
+            <rect x="452" y="4" width="204" height="187" rx="10" fill="#0b111c" stroke="#34d399" stroke-width="2"/>
+            <rect x="452" y="4" width="204" height="8" rx="5" fill="#34d399"/>
+            <text x="554" y="34" fill="#34d399" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="2">GENERIC</text>
+            <text x="554" y="53" fill="#f1f5f9" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">Generic Subdomain</text>
+            <text x="554" y="73" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">Necesario pero no crítico.</text>
+            <text x="554" y="88" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">"Necesitamos solución para X".</text>
+            <line x1="472" y1="103" x2="636" y2="103" stroke="#1a2540" stroke-width="1"/>
+            <text x="554" y="122" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ SaaS / COTS</text>
+            <text x="554" y="140" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Outsourcing</text>
+            <text x="554" y="158" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Vendor management</text>
+            <text x="554" y="176" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">Ej: envío de emails</text>
+          </svg>
+          <figcaption>FIG 2 — Los tres tipos de subdominio determinan cómo invertir, qué equipos asignar y qué tecnología usar</figcaption>
+        </figure>
 
         <blockquote>
           <p>"No todas las partes de un sistema estarán bien diseñadas."</p>
           <cite>— Eric Evans, autor de Domain-Driven Design</cite>
         </blockquote>
-
-        <p>Esta afirmación de Evans es liberadora: no se trata de diseñar todo perfectamente, sino de invertir la energía donde más importa. La clasificación de subdominios nos da el criterio para tomar esa decisión conscientemente.</p>
+        <p>Esta afirmación es liberadora: no se trata de diseñar todo perfectamente, sino de saber dónde invertir la energía. La clasificación de subdominios nos da ese criterio.</p>
 
         <h2>Bounded Contexts</h2>
-
         <p>Un <strong>Bounded Context</strong> es una frontera lingüística alrededor del significado de un modelo de dominio. Dentro de ese contexto, cada término tiene un significado preciso y consistente.</p>
+        <p>El concepto de "Cliente" puede significar cosas distintas en ventas, en scoring crediticio y en contratos. Tener un modelo centralizado genera acoplamiento innecesario: cualquier cambio en "Cliente" impacta a todos los contextos, aunque solo sea relevante para uno.</p>
 
-        <p>Por ejemplo, el concepto de "Solicitante" puede significar cosas distintas en el contexto de ventas, en el contexto de scoring crediticio y en el contexto de contratos. Tener un único modelo centralizado genera acoplamiento innecesario: cualquier cambio en la definición de "Solicitante" impacta a todos los contextos, aunque ese cambio solo sea relevante para uno.</p>
-
-        <p>La descentralización de modelos en Bounded Contexts tiene varios beneficios:</p>
-
-        <ul>
-          <li>Mayor cohesión dentro de cada contexto.</li>
-          <li>Menor acoplamiento entre equipos.</li>
-          <li>Los equipos pueden trabajar en paralelo con mayor autonomía.</li>
-          <li>Cada equipo puede elegir distintas opciones de implementación según sus necesidades.</li>
-        </ul>
+        <figure class="diagram">
+          <svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg">
+            <text x="330" y="20" fill="#64748b" font-size="9.5" text-anchor="middle" font-family="sans-serif">El mismo término, tres significados distintos — cada Bounded Context define su propio modelo</text>
+            <!-- Sales BC -->
+            <rect x="4" y="32" width="204" height="170" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <rect x="4" y="32" width="204" height="32" rx="8" fill="#1a2845"/>
+            <rect x="4" y="51" width="204" height="13" fill="#1a2845"/>
+            <text x="106" y="53" fill="#7dd3fc" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace">BC: SALES</text>
+            <text x="106" y="82" fill="#f87171" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">"Customer"</text>
+            <text x="106" y="103" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· name, email</text>
+            <text x="106" y="119" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· referral source</text>
+            <text x="106" y="135" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· sales stage</text>
+            <text x="106" y="151" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· preferred channel</text>
+            <text x="106" y="192" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">prospect → client</text>
+            <!-- Scoring BC -->
+            <rect x="228" y="32" width="204" height="170" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <rect x="228" y="32" width="204" height="32" rx="8" fill="#1a2845"/>
+            <rect x="228" y="51" width="204" height="13" fill="#1a2845"/>
+            <text x="330" y="53" fill="#7dd3fc" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace">BC: SCORING</text>
+            <text x="330" y="82" fill="#f87171" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">"Customer"</text>
+            <text x="330" y="103" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· income, debt ratio</text>
+            <text x="330" y="119" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· credit history</text>
+            <text x="330" y="135" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· risk score</text>
+            <text x="330" y="151" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· collateral</text>
+            <text x="330" y="192" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">applicant</text>
+            <!-- Contracts BC -->
+            <rect x="452" y="32" width="204" height="170" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <rect x="452" y="32" width="204" height="32" rx="8" fill="#1a2845"/>
+            <rect x="452" y="51" width="204" height="13" fill="#1a2845"/>
+            <text x="554" y="53" fill="#7dd3fc" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace">BC: CONTRACTS</text>
+            <text x="554" y="82" fill="#f87171" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">"Customer"</text>
+            <text x="554" y="103" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· legal name, tax ID</text>
+            <text x="554" y="119" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· signatures</text>
+            <text x="554" y="135" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· legal representative</text>
+            <text x="554" y="151" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· jurisdiction</text>
+            <text x="554" y="192" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">contracting party</text>
+          </svg>
+          <figcaption>FIG 3 — Bounded Contexts: el mismo término con modelos distintos evita el acoplamiento y la confusión semántica</figcaption>
+        </figure>
 
         <h3>¿Cómo identificar Bounded Contexts?</h3>
-
-        <p>La identificación no debe basarse en un solo criterio. Es un ejercicio colaborativo que evalúa múltiples dimensiones:</p>
-
-        <ul>
-          <li><strong>Capacidades y responsabilidades</strong>: qué hace este contexto, qué tipo de información maneja, qué acciones ejecuta.</li>
-          <li><strong>Lenguaje ubicuo</strong>: qué términos son únicos a este contexto, qué actores clave intervienen.</li>
-          <li><strong>Políticas de negocio</strong>: qué reglas y validaciones aplican aquí.</li>
-          <li><strong>Criterios de calidad</strong>: escalabilidad, performance, frecuencia de cambio (ISO 25010).</li>
-          <li><strong>Estructura de equipos</strong>: cuántos equipos hay disponibles — los contextos no deben ser más que los equipos capaces de mantenerlos.</li>
-        </ul>
+        <p>La identificación no debe basarse en un solo criterio. Es un ejercicio colaborativo que evalúa: capacidades y responsabilidades, políticas de negocio, lenguaje ubicuo (actores y verbos clave), criterios de calidad (escalabilidad, frecuencia de cambio) y la cantidad de equipos disponibles.</p>
 
         <h2>Lenguaje Ubicuo</h2>
-
-        <p>El lenguaje ubicuo es el vocabulario compartido entre desarrolladores y expertos de dominio dentro de un Bounded Context. No es el lenguaje técnico de los desarrolladores ni el lenguaje genérico del negocio — es un lenguaje construido en conjunto, refinado continuamente a través del modelado colaborativo.</p>
-
-        <p>Las técnicas más populares para construir y validar este lenguaje incluyen:</p>
-
-        <ul>
-          <li><strong>Event Storming</strong>: mapeo colaborativo de eventos de dominio en un tablero.</li>
-          <li><strong>Domain Storytelling</strong>: narración de procesos de negocio con pictogramas.</li>
-          <li><strong>Example Mapping</strong>: definición de reglas y ejemplos concretos de comportamiento.</li>
-          <li><strong>User Story Mapping</strong>: organización de funcionalidades desde la perspectiva del usuario.</li>
-        </ul>
-
-        <p>El objetivo de todas estas técnicas es el mismo: crear un espacio donde negocio y tecnología construyan juntos un entendimiento compartido, eliminando las interpretaciones divergentes antes de que se conviertan en bugs o en deuda técnica.</p>
+        <p>El lenguaje ubicuo es el vocabulario compartido entre desarrolladores y expertos de dominio <em>dentro</em> de un Bounded Context. No es el lenguaje técnico de los devs ni el lenguaje genérico del negocio — es uno construido en conjunto, refinado continuamente a través de técnicas de modelado colaborativo como <strong>Event Storming</strong>, <strong>Domain Storytelling</strong>, <strong>Example Mapping</strong> y <strong>User Story Mapping</strong>.</p>
 
         <h2>Context Maps</h2>
+        <p>Los Context Maps ofrecen una visión holística del acoplamiento entre Bounded Contexts. No son solo diagramas técnicos — capturan relaciones técnicas, organizacionales y políticas entre equipos. Son uno de los artefactos más valiosos y menos utilizados del DDD.</p>
 
-        <p>Los Context Maps proveen una visión holística del acoplamiento entre Bounded Contexts. No son solo diagramas técnicos — capturan relaciones técnicas, organizacionales y políticas entre equipos. Son uno de los artefactos más valiosos y menos utilizados del DDD.</p>
+        <figure class="diagram">
+          <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- BC: Scoring (upstream left) -->
+            <rect x="4" y="80" width="160" height="65" rx="8" fill="#0b111c" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="84" y="106" fill="#7dd3fc" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">BC: SCORING</text>
+            <text x="84" y="122" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">upstream</text>
+            <text x="84" y="137" fill="#f87171" font-size="8" text-anchor="middle" font-family="monospace">core subdomain</text>
 
-        <p>Algunos de los patrones más importantes:</p>
+            <!-- Arrow 1: OHS → Sales -->
+            <line x1="164" y1="113" x2="248" y2="82" stroke="#38bdf8" stroke-width="1.5"/>
+            <polygon points="248,78 258,82 248,86" fill="#38bdf8"/>
+            <text x="195" y="88" fill="#38bdf8" font-size="8" font-family="monospace" text-anchor="middle">OHS</text>
 
-        <ul>
-          <li><strong>Open Host Service / Published Language</strong>: un proveedor con múltiples consumidores. Expone una API de propósito general con un lenguaje publicado y estable.</li>
-          <li><strong>Anticorruption Layer (ACL)</strong>: capa de traducción que protege el modelo downstream del modelo upstream. Reduce el acoplamiento y evita que un modelo externo "contamine" el propio.</li>
-          <li><strong>Shared Kernel</strong>: artefacto compartido entre contextos — código, base de datos o librería. Requiere coordinación alta entre equipos.</li>
-          <li><strong>Customer/Supplier</strong>: el equipo downstream puede hacer demandas al upstream, que tiene la responsabilidad de cumplirlas. Implica negociación y priorización conjunta.</li>
-          <li><strong>Conformist</strong>: el equipo downstream adopta el modelo del upstream sin traducción. Más simple, pero genera acoplamiento directo al modelo externo.</li>
-        </ul>
+            <!-- Arrow 2: OHS → Decision -->
+            <line x1="164" y1="125" x2="248" y2="158" stroke="#38bdf8" stroke-width="1.5"/>
+            <polygon points="248,154 258,158 248,162" fill="#38bdf8"/>
+            <text x="200" y="160" fill="#38bdf8" font-size="8" font-family="monospace" text-anchor="middle">Pub. Lang</text>
 
-        <p>Los Context Maps sirven para hacer visibles los procesos organizacionales implícitos, identificar flujos de modelos deficientes, establecer un modelo de gobernanza descentralizado y servir como punto de partida para transformaciones futuras.</p>
+            <!-- BC: Sales Funnel (top right) -->
+            <rect x="258" y="55" width="160" height="65" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <text x="338" y="81" fill="#7dd3fc" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">BC: SALES</text>
+            <text x="338" y="97" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">downstream</text>
+            <text x="338" y="112" fill="#fbbf24" font-size="8" text-anchor="middle" font-family="monospace">ACL ↓</text>
+
+            <!-- Arrow: Sales → Contracts (ACL) -->
+            <line x1="338" y1="120" x2="338" y2="175" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <polygon points="334,175 338,185 342,175" fill="#fbbf24"/>
+
+            <!-- BC: Credit Decision (bottom right) -->
+            <rect x="258" y="185" width="160" height="65" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <text x="338" y="210" fill="#7dd3fc" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">BC: CONTRACTS</text>
+            <text x="338" y="226" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">downstream</text>
+            <text x="338" y="241" fill="#34d399" font-size="8" text-anchor="middle" font-family="monospace">conformist</text>
+
+            <!-- BC: Shared Kernel -->
+            <rect x="512" y="80" width="144" height="140" rx="8" fill="#111827" stroke="#1e2d4a" stroke-width="1.5" stroke-dasharray="6,3"/>
+            <text x="584" y="108" fill="#94a3b8" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">SHARED</text>
+            <text x="584" y="123" fill="#94a3b8" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">KERNEL</text>
+            <text x="584" y="147" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">código compartido</text>
+            <text x="584" y="163" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">requiere alta</text>
+            <text x="584" y="178" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">coordinación</text>
+            <line x1="418" y1="113" x2="512" y2="140" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+
+            <!-- Legend -->
+            <line x1="20" y1="268" x2="50" y2="268" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="58" y="272" fill="#475569" font-size="8.5" font-family="sans-serif">Open Host Service / Published Language</text>
+            <line x1="20" y1="285" x2="50" y2="285" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="58" y="289" fill="#475569" font-size="8.5" font-family="sans-serif">Anticorruption Layer</text>
+            <line x1="320" y1="268" x2="350" y2="268" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="358" y="272" fill="#475569" font-size="8.5" font-family="sans-serif">Shared Kernel</text>
+            <rect x="320" y="278" width="10" height="10" rx="2" fill="none" stroke="#34d399" stroke-width="1.5"/>
+            <text x="338" y="287" fill="#475569" font-size="8.5" font-family="sans-serif">Conformist</text>
+          </svg>
+          <figcaption>FIG 4 — Context Map: los patrones de relación entre Bounded Contexts capturan acoplamientos técnicos, organizacionales y políticos</figcaption>
+        </figure>
 
         <h2>DDD y la estructura de equipos</h2>
-
-        <p>Una de las ideas más poderosas del DDD Estratégico es que la arquitectura y la estructura organizacional deben estar alineadas. La Ley de Conway nos dice que los sistemas que diseñamos tienden a reflejar la estructura de comunicación de las organizaciones que los crean. DDD lo convierte en una ventaja: diseña primero los Bounded Contexts, luego organiza los equipos alrededor de ellos.</p>
+        <p>Una de las ideas más poderosas del DDD Estratégico es que la arquitectura y la estructura organizacional deben estar alineadas. La Ley de Conway dice que los sistemas tienden a reflejar la estructura de comunicación de las organizaciones que los crean. DDD convierte esto en una ventaja: diseña los Bounded Contexts primero, luego organiza los equipos alrededor de ellos.</p>
 
         <blockquote>
           <p>"Las asignaciones de equipo son el primer borrador de la arquitectura."</p>
           <cite>— Michael Nygard, autor de Release It!</cite>
         </blockquote>
 
-        <p>Algunos heurísticos para la distribución de equipos:</p>
-
-        <ul>
-          <li>5–9 personas por equipo para mantener comunicación efectiva.</li>
-          <li>Considerar la carga cognitiva — un equipo no puede ser dueño de demasiados contextos.</li>
-          <li><em>"You design it, you build it, you run it"</em> — ownership end-to-end.</li>
-          <li>Considerar el ancho de banda de comunicación entre equipos.</li>
-          <li>Alinear los subdominos con los límites de los equipos.</li>
-        </ul>
-
-        <p>Los modos de interacción entre equipos definidos por <strong>Team Topologies</strong> (stream-aligned, enabling, platform, complicated-subsystem) son una extensión natural de los patrones de Context Maps: nos dicen no solo cómo los sistemas se relacionan, sino cómo los equipos detrás de ellos deben colaborar.</p>
+        <p>Heurísticos para la distribución de equipos: 5–9 personas por equipo, considerar la carga cognitiva, <em>"you design it, you build it, you run it"</em>, y alinear subdominios con límites de equipo. Los modos de interacción de <strong>Team Topologies</strong> (stream-aligned, enabling, platform, complicated-subsystem) son la extensión natural de los patrones de Context Maps.</p>
 
         <h2>Conclusión</h2>
-
-        <p>El DDD Estratégico nos da un framework para alinear el diseño de software con la realidad del negocio. No se trata de adoptar todos los patrones de golpe, sino de empezar por donde más duele: identificar los subdominios, establecer un lenguaje compartido con el negocio, y definir los Bounded Contexts que reflejen esa realidad.</p>
-
-        <p>El resultado es una arquitectura que evoluciona con el negocio, que reduce el acoplamiento entre equipos y que hace explícito lo que antes era implícito. Una arquitectura que, como bien dijo Eric Evans, acepta que no todo estará bien diseñado — y usa eso como criterio para decidir dónde sí invertir.</p>
+        <p>El DDD Estratégico nos da un framework para alinear el diseño de software con la realidad del negocio. No se trata de adoptar todos los patrones de golpe, sino de empezar donde duele: identificar los subdominios, establecer un lenguaje compartido con el negocio, y definir los Bounded Contexts que reflejen esa realidad.</p>
+        <p>El resultado es una arquitectura que evoluciona con el negocio, reduce el acoplamiento entre equipos y hace explícito lo que antes era implícito.</p>
 
         <hr />
-        <p style="font-size:0.85rem;color:var(--text-3)">Este artículo está basado en los conceptos del <em>Strategic Domain-Driven Design</em> popularizados por Eric Evans y desarrollados por la comunidad DDD. Referencias recomendadas: <em>Domain-Driven Design</em> de Eric Evans, <em>Implementing Domain-Driven Design</em> de Vaughn Vernon, <em>Team Topologies</em> de Skelton y Pais.</p>
+        <p style="font-size:0.85rem;color:var(--text-3)">Referencias: <em>Domain-Driven Design</em> — Eric Evans · <em>Implementing DDD</em> — Vaughn Vernon · <em>Team Topologies</em> — Skelton &amp; Pais</p>
 
       </div>
-    </div><!-- end lang-es -->
+    </div><!-- /lang-es -->
 
 
-    <!-- ══════════════════════════════════════════════════════
-         ENGLISH CONTENT
-    ═══════════════════════════════════════════════════════ -->
-    <div class="lang-block lang-en" style="display:none">
+    <!-- ══ ENGLISH ═══════════════════════════════════════════ -->
+    <div class="lang-en">
       <div class="container article-body">
 
-        <p>Domain-Driven Design (DDD) is far more than a collection of technical patterns. It is a holistic approach to software design that goes beyond technical concerns to address the cultural and organizational dimensions of a delivery organization. In this article, I walk through the core concepts of <strong>Strategic DDD</strong> — from the communication problem between business and technology, to Context Map patterns and their relationship with team structures.</p>
+        <p>Domain-Driven Design (DDD) is far more than a collection of technical patterns. It is a holistic approach to software design that addresses the cultural and organizational dimensions of a delivery organization. In this article, I walk through the core concepts of <strong>Strategic DDD</strong> — from the communication problem between business and technology, to Context Map patterns and their relationship with team structures.</p>
 
         <h2>The Communication Problem</h2>
-
-        <p>One of the greatest challenges in software development is the gap between business language and technical language. Business talks about "customers", "orders", and "approvals". Developers talk about <code>CustomerEntityImpl</code>, <code>OrderProcessorFactory</code>, and <code>ApprovalWorkflowSingleton</code>.</p>
-
-        <p>This disconnect is not trivial. When names don't reflect business reality, models become hard to understand, maintain, and evolve. And the most dangerous part: two people can say they agree without actually agreeing, because each understands something different under the same term.</p>
-
-        <p>DDD proposes that <strong>language</strong> be the bridge between both worlds. It's not about developers learning business vocabulary — it's about building a shared, precise language called the <em>Ubiquitous Language</em> that eliminates that ambiguity entirely.</p>
+        <p>One of the greatest challenges in software development is the gap between business language and technical language. Business talks about "customers" and "approvals". Developers build <code>CustomerEntityImpl</code> and <code>ApprovalWorkflowSingleton</code>. This disconnect means two people can say they agree without actually agreeing — each understanding something different under the same term.</p>
+        <p>DDD proposes that <strong>language</strong> be the bridge: building a shared, precise vocabulary — the <em>Ubiquitous Language</em> — that eliminates that ambiguity at its source.</p>
 
         <h2>Problem Space vs. Solution Space</h2>
+        <p>DDD clearly separates two spaces that organizations constantly conflate: the <strong>Problem Space</strong> (what to solve — domains and subdomains) and the <strong>Solution Space</strong> (how to solve it — Bounded Contexts). The key is that alignment must exist between both. The greater the alignment, the better the resulting design.</p>
 
-        <p>DDD clearly separates two spaces that are often confused:</p>
-
-        <ul>
-          <li><strong>Problem Space</strong>: represents the business architecture. This is where domains and subdomains live. It's the <em>"what we want to solve"</em>.</li>
-          <li><strong>Solution Space</strong>: represents the software architecture. This is where Bounded Contexts live. It's the <em>"how we solve it"</em>.</li>
-        </ul>
-
-        <p>The key is that alignment must exist between both spaces. The greater the alignment, the better the resulting design. However, perfection is unattainable — the goal is to maximize this correspondence iteratively, through continuous learning and collaborative modeling.</p>
+        <figure class="diagram">
+          <svg viewBox="0 0 660 230" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="276" height="222" rx="10" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <text x="142" y="28" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="2">PROBLEM SPACE</text>
+            <text x="142" y="45" fill="#475569" font-size="9.5" text-anchor="middle" font-family="sans-serif">What we want to solve</text>
+            <rect x="22" y="58" width="240" height="154" rx="7" fill="#111827" stroke="#1e2d4a"/>
+            <text x="38" y="78" fill="#94a3b8" font-size="10" font-weight="600" font-family="sans-serif">Domain</text>
+            <circle cx="46" cy="103" r="5" fill="#f87171"/>
+            <text x="58" y="107" fill="#f1f5f9" font-size="10" font-family="sans-serif">Core Subdomain</text>
+            <circle cx="46" cy="130" r="5" fill="#fbbf24"/>
+            <text x="58" y="134" fill="#f1f5f9" font-size="10" font-family="sans-serif">Supporting Subdomain</text>
+            <circle cx="46" cy="157" r="5" fill="#34d399"/>
+            <text x="58" y="161" fill="#f1f5f9" font-size="10" font-family="sans-serif">Generic Subdomain</text>
+            <text x="330" y="103" fill="#475569" font-size="9" text-anchor="middle" font-family="monospace">Alignment</text>
+            <line x1="294" y1="115" x2="366" y2="115" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <polygon points="366,111 374,115 366,119" fill="#38bdf8"/>
+            <polygon points="294,111 286,115 294,119" fill="#38bdf8"/>
+            <rect x="380" y="4" width="276" height="222" rx="10" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <text x="518" y="28" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="2">SOLUTION SPACE</text>
+            <text x="518" y="45" fill="#475569" font-size="9.5" text-anchor="middle" font-family="sans-serif">How we solve it</text>
+            <rect x="398" y="62" width="240" height="46" rx="6" fill="#111827" stroke="#1e2d4a"/>
+            <text x="416" y="82" fill="#7dd3fc" font-size="10" font-family="monospace">BC: Credit Scoring</text>
+            <text x="416" y="97" fill="#475569" font-size="9" font-family="sans-serif">scoring · risk model</text>
+            <rect x="398" y="118" width="240" height="46" rx="6" fill="#111827" stroke="#1e2d4a"/>
+            <text x="416" y="138" fill="#7dd3fc" font-size="10" font-family="monospace">BC: Loan Applications</text>
+            <text x="416" y="153" fill="#475569" font-size="9" font-family="sans-serif">application · applicant</text>
+            <rect x="398" y="174" width="240" height="46" rx="6" fill="#111827" stroke="#1e2d4a"/>
+            <text x="416" y="194" fill="#7dd3fc" font-size="10" font-family="monospace">BC: Contracting</text>
+            <text x="416" y="209" fill="#475569" font-size="9" font-family="sans-serif">contract · proposal</text>
+          </svg>
+          <figcaption>FIG 1 — The problem space (business architecture) must align with the solution space (software architecture)</figcaption>
+        </figure>
 
         <h2>Subdomains and Their Classification</h2>
+        <p>A domain breaks down into subdomains — lower-level business capabilities. Classifying them is not an academic exercise: it is a strategic decision that directly impacts how we invest, form teams, and build software.</p>
 
-        <p>A domain can be broken down into subdomains — lower-level business capabilities. Identifying subdomains is not an academic exercise. It is a strategic decision that directly impacts how we invest, how we form teams, and how we build software.</p>
-
-        <table class="subdomain-table">
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Description</th>
-              <th>Strategy</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="badge-core">Core Subdomain</span></td>
-              <td>The heart of the business. This is where competitive differentiation lives.</td>
-              <td>In-house development, top teams, no offshore, no COTS.</td>
-            </tr>
-            <tr>
-              <td><span class="badge-support">Supporting Subdomain</span></td>
-              <td>Vital for the core to function, but without direct strategic relevance against competition.</td>
-              <td>In-house with possible external support, nearshore as option, COTS with minor customizations.</td>
-            </tr>
-            <tr>
-              <td><span class="badge-generic">Generic Subdomain</span></td>
-              <td>Necessary but not critical functionality. "We need some solution for problem X."</td>
-              <td>SaaS or COTS, outsourcing strategy, focus on vendor management.</td>
-            </tr>
-          </tbody>
-        </table>
+        <figure class="diagram">
+          <svg viewBox="0 0 660 195" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="204" height="187" rx="10" fill="#0b111c" stroke="#f87171" stroke-width="2"/>
+            <rect x="4" y="4" width="204" height="8" rx="5" fill="#f87171"/>
+            <text x="106" y="34" fill="#f87171" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="2">CORE</text>
+            <text x="106" y="53" fill="#f1f5f9" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">Core Subdomain</text>
+            <text x="106" y="73" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">Competitive advantage.</text>
+            <text x="106" y="88" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">Heart of the business.</text>
+            <line x1="24" y1="103" x2="188" y2="103" stroke="#1a2540" stroke-width="1"/>
+            <text x="106" y="122" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Best in-house teams</text>
+            <text x="106" y="140" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ No nearshore / offshore</text>
+            <text x="106" y="158" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ No COTS software</text>
+            <text x="106" y="176" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">e.g. scoring algorithm</text>
+            <rect x="228" y="4" width="204" height="187" rx="10" fill="#0b111c" stroke="#fbbf24" stroke-width="2"/>
+            <rect x="228" y="4" width="204" height="8" rx="5" fill="#fbbf24"/>
+            <text x="330" y="34" fill="#fbbf24" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="1">SUPPORTING</text>
+            <text x="330" y="53" fill="#f1f5f9" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">Supporting Subdomain</text>
+            <text x="330" y="73" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">Enables the core.</text>
+            <text x="330" y="88" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">Vital but not differentiating.</text>
+            <line x1="248" y1="103" x2="412" y2="103" stroke="#1a2540" stroke-width="1"/>
+            <text x="330" y="122" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ In-house + external support</text>
+            <text x="330" y="140" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Nearshore as option</text>
+            <text x="330" y="158" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Minor COTS OK</text>
+            <text x="330" y="176" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">e.g. document management</text>
+            <rect x="452" y="4" width="204" height="187" rx="10" fill="#0b111c" stroke="#34d399" stroke-width="2"/>
+            <rect x="452" y="4" width="204" height="8" rx="5" fill="#34d399"/>
+            <text x="554" y="34" fill="#34d399" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="2">GENERIC</text>
+            <text x="554" y="53" fill="#f1f5f9" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">Generic Subdomain</text>
+            <text x="554" y="73" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">Necessary, not critical.</text>
+            <text x="554" y="88" fill="#94a3b8" font-size="9.5" text-anchor="middle" font-family="sans-serif">"We need a solution for X."</text>
+            <line x1="472" y1="103" x2="636" y2="103" stroke="#1a2540" stroke-width="1"/>
+            <text x="554" y="122" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ SaaS / COTS</text>
+            <text x="554" y="140" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Outsource</text>
+            <text x="554" y="158" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">✓ Vendor management</text>
+            <text x="554" y="176" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">e.g. email sending</text>
+          </svg>
+          <figcaption>FIG 2 — The three subdomain types determine how to invest, which teams to assign, and what technology to use</figcaption>
+        </figure>
 
         <blockquote>
           <p>"Not all parts of a system will be well designed."</p>
           <cite>— Eric Evans, author of Domain-Driven Design</cite>
         </blockquote>
-
-        <p>This statement from Evans is liberating: it's not about designing everything perfectly, but about investing energy where it matters most. Subdomain classification gives us the criterion to make that decision consciously.</p>
+        <p>This statement is liberating: it's not about designing everything perfectly, but about knowing where to invest your energy. Subdomain classification gives you that criterion.</p>
 
         <h2>Bounded Contexts</h2>
-
         <p>A <strong>Bounded Context</strong> is a linguistic boundary around the meaning of a domain model. Within that context, every term has a precise and consistent meaning.</p>
+        <p>The concept of "Customer" can mean different things in sales, credit scoring, and contracts. Having a single centralized model creates unnecessary coupling: any change to "Customer" impacts all contexts, even when that change is only relevant to one.</p>
 
-        <p>For example, the concept of "Applicant" can mean different things in the sales context, in the credit scoring context, and in the contracts context. Having a single centralized model creates unnecessary coupling: any change to the definition of "Applicant" impacts all contexts, even when that change is only relevant to one.</p>
-
-        <p>Decentralizing models into Bounded Contexts delivers several benefits:</p>
-
-        <ul>
-          <li>Higher cohesion within each context.</li>
-          <li>Lower coupling between teams.</li>
-          <li>Teams can work in parallel with greater autonomy.</li>
-          <li>Each team can choose different implementation options based on their needs.</li>
-        </ul>
+        <figure class="diagram">
+          <svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg">
+            <text x="330" y="20" fill="#64748b" font-size="9.5" text-anchor="middle" font-family="sans-serif">Same term, three different meanings — each Bounded Context defines its own model</text>
+            <rect x="4" y="32" width="204" height="170" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <rect x="4" y="32" width="204" height="32" rx="8" fill="#1a2845"/>
+            <rect x="4" y="51" width="204" height="13" fill="#1a2845"/>
+            <text x="106" y="53" fill="#7dd3fc" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace">BC: SALES</text>
+            <text x="106" y="82" fill="#f87171" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">"Customer"</text>
+            <text x="106" y="103" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· name, email</text>
+            <text x="106" y="119" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· referral source</text>
+            <text x="106" y="135" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· sales stage</text>
+            <text x="106" y="151" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· preferred channel</text>
+            <text x="106" y="192" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">prospect → client</text>
+            <rect x="228" y="32" width="204" height="170" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <rect x="228" y="32" width="204" height="32" rx="8" fill="#1a2845"/>
+            <rect x="228" y="51" width="204" height="13" fill="#1a2845"/>
+            <text x="330" y="53" fill="#7dd3fc" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace">BC: SCORING</text>
+            <text x="330" y="82" fill="#f87171" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">"Customer"</text>
+            <text x="330" y="103" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· income, debt ratio</text>
+            <text x="330" y="119" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· credit history</text>
+            <text x="330" y="135" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· risk score</text>
+            <text x="330" y="151" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· collateral</text>
+            <text x="330" y="192" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">applicant</text>
+            <rect x="452" y="32" width="204" height="170" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <rect x="452" y="32" width="204" height="32" rx="8" fill="#1a2845"/>
+            <rect x="452" y="51" width="204" height="13" fill="#1a2845"/>
+            <text x="554" y="53" fill="#7dd3fc" font-size="9.5" font-weight="700" text-anchor="middle" font-family="monospace">BC: CONTRACTS</text>
+            <text x="554" y="82" fill="#f87171" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">"Customer"</text>
+            <text x="554" y="103" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· legal name, tax ID</text>
+            <text x="554" y="119" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· signatures</text>
+            <text x="554" y="135" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· legal representative</text>
+            <text x="554" y="151" fill="#64748b" font-size="9" text-anchor="middle" font-family="sans-serif">· jurisdiction</text>
+            <text x="554" y="192" fill="#475569" font-size="8.5" text-anchor="middle" font-family="monospace" font-style="italic">contracting party</text>
+          </svg>
+          <figcaption>FIG 3 — Bounded Contexts: the same term with different models prevents coupling and semantic confusion</figcaption>
+        </figure>
 
         <h3>How to identify Bounded Contexts?</h3>
-
-        <p>Identification should not be based on a single criterion. It is a collaborative exercise that evaluates multiple dimensions:</p>
-
-        <ul>
-          <li><strong>Capabilities and responsibilities</strong>: what does this context do, what information does it manage, what actions does it execute.</li>
-          <li><strong>Ubiquitous language</strong>: what terms are unique to this context, what key actors are involved.</li>
-          <li><strong>Business policies</strong>: what rules and validations apply here.</li>
-          <li><strong>Quality criteria</strong>: scalability, performance, change frequency (ISO 25010).</li>
-          <li><strong>Team structure</strong>: how many teams are available — contexts shouldn't outnumber the teams able to maintain them.</li>
-        </ul>
+        <p>Identification should not be based on a single criterion. It is a collaborative exercise evaluating: capabilities and responsibilities, business policies, ubiquitous language (key actors and verbs), quality criteria (scalability, change frequency), and the number of available teams.</p>
 
         <h2>Ubiquitous Language</h2>
-
-        <p>The ubiquitous language is the shared vocabulary between developers and domain experts within a Bounded Context. It's not the developers' technical jargon nor the business's generic language — it's a language built together, continuously refined through collaborative modeling.</p>
-
-        <p>The most popular techniques for building and validating this language include:</p>
-
-        <ul>
-          <li><strong>Event Storming</strong>: collaborative mapping of domain events on a shared board.</li>
-          <li><strong>Domain Storytelling</strong>: narrating business processes using pictograms.</li>
-          <li><strong>Example Mapping</strong>: defining rules and concrete behavioral examples.</li>
-          <li><strong>User Story Mapping</strong>: organizing features from the user's perspective.</li>
-        </ul>
-
-        <p>The goal of all these techniques is the same: create a space where business and technology build a shared understanding together, eliminating divergent interpretations before they become bugs or technical debt.</p>
+        <p>The ubiquitous language is the shared vocabulary between developers and domain experts <em>within</em> a Bounded Context. It's not technical jargon nor generic business language — it's built together, continuously refined through collaborative modeling techniques like <strong>Event Storming</strong>, <strong>Domain Storytelling</strong>, <strong>Example Mapping</strong>, and <strong>User Story Mapping</strong>.</p>
 
         <h2>Context Maps</h2>
+        <p>Context Maps provide a holistic view of the coupling between Bounded Contexts. They're not just technical diagrams — they capture technical, organizational, and political relationships between teams. They are one of the most valuable and least utilized artifacts in DDD.</p>
 
-        <p>Context Maps provide a holistic view of the coupling between Bounded Contexts. They are not just technical diagrams — they capture technical, organizational, and political relationships between teams. They are one of the most valuable and least utilized artifacts in DDD.</p>
-
-        <p>Some of the most important patterns:</p>
-
-        <ul>
-          <li><strong>Open Host Service / Published Language</strong>: one provider, multiple consumers. Exposes a general-purpose API with a stable, published language.</li>
-          <li><strong>Anticorruption Layer (ACL)</strong>: translation layer that protects the downstream model from the upstream model. Reduces coupling and prevents an external model from "contaminating" your own.</li>
-          <li><strong>Shared Kernel</strong>: shared artifact between contexts — code, database, or library. Requires high coordination between teams.</li>
-          <li><strong>Customer/Supplier</strong>: the downstream team can make demands on the upstream, which has the responsibility to fulfill them. Involves joint negotiation and prioritization.</li>
-          <li><strong>Conformist</strong>: the downstream team adopts the upstream model without translation. Simpler, but creates direct coupling to the external model.</li>
-        </ul>
-
-        <p>Context Maps help make implicit organizational processes visible, identify flows of bad domain models, establish a decentralized governance model, and serve as a starting point for future transformations.</p>
+        <figure class="diagram">
+          <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="80" width="160" height="65" rx="8" fill="#0b111c" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="84" y="106" fill="#7dd3fc" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">BC: SCORING</text>
+            <text x="84" y="122" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">upstream</text>
+            <text x="84" y="137" fill="#f87171" font-size="8" text-anchor="middle" font-family="monospace">core subdomain</text>
+            <line x1="164" y1="113" x2="248" y2="82" stroke="#38bdf8" stroke-width="1.5"/>
+            <polygon points="248,78 258,82 248,86" fill="#38bdf8"/>
+            <text x="195" y="88" fill="#38bdf8" font-size="8" font-family="monospace" text-anchor="middle">OHS</text>
+            <line x1="164" y1="125" x2="248" y2="158" stroke="#38bdf8" stroke-width="1.5"/>
+            <polygon points="248,154 258,158 248,162" fill="#38bdf8"/>
+            <text x="200" y="160" fill="#38bdf8" font-size="8" font-family="monospace" text-anchor="middle">Pub. Lang</text>
+            <rect x="258" y="55" width="160" height="65" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <text x="338" y="81" fill="#7dd3fc" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">BC: SALES</text>
+            <text x="338" y="97" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">downstream</text>
+            <text x="338" y="112" fill="#fbbf24" font-size="8" text-anchor="middle" font-family="monospace">ACL ↓</text>
+            <line x1="338" y1="120" x2="338" y2="175" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <polygon points="334,175 338,185 342,175" fill="#fbbf24"/>
+            <rect x="258" y="185" width="160" height="65" rx="8" fill="#0b111c" stroke="#1a2540" stroke-width="1.5"/>
+            <text x="338" y="210" fill="#7dd3fc" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">BC: CONTRACTS</text>
+            <text x="338" y="226" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">downstream</text>
+            <text x="338" y="241" fill="#34d399" font-size="8" text-anchor="middle" font-family="monospace">conformist</text>
+            <rect x="512" y="80" width="144" height="140" rx="8" fill="#111827" stroke="#1e2d4a" stroke-width="1.5" stroke-dasharray="6,3"/>
+            <text x="584" y="108" fill="#94a3b8" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">SHARED</text>
+            <text x="584" y="123" fill="#94a3b8" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">KERNEL</text>
+            <text x="584" y="147" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">shared code</text>
+            <text x="584" y="163" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">high coordination</text>
+            <text x="584" y="178" fill="#475569" font-size="8.5" text-anchor="middle" font-family="sans-serif">required</text>
+            <line x1="418" y1="113" x2="512" y2="140" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+            <line x1="20" y1="268" x2="50" y2="268" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="58" y="272" fill="#475569" font-size="8.5" font-family="sans-serif">Open Host Service / Published Language</text>
+            <line x1="20" y1="285" x2="50" y2="285" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="58" y="289" fill="#475569" font-size="8.5" font-family="sans-serif">Anticorruption Layer</text>
+            <line x1="320" y1="268" x2="350" y2="268" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="358" y="272" fill="#475569" font-size="8.5" font-family="sans-serif">Shared Kernel</text>
+            <rect x="320" y="278" width="10" height="10" rx="2" fill="none" stroke="#34d399" stroke-width="1.5"/>
+            <text x="338" y="287" fill="#475569" font-size="8.5" font-family="sans-serif">Conformist</text>
+          </svg>
+          <figcaption>FIG 4 — Context Map: relationship patterns between Bounded Contexts capture technical, organizational and political coupling</figcaption>
+        </figure>
 
         <h2>DDD and Team Structure</h2>
-
-        <p>One of the most powerful ideas in Strategic DDD is that architecture and organizational structure must be aligned. Conway's Law tells us that systems we design tend to mirror the communication structure of the organizations that create them. DDD turns this into an advantage: design your Bounded Contexts first, then organize teams around them.</p>
+        <p>One of Strategic DDD's most powerful ideas: architecture and organizational structure must be aligned. Conway's Law tells us that systems mirror the communication structure of the organizations that create them. DDD turns this into an advantage: design your Bounded Contexts first, then organize teams around them.</p>
 
         <blockquote>
           <p>"Team assignments are the first draft of the architecture."</p>
           <cite>— Michael Nygard, author of Release It!</cite>
         </blockquote>
 
-        <p>Some heuristics for team distribution:</p>
-
-        <ul>
-          <li>5–9 people per team to maintain effective communication.</li>
-          <li>Consider cognitive load — a team can't own too many contexts.</li>
-          <li><em>"You design it, you build it, you run it"</em> — end-to-end ownership.</li>
-          <li>Consider communication bandwidth between teams.</li>
-          <li>Align subdomains with team boundaries.</li>
-        </ul>
-
-        <p>The team interaction modes defined by <strong>Team Topologies</strong> (stream-aligned, enabling, platform, complicated-subsystem) are a natural extension of Context Map patterns: they tell us not just how systems relate, but how the teams behind them should collaborate.</p>
+        <p>Heuristics for team distribution: 5–9 people per team, consider cognitive load, <em>"you design it, you build it, you run it"</em>, and align subdomains with team boundaries. The interaction modes from <strong>Team Topologies</strong> (stream-aligned, enabling, platform, complicated-subsystem) are the natural extension of Context Map patterns.</p>
 
         <h2>Conclusion</h2>
-
         <p>Strategic DDD gives us a framework to align software design with business reality. It's not about adopting all patterns at once, but starting where it hurts most: identifying subdomains, establishing a shared language with the business, and defining the Bounded Contexts that reflect that reality.</p>
-
-        <p>The result is an architecture that evolves with the business, reduces coupling between teams, and makes explicit what was previously implicit. An architecture that, as Eric Evans wisely said, accepts that not everything will be well designed — and uses that as the criterion for deciding where to invest.</p>
+        <p>The result is an architecture that evolves with the business, reduces coupling between teams, and makes explicit what was previously implicit.</p>
 
         <hr />
-        <p style="font-size:0.85rem;color:var(--text-3)">This article is based on Strategic Domain-Driven Design concepts popularized by Eric Evans and developed by the DDD community. Recommended references: <em>Domain-Driven Design</em> by Eric Evans, <em>Implementing Domain-Driven Design</em> by Vaughn Vernon, <em>Team Topologies</em> by Skelton and Pais.</p>
+        <p style="font-size:0.85rem;color:var(--text-3)">References: <em>Domain-Driven Design</em> — Eric Evans · <em>Implementing DDD</em> — Vaughn Vernon · <em>Team Topologies</em> — Skelton &amp; Pais</p>
 
       </div>
-    </div><!-- end lang-en -->
+    </div><!-- /lang-en -->
 
-    <!-- ── Newsletter CTA ─────────────────────────────────────── -->
+    <!-- Newsletter CTA -->
     <section class="newsletter-section">
       <div class="container">
         <div class="newsletter-box">
           <span class="newsletter-eyebrow">Newsletter</span>
-          <h2 data-es="¿Te gustó el artículo?" data-en="Enjoyed the article?">
-            ¿Te gustó el artículo?
-          </h2>
-          <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software directamente en tu inbox."
-             data-en="Subscribe to get new software architecture articles delivered straight to your inbox.">
-            Suscríbete para recibir nuevos artículos sobre arquitectura de software directamente en tu inbox.
+          <h2 data-es="¿Te gustó el artículo?" data-en="Enjoyed the article?">¿Te gustó el artículo?</h2>
+          <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu inbox."
+             data-en="Subscribe to get new software architecture articles straight to your inbox.">
+            Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu inbox.
           </p>
           <form class="subscribe-form" onsubmit="handleSubscribe(event)">
             <input type="email" class="email-input" placeholder="tu@email.com" required />
-            <button type="submit" class="btn"
-                    data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
+            <button type="submit" class="btn" data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
           </form>
           <p class="newsletter-note">
             <span data-es="Publicado en" data-en="Published on">Publicado en</span>
@@ -387,10 +508,8 @@
         </div>
       </div>
     </section>
-
   </main>
 
-  <!-- ── Footer ────────────────────────────────────────────── -->
   <footer>
     <div class="container">
       <div class="footer-inner">

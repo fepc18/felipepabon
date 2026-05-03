@@ -20,13 +20,8 @@ function applyLang(lang) {
     el.textContent = lang === 'es' ? el.dataset.es : el.dataset.en;
   });
 
-  /* show/hide full article language blocks */
-  document.querySelectorAll('.lang-block').forEach(el => {
-    el.style.display = 'none';
-  });
-  document.querySelectorAll(`.lang-${lang}`).forEach(el => {
-    el.style.display = '';
-  });
+  /* drive lang visibility purely through CSS via data-lang attribute */
+  document.documentElement.setAttribute('data-lang', lang);
 
   /* re-render post lists */
   const activeChip = document.querySelector('.filter-chip.active');
@@ -61,9 +56,15 @@ function renderPosts(filter) {
   }
 }
 
+function resolveHref(post) {
+  if (!post.href || post.external) return post.href || '#';
+  const onBlog = window.location.pathname.includes('/blog');
+  return onBlog ? post.href.replace(/^blog\//, '') : post.href;
+}
+
 function cardHTML(post) {
   const title  = currentLang === 'es' ? post.titleEs : post.titleEn;
-  const href   = post.href || '#';
+  const href   = resolveHref(post);
   const target = post.external ? 'target="_blank" rel="noopener noreferrer"' : '';
   const tags   = post.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
   const source = post.external
@@ -83,7 +84,7 @@ function cardHTML(post) {
 
 function rowHTML(post) {
   const title  = currentLang === 'es' ? post.titleEs : post.titleEn;
-  const href   = post.href || '#';
+  const href   = resolveHref(post);
   const target = post.external ? 'target="_blank" rel="noopener noreferrer"' : '';
   const tags   = post.tags.map(t => `<span class="row-tag">${t}</span>`).join('');
   const source = post.external

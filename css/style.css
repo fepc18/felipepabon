@@ -404,6 +404,11 @@ nav {
 }
 .post-row:hover .row-arrow { color: var(--accent); }
 
+/* ── Language visibility (CSS-driven, no JS flicker) ───────── */
+.lang-en { display: none; }
+[data-lang="en"] .lang-es { display: none; }
+[data-lang="en"] .lang-en { display: block; }
+
 /* ── Article page ──────────────────────────────────────────── */
 .article-header {
   padding: 4rem 0 3rem;
@@ -546,6 +551,27 @@ nav {
   border-top: 1px solid var(--border);
   margin: 2.5rem 0;
 }
+
+/* ── Diagrams ──────────────────────────────────────────────── */
+.diagram {
+  margin: 2rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.diagram figcaption {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-3);
+  text-align: center;
+  padding: 0.6rem 1rem 0.8rem;
+  letter-spacing: 0.04em;
+  border-top: 1px solid var(--border);
+}
+
+.diagram svg { display: block; width: 100%; padding: 1rem; }
 
 /* Subdomain comparison table */
 .subdomain-table {
