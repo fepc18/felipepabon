@@ -83,6 +83,36 @@
       </div>
     </section>
 
+    <!-- ── Newsletter ─────────────────────────────────────────── -->
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="newsletter-box">
+          <span class="newsletter-eyebrow">Newsletter</span>
+          <h2 data-es="Arquitectura en tu inbox" data-en="Architecture in your inbox">
+            Arquitectura en tu inbox
+          </h2>
+          <p data-es="Artículos sobre DDD, diseño de APIs y microservicios directamente en tu correo. Sin spam, solo contenido que vale la pena leer."
+             data-en="Articles on DDD, API design, and microservices straight to your email. No spam, only content worth reading.">
+            Artículos sobre DDD, diseño de APIs y microservicios directamente en tu correo. Sin spam, solo contenido que vale la pena leer.
+          </p>
+          <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+            <input type="email" class="email-input"
+                   placeholder="tu@email.com"
+                   data-placeholder-es="tu@email.com"
+                   data-placeholder-en="you@email.com"
+                   required />
+            <button type="submit" class="btn"
+                    data-es="Suscribirse"
+                    data-en="Subscribe">Suscribirse</button>
+          </form>
+          <p class="newsletter-note">
+            <span data-es="Publicado en" data-en="Published on">Publicado en</span>
+            <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ── Footer ────────────────────────────────────────────── -->
@@ -91,6 +121,7 @@
       <div class="footer-inner">
         <span class="footer-copy">Felipe Pabón © 2026</span>
         <div class="footer-links">
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
           <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
           <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
           <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>

@@ -103,6 +103,17 @@ function filterPosts(filter, chipEl) {
   renderPosts(filter);
 }
 
+/* ── Newsletter ────────────────────────────────────────────── */
+function handleSubscribe(e) {
+  e.preventDefault();
+  const email = e.target.querySelector('input[type="email"]').value.trim();
+  window.open(
+    `https://felipepabon.substack.com/subscribe?email=${encodeURIComponent(email)}`,
+    '_blank',
+    'noopener,noreferrer'
+  );
+}
+
 /* ── Init ──────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   applyLang(currentLang);
