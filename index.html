@@ -3,59 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Felipe Pabón</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #0d1117;
-      color: #e6edf3;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    .container {
-      text-align: center;
-      padding: 2rem;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #f0f6fc;
-    }
-
-    p {
-      font-size: 1.1rem;
-      color: #8b949e;
-      margin-bottom: 2rem;
-    }
-
-    .badge {
-      display: inline-block;
-      background-color: #238636;
-      color: #ffffff;
-      font-size: 0.85rem;
-      padding: 0.3rem 0.9rem;
-      border-radius: 2rem;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-    }
-  </style>
+  <meta name="description" content="Felipe Pabón — Software Architect & Engineering Manager. Artículos sobre DDD, diseño de APIs, microservicios y arquitectura de software." />
+  <meta name="author" content="Felipe Pabón" />
+  <title>Felipe Pabón — Software Architect</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Felipe Pabón</h1>
-    <p>Sitio en construcción — GitHub Pages activo ✓</p>
-    <span class="badge">🚀 Despliegue exitoso</span>
-  </div>
+
+  <!-- ── Nav ──────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="./" class="nav-logo">fp.</a>
+      <div class="nav-links">
+        <a href="blog/" data-es="Blog" data-en="Blog">Blog</a>
+        <button class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ── Hero ─────────────────────────────────────────────── -->
+    <section class="hero">
+      <div class="container">
+        <span class="hero-eyebrow"
+              data-es="Software Architect &amp; Engineering Manager"
+              data-en="Software Architect &amp; Engineering Manager">
+          Software Architect &amp; Engineering Manager
+        </span>
+        <h1>Felipe Pabón</h1>
+        <p class="hero-sub"
+           data-es="Escribo sobre Domain-Driven Design, diseño de APIs, microservicios y estrategias de arquitectura para equipos de ingeniería de alto rendimiento."
+           data-en="Writing about Domain-Driven Design, API design, microservices, and architecture strategies for high-performing engineering teams.">
+          Escribo sobre Domain-Driven Design, diseño de APIs, microservicios y estrategias de arquitectura para equipos de ingeniería de alto rendimiento.
+        </p>
+        <a href="blog/" class="btn"
+           data-es="Leer el Blog →"
+           data-en="Read the Blog →">Leer el Blog →</a>
+      </div>
+    </section>
+
+    <!-- ── Topics ────────────────────────────────────────────── -->
+    <section class="topics-section">
+      <div class="container">
+        <p class="section-eyebrow"
+           data-es="Temas"
+           data-en="Topics">Temas</p>
+        <div class="tags">
+          <span class="tag">Domain-Driven Design</span>
+          <span class="tag">API Design</span>
+          <span class="tag">Microservices</span>
+          <span class="tag">Spec Driven Development</span>
+          <span class="tag">Clean Architecture</span>
+          <span class="tag">Engineering Management</span>
+          <span class="tag">SOA</span>
+          <span class="tag">TDD</span>
+          <span class="tag">Golang</span>
+          <span class="tag">.NET / Azure</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Recent posts ──────────────────────────────────────── -->
+    <section class="posts-section">
+      <div class="container">
+        <p class="section-eyebrow"
+           data-es="Artículos Recientes"
+           data-en="Recent Posts">Artículos Recientes</p>
+
+        <div class="posts-grid" id="posts-preview">
+          <!-- Rendered by main.js -->
+        </div>
+
+        <div class="text-center" style="margin-top:2.5rem">
+          <a href="blog/" class="btn btn-ghost"
+             data-es="Ver todos los artículos →"
+             data-en="View all posts →">Ver todos los artículos →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">Felipe Pabón © 2026</span>
+        <div class="footer-links">
+          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
+          <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/posts.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

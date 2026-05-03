@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Blog de Felipe Pabón — Artículos sobre DDD, diseño de APIs, microservicios y arquitectura de software." />
+  <meta name="author" content="Felipe Pabón" />
+  <title>Blog — Felipe Pabón</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <!-- ── Nav ──────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">fp.</a>
+      <div class="nav-links">
+        <a href="../blog/" class="active"
+           data-es="Blog" data-en="Blog">Blog</a>
+        <button class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ── Blog header ───────────────────────────────────────── -->
+    <section class="blog-header">
+      <div class="container">
+        <span class="hero-eyebrow">Blog</span>
+        <h1 data-es="Artículos" data-en="Posts">Artículos</h1>
+        <p data-es="Ideas, guías y reflexiones sobre arquitectura de software y gestión de ingeniería."
+           data-en="Ideas, guides, and thoughts on software architecture and engineering management.">
+          Ideas, guías y reflexiones sobre arquitectura de software y gestión de ingeniería.
+        </p>
+
+        <!-- filter chips -->
+        <div class="filter-row">
+          <button class="filter-chip active" data-filter="all"
+                  onclick="filterPosts('all', this)"
+                  data-es="Todos" data-en="All">Todos</button>
+          <button class="filter-chip" data-filter="DDD"
+                  onclick="filterPosts('DDD', this)">DDD</button>
+          <button class="filter-chip" data-filter="API Design"
+                  onclick="filterPosts('API Design', this)">API Design</button>
+          <button class="filter-chip" data-filter="Microservices"
+                  onclick="filterPosts('Microservices', this)">Microservices</button>
+          <button class="filter-chip" data-filter="SOA"
+                  onclick="filterPosts('SOA', this)">SOA</button>
+          <button class="filter-chip" data-filter="TDD"
+                  onclick="filterPosts('TDD', this)">TDD</button>
+          <button class="filter-chip" data-filter="Clean Architecture"
+                  onclick="filterPosts('Clean Architecture', this)">Clean Architecture</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Posts list ─────────────────────────────────────────── -->
+    <section class="posts-section" style="padding-top:0.5rem">
+      <div class="container">
+        <div class="posts-list" id="posts-full">
+          <!-- Rendered by main.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">Felipe Pabón © 2026</span>
+        <div class="footer-links">
+          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
+          <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/posts.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
