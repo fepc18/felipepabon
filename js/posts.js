@@ -32,6 +32,17 @@ const POSTS = [
     external: true,
   },
 
+  /* ── Site articles ────────────────────────────────────────── */
+  {
+    id: 'ddd-strategic-overview',
+    titleEs: 'DDD Estratégico: Un Overview',
+    titleEn: 'Strategic DDD: An Overview',
+    tags: ['DDD'],
+    date: 'May 2026',
+    href: 'blog/ddd-strategic-overview.html',
+    external: false,
+  },
+
   /* ── Previous site posts (coming soon) ────────────────────── */
   {
     id: 'ddd-intro',

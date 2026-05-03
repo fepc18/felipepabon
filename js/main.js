@@ -20,6 +20,14 @@ function applyLang(lang) {
     el.textContent = lang === 'es' ? el.dataset.es : el.dataset.en;
   });
 
+  /* show/hide full article language blocks */
+  document.querySelectorAll('.lang-block').forEach(el => {
+    el.style.display = 'none';
+  });
+  document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+    el.style.display = '';
+  });
+
   /* re-render post lists */
   const activeChip = document.querySelector('.filter-chip.active');
   const activeFilter = activeChip ? activeChip.dataset.filter : 'all';

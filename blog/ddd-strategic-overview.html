@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Un overview de DDD Estratégico: espacios de problema y solución, subdominios, Bounded Contexts, lenguaje ubicuo y Context Maps." />
+  <meta name="author" content="Felipe Pabón" />
+  <title>DDD Estratégico: Un Overview — Felipe Pabón</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <!-- ── Nav ──────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">fp.</a>
+      <div class="nav-links">
+        <a href="../blog/" data-es="Blog" data-en="Blog">Blog</a>
+        <button class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container" style="padding-top:2rem">
+      <a href="../blog/" class="back-link">← <span data-es="Volver al Blog" data-en="Back to Blog">Volver al Blog</span></a>
+    </div>
+
+    <!-- ── Article Header ────────────────────────────────────── -->
+    <header class="article-header">
+      <div class="container">
+        <div class="article-header-meta">
+          <span class="card-tag">DDD</span>
+          <span class="reading-time">~10 min</span>
+        </div>
+        <h1 class="article-title"
+            data-es="DDD Estratégico: Un Overview"
+            data-en="Strategic DDD: An Overview">
+          DDD Estratégico: Un Overview
+        </h1>
+        <p class="article-subtitle"
+           data-es="Subdominios, Bounded Contexts, lenguaje ubicuo y Context Maps — los pilares del DDD Estratégico explicados desde una perspectiva práctica."
+           data-en="Subdomains, Bounded Contexts, ubiquitous language, and Context Maps — the pillars of Strategic DDD explained from a practical perspective.">
+          Subdominios, Bounded Contexts, lenguaje ubicuo y Context Maps — los pilares del DDD Estratégico explicados desde una perspectiva práctica.
+        </p>
+        <div class="article-byline">
+          <span>Felipe Pabón</span>
+          <span data-es="Mayo 2026" data-en="May 2026">Mayo 2026</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════════
+         SPANISH CONTENT
+    ═══════════════════════════════════════════════════════ -->
+    <div class="lang-block lang-es">
+      <div class="container article-body">
+
+        <p>Domain-Driven Design (DDD) es mucho más que un conjunto de patrones técnicos. Es un enfoque holístico para el diseño de software que va más allá de los aspectos técnicos y aborda los aspectos culturales y organizacionales de un equipo de desarrollo. En este artículo hago un recorrido por los conceptos fundamentales del <strong>DDD Estratégico</strong>: desde el problema de comunicación entre negocio y tecnología, hasta los patrones de Context Maps y su relación con las estructuras de equipo.</p>
+
+        <h2>El problema de comunicación</h2>
+
+        <p>Uno de los mayores desafíos en el desarrollo de software es la brecha entre el lenguaje del negocio y el lenguaje técnico. El negocio habla de "clientes", "pedidos" y "aprobaciones". Los desarrolladores hablan de <code>CustomerEntityImpl</code>, <code>OrderProcessorFactory</code> y <code>ApprovalWorkflowSingleton</code>.</p>
+
+        <p>Esta desconexión no es trivial. Cuando los nombres no reflejan la realidad del negocio, los modelos se vuelven difíciles de entender, mantener y evolucionar. Y lo más peligroso: dos personas pueden decir que están de acuerdo sin realmente estarlo, porque cada una entiende algo diferente bajo el mismo término.</p>
+
+        <p>DDD propone que el <strong>lenguaje</strong> sea el puente entre ambos mundos. No se trata de que los desarrolladores aprendan el vocabulario del negocio, sino de construir un lenguaje común y preciso — el llamado <em>Lenguaje Ubicuo</em> — que elimine esa ambigüedad.</p>
+
+        <h2>Espacio del Problema vs. Espacio de la Solución</h2>
+
+        <p>DDD separa claramente dos espacios que a menudo se confunden:</p>
+
+        <ul>
+          <li><strong>Espacio del Problema</strong>: representa la arquitectura de negocio. Aquí viven los dominios y subdominios. Es el <em>"qué queremos resolver"</em>.</li>
+          <li><strong>Espacio de la Solución</strong>: representa la arquitectura de software. Aquí viven los Bounded Contexts. Es el <em>"cómo lo resolvemos"</em>.</li>
+        </ul>
+
+        <p>La clave está en que debe existir alineación entre ambos espacios. Cuanto mayor sea esa alineación, mejor será el diseño resultante. Sin embargo, la perfección es inalcanzable — el objetivo es maximizar esa correspondencia de forma iterativa, a través del aprendizaje continuo y el modelado colaborativo.</p>
+
+        <h2>Subdominios y su clasificación</h2>
+
+        <p>Un dominio puede dividirse en subdominios, que son capacidades de negocio de menor nivel. Identificar los subdominios no es un ejercicio académico — es una decisión estratégica que impacta directamente en cómo invertimos, cómo armamos equipos y cómo construimos software.</p>
+
+        <table class="subdomain-table">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Descripción</th>
+              <th>Estrategia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge-core">Core Subdomain</span></td>
+              <td>El corazón del negocio. Aquí está la diferenciación competitiva.</td>
+              <td>Desarrollo in-house, mejores equipos, sin offshore, sin COTS.</td>
+            </tr>
+            <tr>
+              <td><span class="badge-support">Supporting Subdomain</span></td>
+              <td>Vital para el core, pero sin relevancia estratégica directa frente a la competencia.</td>
+              <td>In-house con apoyo externo, nearshore posible, COTS con customizaciones menores.</td>
+            </tr>
+            <tr>
+              <td><span class="badge-generic">Generic Subdomain</span></td>
+              <td>Funcionalidad necesaria pero no crítica. "Necesitamos una solución para el problema X."</td>
+              <td>SaaS o COTS, outsourcing, foco en vendor management.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <blockquote>
+          <p>"No todas las partes de un sistema estarán bien diseñadas."</p>
+          <cite>— Eric Evans, autor de Domain-Driven Design</cite>
+        </blockquote>
+
+        <p>Esta afirmación de Evans es liberadora: no se trata de diseñar todo perfectamente, sino de invertir la energía donde más importa. La clasificación de subdominios nos da el criterio para tomar esa decisión conscientemente.</p>
+
+        <h2>Bounded Contexts</h2>
+
+        <p>Un <strong>Bounded Context</strong> es una frontera lingüística alrededor del significado de un modelo de dominio. Dentro de ese contexto, cada término tiene un significado preciso y consistente.</p>
+
+        <p>Por ejemplo, el concepto de "Solicitante" puede significar cosas distintas en el contexto de ventas, en el contexto de scoring crediticio y en el contexto de contratos. Tener un único modelo centralizado genera acoplamiento innecesario: cualquier cambio en la definición de "Solicitante" impacta a todos los contextos, aunque ese cambio solo sea relevante para uno.</p>
+
+        <p>La descentralización de modelos en Bounded Contexts tiene varios beneficios:</p>
+
+        <ul>
+          <li>Mayor cohesión dentro de cada contexto.</li>
+          <li>Menor acoplamiento entre equipos.</li>
+          <li>Los equipos pueden trabajar en paralelo con mayor autonomía.</li>
+          <li>Cada equipo puede elegir distintas opciones de implementación según sus necesidades.</li>
+        </ul>
+
+        <h3>¿Cómo identificar Bounded Contexts?</h3>
+
+        <p>La identificación no debe basarse en un solo criterio. Es un ejercicio colaborativo que evalúa múltiples dimensiones:</p>
+
+        <ul>
+          <li><strong>Capacidades y responsabilidades</strong>: qué hace este contexto, qué tipo de información maneja, qué acciones ejecuta.</li>
+          <li><strong>Lenguaje ubicuo</strong>: qué términos son únicos a este contexto, qué actores clave intervienen.</li>
+          <li><strong>Políticas de negocio</strong>: qué reglas y validaciones aplican aquí.</li>
+          <li><strong>Criterios de calidad</strong>: escalabilidad, performance, frecuencia de cambio (ISO 25010).</li>
+          <li><strong>Estructura de equipos</strong>: cuántos equipos hay disponibles — los contextos no deben ser más que los equipos capaces de mantenerlos.</li>
+        </ul>
+
+        <h2>Lenguaje Ubicuo</h2>
+
+        <p>El lenguaje ubicuo es el vocabulario compartido entre desarrolladores y expertos de dominio dentro de un Bounded Context. No es el lenguaje técnico de los desarrolladores ni el lenguaje genérico del negocio — es un lenguaje construido en conjunto, refinado continuamente a través del modelado colaborativo.</p>
+
+        <p>Las técnicas más populares para construir y validar este lenguaje incluyen:</p>
+
+        <ul>
+          <li><strong>Event Storming</strong>: mapeo colaborativo de eventos de dominio en un tablero.</li>
+          <li><strong>Domain Storytelling</strong>: narración de procesos de negocio con pictogramas.</li>
+          <li><strong>Example Mapping</strong>: definición de reglas y ejemplos concretos de comportamiento.</li>
+          <li><strong>User Story Mapping</strong>: organización de funcionalidades desde la perspectiva del usuario.</li>
+        </ul>
+
+        <p>El objetivo de todas estas técnicas es el mismo: crear un espacio donde negocio y tecnología construyan juntos un entendimiento compartido, eliminando las interpretaciones divergentes antes de que se conviertan en bugs o en deuda técnica.</p>
+
+        <h2>Context Maps</h2>
+
+        <p>Los Context Maps proveen una visión holística del acoplamiento entre Bounded Contexts. No son solo diagramas técnicos — capturan relaciones técnicas, organizacionales y políticas entre equipos. Son uno de los artefactos más valiosos y menos utilizados del DDD.</p>
+
+        <p>Algunos de los patrones más importantes:</p>
+
+        <ul>
+          <li><strong>Open Host Service / Published Language</strong>: un proveedor con múltiples consumidores. Expone una API de propósito general con un lenguaje publicado y estable.</li>
+          <li><strong>Anticorruption Layer (ACL)</strong>: capa de traducción que protege el modelo downstream del modelo upstream. Reduce el acoplamiento y evita que un modelo externo "contamine" el propio.</li>
+          <li><strong>Shared Kernel</strong>: artefacto compartido entre contextos — código, base de datos o librería. Requiere coordinación alta entre equipos.</li>
+          <li><strong>Customer/Supplier</strong>: el equipo downstream puede hacer demandas al upstream, que tiene la responsabilidad de cumplirlas. Implica negociación y priorización conjunta.</li>
+          <li><strong>Conformist</strong>: el equipo downstream adopta el modelo del upstream sin traducción. Más simple, pero genera acoplamiento directo al modelo externo.</li>
+        </ul>
+
+        <p>Los Context Maps sirven para hacer visibles los procesos organizacionales implícitos, identificar flujos de modelos deficientes, establecer un modelo de gobernanza descentralizado y servir como punto de partida para transformaciones futuras.</p>
+
+        <h2>DDD y la estructura de equipos</h2>
+
+        <p>Una de las ideas más poderosas del DDD Estratégico es que la arquitectura y la estructura organizacional deben estar alineadas. La Ley de Conway nos dice que los sistemas que diseñamos tienden a reflejar la estructura de comunicación de las organizaciones que los crean. DDD lo convierte en una ventaja: diseña primero los Bounded Contexts, luego organiza los equipos alrededor de ellos.</p>
+
+        <blockquote>
+          <p>"Las asignaciones de equipo son el primer borrador de la arquitectura."</p>
+          <cite>— Michael Nygard, autor de Release It!</cite>
+        </blockquote>
+
+        <p>Algunos heurísticos para la distribución de equipos:</p>
+
+        <ul>
+          <li>5–9 personas por equipo para mantener comunicación efectiva.</li>
+          <li>Considerar la carga cognitiva — un equipo no puede ser dueño de demasiados contextos.</li>
+          <li><em>"You design it, you build it, you run it"</em> — ownership end-to-end.</li>
+          <li>Considerar el ancho de banda de comunicación entre equipos.</li>
+          <li>Alinear los subdominos con los límites de los equipos.</li>
+        </ul>
+
+        <p>Los modos de interacción entre equipos definidos por <strong>Team Topologies</strong> (stream-aligned, enabling, platform, complicated-subsystem) son una extensión natural de los patrones de Context Maps: nos dicen no solo cómo los sistemas se relacionan, sino cómo los equipos detrás de ellos deben colaborar.</p>
+
+        <h2>Conclusión</h2>
+
+        <p>El DDD Estratégico nos da un framework para alinear el diseño de software con la realidad del negocio. No se trata de adoptar todos los patrones de golpe, sino de empezar por donde más duele: identificar los subdominios, establecer un lenguaje compartido con el negocio, y definir los Bounded Contexts que reflejen esa realidad.</p>
+
+        <p>El resultado es una arquitectura que evoluciona con el negocio, que reduce el acoplamiento entre equipos y que hace explícito lo que antes era implícito. Una arquitectura que, como bien dijo Eric Evans, acepta que no todo estará bien diseñado — y usa eso como criterio para decidir dónde sí invertir.</p>
+
+        <hr />
+        <p style="font-size:0.85rem;color:var(--text-3)">Este artículo está basado en los conceptos del <em>Strategic Domain-Driven Design</em> popularizados por Eric Evans y desarrollados por la comunidad DDD. Referencias recomendadas: <em>Domain-Driven Design</em> de Eric Evans, <em>Implementing Domain-Driven Design</em> de Vaughn Vernon, <em>Team Topologies</em> de Skelton y Pais.</p>
+
+      </div>
+    </div><!-- end lang-es -->
+
+
+    <!-- ══════════════════════════════════════════════════════
+         ENGLISH CONTENT
+    ═══════════════════════════════════════════════════════ -->
+    <div class="lang-block lang-en" style="display:none">
+      <div class="container article-body">
+
+        <p>Domain-Driven Design (DDD) is far more than a collection of technical patterns. It is a holistic approach to software design that goes beyond technical concerns to address the cultural and organizational dimensions of a delivery organization. In this article, I walk through the core concepts of <strong>Strategic DDD</strong> — from the communication problem between business and technology, to Context Map patterns and their relationship with team structures.</p>
+
+        <h2>The Communication Problem</h2>
+
+        <p>One of the greatest challenges in software development is the gap between business language and technical language. Business talks about "customers", "orders", and "approvals". Developers talk about <code>CustomerEntityImpl</code>, <code>OrderProcessorFactory</code>, and <code>ApprovalWorkflowSingleton</code>.</p>
+
+        <p>This disconnect is not trivial. When names don't reflect business reality, models become hard to understand, maintain, and evolve. And the most dangerous part: two people can say they agree without actually agreeing, because each understands something different under the same term.</p>
+
+        <p>DDD proposes that <strong>language</strong> be the bridge between both worlds. It's not about developers learning business vocabulary — it's about building a shared, precise language called the <em>Ubiquitous Language</em> that eliminates that ambiguity entirely.</p>
+
+        <h2>Problem Space vs. Solution Space</h2>
+
+        <p>DDD clearly separates two spaces that are often confused:</p>
+
+        <ul>
+          <li><strong>Problem Space</strong>: represents the business architecture. This is where domains and subdomains live. It's the <em>"what we want to solve"</em>.</li>
+          <li><strong>Solution Space</strong>: represents the software architecture. This is where Bounded Contexts live. It's the <em>"how we solve it"</em>.</li>
+        </ul>
+
+        <p>The key is that alignment must exist between both spaces. The greater the alignment, the better the resulting design. However, perfection is unattainable — the goal is to maximize this correspondence iteratively, through continuous learning and collaborative modeling.</p>
+
+        <h2>Subdomains and Their Classification</h2>
+
+        <p>A domain can be broken down into subdomains — lower-level business capabilities. Identifying subdomains is not an academic exercise. It is a strategic decision that directly impacts how we invest, how we form teams, and how we build software.</p>
+
+        <table class="subdomain-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge-core">Core Subdomain</span></td>
+              <td>The heart of the business. This is where competitive differentiation lives.</td>
+              <td>In-house development, top teams, no offshore, no COTS.</td>
+            </tr>
+            <tr>
+              <td><span class="badge-support">Supporting Subdomain</span></td>
+              <td>Vital for the core to function, but without direct strategic relevance against competition.</td>
+              <td>In-house with possible external support, nearshore as option, COTS with minor customizations.</td>
+            </tr>
+            <tr>
+              <td><span class="badge-generic">Generic Subdomain</span></td>
+              <td>Necessary but not critical functionality. "We need some solution for problem X."</td>
+              <td>SaaS or COTS, outsourcing strategy, focus on vendor management.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <blockquote>
+          <p>"Not all parts of a system will be well designed."</p>
+          <cite>— Eric Evans, author of Domain-Driven Design</cite>
+        </blockquote>
+
+        <p>This statement from Evans is liberating: it's not about designing everything perfectly, but about investing energy where it matters most. Subdomain classification gives us the criterion to make that decision consciously.</p>
+
+        <h2>Bounded Contexts</h2>
+
+        <p>A <strong>Bounded Context</strong> is a linguistic boundary around the meaning of a domain model. Within that context, every term has a precise and consistent meaning.</p>
+
+        <p>For example, the concept of "Applicant" can mean different things in the sales context, in the credit scoring context, and in the contracts context. Having a single centralized model creates unnecessary coupling: any change to the definition of "Applicant" impacts all contexts, even when that change is only relevant to one.</p>
+
+        <p>Decentralizing models into Bounded Contexts delivers several benefits:</p>
+
+        <ul>
+          <li>Higher cohesion within each context.</li>
+          <li>Lower coupling between teams.</li>
+          <li>Teams can work in parallel with greater autonomy.</li>
+          <li>Each team can choose different implementation options based on their needs.</li>
+        </ul>
+
+        <h3>How to identify Bounded Contexts?</h3>
+
+        <p>Identification should not be based on a single criterion. It is a collaborative exercise that evaluates multiple dimensions:</p>
+
+        <ul>
+          <li><strong>Capabilities and responsibilities</strong>: what does this context do, what information does it manage, what actions does it execute.</li>
+          <li><strong>Ubiquitous language</strong>: what terms are unique to this context, what key actors are involved.</li>
+          <li><strong>Business policies</strong>: what rules and validations apply here.</li>
+          <li><strong>Quality criteria</strong>: scalability, performance, change frequency (ISO 25010).</li>
+          <li><strong>Team structure</strong>: how many teams are available — contexts shouldn't outnumber the teams able to maintain them.</li>
+        </ul>
+
+        <h2>Ubiquitous Language</h2>
+
+        <p>The ubiquitous language is the shared vocabulary between developers and domain experts within a Bounded Context. It's not the developers' technical jargon nor the business's generic language — it's a language built together, continuously refined through collaborative modeling.</p>
+
+        <p>The most popular techniques for building and validating this language include:</p>
+
+        <ul>
+          <li><strong>Event Storming</strong>: collaborative mapping of domain events on a shared board.</li>
+          <li><strong>Domain Storytelling</strong>: narrating business processes using pictograms.</li>
+          <li><strong>Example Mapping</strong>: defining rules and concrete behavioral examples.</li>
+          <li><strong>User Story Mapping</strong>: organizing features from the user's perspective.</li>
+        </ul>
+
+        <p>The goal of all these techniques is the same: create a space where business and technology build a shared understanding together, eliminating divergent interpretations before they become bugs or technical debt.</p>
+
+        <h2>Context Maps</h2>
+
+        <p>Context Maps provide a holistic view of the coupling between Bounded Contexts. They are not just technical diagrams — they capture technical, organizational, and political relationships between teams. They are one of the most valuable and least utilized artifacts in DDD.</p>
+
+        <p>Some of the most important patterns:</p>
+
+        <ul>
+          <li><strong>Open Host Service / Published Language</strong>: one provider, multiple consumers. Exposes a general-purpose API with a stable, published language.</li>
+          <li><strong>Anticorruption Layer (ACL)</strong>: translation layer that protects the downstream model from the upstream model. Reduces coupling and prevents an external model from "contaminating" your own.</li>
+          <li><strong>Shared Kernel</strong>: shared artifact between contexts — code, database, or library. Requires high coordination between teams.</li>
+          <li><strong>Customer/Supplier</strong>: the downstream team can make demands on the upstream, which has the responsibility to fulfill them. Involves joint negotiation and prioritization.</li>
+          <li><strong>Conformist</strong>: the downstream team adopts the upstream model without translation. Simpler, but creates direct coupling to the external model.</li>
+        </ul>
+
+        <p>Context Maps help make implicit organizational processes visible, identify flows of bad domain models, establish a decentralized governance model, and serve as a starting point for future transformations.</p>
+
+        <h2>DDD and Team Structure</h2>
+
+        <p>One of the most powerful ideas in Strategic DDD is that architecture and organizational structure must be aligned. Conway's Law tells us that systems we design tend to mirror the communication structure of the organizations that create them. DDD turns this into an advantage: design your Bounded Contexts first, then organize teams around them.</p>
+
+        <blockquote>
+          <p>"Team assignments are the first draft of the architecture."</p>
+          <cite>— Michael Nygard, author of Release It!</cite>
+        </blockquote>
+
+        <p>Some heuristics for team distribution:</p>
+
+        <ul>
+          <li>5–9 people per team to maintain effective communication.</li>
+          <li>Consider cognitive load — a team can't own too many contexts.</li>
+          <li><em>"You design it, you build it, you run it"</em> — end-to-end ownership.</li>
+          <li>Consider communication bandwidth between teams.</li>
+          <li>Align subdomains with team boundaries.</li>
+        </ul>
+
+        <p>The team interaction modes defined by <strong>Team Topologies</strong> (stream-aligned, enabling, platform, complicated-subsystem) are a natural extension of Context Map patterns: they tell us not just how systems relate, but how the teams behind them should collaborate.</p>
+
+        <h2>Conclusion</h2>
+
+        <p>Strategic DDD gives us a framework to align software design with business reality. It's not about adopting all patterns at once, but starting where it hurts most: identifying subdomains, establishing a shared language with the business, and defining the Bounded Contexts that reflect that reality.</p>
+
+        <p>The result is an architecture that evolves with the business, reduces coupling between teams, and makes explicit what was previously implicit. An architecture that, as Eric Evans wisely said, accepts that not everything will be well designed — and uses that as the criterion for deciding where to invest.</p>
+
+        <hr />
+        <p style="font-size:0.85rem;color:var(--text-3)">This article is based on Strategic Domain-Driven Design concepts popularized by Eric Evans and developed by the DDD community. Recommended references: <em>Domain-Driven Design</em> by Eric Evans, <em>Implementing Domain-Driven Design</em> by Vaughn Vernon, <em>Team Topologies</em> by Skelton and Pais.</p>
+
+      </div>
+    </div><!-- end lang-en -->
+
+    <!-- ── Newsletter CTA ─────────────────────────────────────── -->
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="newsletter-box">
+          <span class="newsletter-eyebrow">Newsletter</span>
+          <h2 data-es="¿Te gustó el artículo?" data-en="Enjoyed the article?">
+            ¿Te gustó el artículo?
+          </h2>
+          <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software directamente en tu inbox."
+             data-en="Subscribe to get new software architecture articles delivered straight to your inbox.">
+            Suscríbete para recibir nuevos artículos sobre arquitectura de software directamente en tu inbox.
+          </p>
+          <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+            <input type="email" class="email-input" placeholder="tu@email.com" required />
+            <button type="submit" class="btn"
+                    data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
+          </form>
+          <p class="newsletter-note">
+            <span data-es="Publicado en" data-en="Published on">Publicado en</span>
+            <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">Felipe Pabón © 2026</span>
+        <div class="footer-links">
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
+          <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/posts.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
