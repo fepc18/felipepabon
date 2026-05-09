@@ -39,8 +39,9 @@ const POSTS = [
     titleEn: 'Strategic DDD: An Overview',
     tags: ['DDD'],
     date: 'May 2026',
-    href: 'blog/ddd-strategic-overview.html',
+    href: 'ddd-strategic-overview.html', // path relative to /blog/
     external: false,
+    published: true,
   },
 
   /* ── Previous site posts (coming soon) ────────────────────── */

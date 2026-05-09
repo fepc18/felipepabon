@@ -58,8 +58,9 @@ function renderPosts(filter) {
 
 function resolveHref(post) {
   if (!post.href || post.external) return post.href || '#';
+  // href is stored relative to /blog/ — add prefix when rendering from homepage
   const onBlog = window.location.pathname.includes('/blog');
-  return onBlog ? post.href.replace(/^blog\//, '') : post.href;
+  return onBlog ? post.href : `blog/${post.href}`;
 }
 
 function cardHTML(post) {
@@ -69,7 +70,9 @@ function cardHTML(post) {
   const tags   = post.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
   const source = post.external
     ? `<span class="card-source">Medium ↗</span>`
-    : `<span style="color:var(--text-3);font-family:var(--mono);font-size:0.7rem">${currentLang === 'es' ? 'próximamente' : 'coming soon'}</span>`;
+    : post.published
+      ? `<span style="color:var(--green);font-family:var(--mono);font-size:0.7rem">${currentLang === 'es' ? 'leer →' : 'read →'}</span>`
+      : `<span style="color:var(--text-3);font-family:var(--mono);font-size:0.7rem">${currentLang === 'es' ? 'próximamente' : 'coming soon'}</span>`;
 
   return `
     <a class="post-card" href="${href}" ${target}>
@@ -89,7 +92,9 @@ function rowHTML(post) {
   const tags   = post.tags.map(t => `<span class="row-tag">${t}</span>`).join('');
   const source = post.external
     ? `<span style="color:var(--green);font-family:var(--mono);font-size:0.7rem">Medium ↗</span>`
-    : `<span style="color:var(--text-3);font-family:var(--mono);font-size:0.7rem">${currentLang === 'es' ? 'próximamente' : 'coming soon'}</span>`;
+    : post.published
+      ? `<span style="color:var(--green);font-family:var(--mono);font-size:0.7rem">${currentLang === 'es' ? 'leer →' : 'read →'}</span>`
+      : `<span style="color:var(--text-3);font-family:var(--mono);font-size:0.7rem">${currentLang === 'es' ? 'próximamente' : 'coming soon'}</span>`;
 
   return `
     <a class="post-row" href="${href}" ${target}>
