@@ -34,10 +34,18 @@ function toggleLang() {
 }
 
 /* ── Rendering ─────────────────────────────────────────────── */
+function parsePostDate(str) {
+  // '2023' or '2022' → treat as Jan 1 of that year
+  if (/^\d{4}$/.test(str)) return new Date(parseInt(str), 0, 1);
+  // 'May 2026' → parse normally
+  return new Date(str);
+}
+
 function renderPosts(filter) {
-  const filtered = filter === 'all'
+  const filtered = (filter === 'all'
     ? POSTS
-    : POSTS.filter(p => p.tags.some(t => t === filter));
+    : POSTS.filter(p => p.tags.some(t => t === filter))
+  ).slice().sort((a, b) => parsePostDate(b.date) - parsePostDate(a.date));
 
   /* homepage grid — up to 4 cards */
   const grid = document.getElementById('posts-preview');
