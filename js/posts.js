@@ -44,6 +44,28 @@ const POSTS = [
     published: true,
   },
 
+  {
+    id: 'atam-ejemplo-api-bancaria',
+    titleEs: 'ATAM en Práctica: API de Movimientos Bancarios',
+    titleEn: 'ATAM in Practice: A Banking Movements API',
+    tags: ['Architecture', 'Design'],
+    date: 'May 2026',
+    href: 'atam-ejemplo-api-bancaria.html',
+    external: false,
+    published: true,
+  },
+
+  {
+    id: 'sei-architecture-methods',
+    titleEs: 'Métodos de Arquitectura del SEI: Un Overview',
+    titleEn: 'SEI Software Architecture Methods: An Overview',
+    tags: ['Architecture', 'Design'],
+    date: 'May 2026',
+    href: 'sei-architecture-methods.html',
+    external: false,
+    published: true,
+  },
+
   /* ── Previous site posts (coming soon) ────────────────────── */
   {
     id: 'ddd-intro',

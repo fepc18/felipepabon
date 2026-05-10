@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Un overview de los métodos de arquitectura de software del SEI (Carnegie Mellon): ADD, Views & Beyond, QAW, SAAM y ATAM." />
+  <meta name="author" content="Felipe Pabón" />
+  <title>Métodos de Arquitectura del SEI: Un Overview — Felipe Pabón</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <!-- ── Nav ──────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">fp.</a>
+      <div class="nav-links">
+        <a href="../blog/" data-es="Blog" data-en="Blog">Blog</a>
+        <button class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <article class="article-container">
+      <div class="container">
+
+        <!-- ── Header ───────────────────────────────────────── -->
+        <header class="article-header">
+          <div class="lang-es">
+            <div class="article-tags">
+              <span class="card-tag">Architecture</span>
+              <span class="card-tag">Design</span>
+            </div>
+            <h1>Métodos de Arquitectura del SEI: Un Overview</h1>
+            <p class="article-subtitle">
+              El Software Engineering Institute lleva décadas sistematizando cómo se diseña, documenta y evalúa una arquitectura de software. Aquí un mapa de sus métodos más importantes.
+            </p>
+            <div class="article-meta">
+              <span>May 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+          <div class="lang-en">
+            <div class="article-tags">
+              <span class="card-tag">Architecture</span>
+              <span class="card-tag">Design</span>
+            </div>
+            <h1>SEI Software Architecture Methods: An Overview</h1>
+            <p class="article-subtitle">
+              The Software Engineering Institute has spent decades systematizing how software architectures are designed, documented, and evaluated. Here's a map of their most important methods.
+            </p>
+            <div class="article-meta">
+              <span>May 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- ── Body ─────────────────────────────────────────── -->
+        <div class="article-body">
+
+          <!-- Sección 1: ¿Qué es el SEI? -->
+          <div class="lang-es">
+            <h2>¿Qué es el SEI?</h2>
+            <p>
+              El <strong>Software Engineering Institute (SEI)</strong> es un centro de investigación de Carnegie Mellon University fundado en 1984, respaldado inicialmente por el Departamento de Defensa de los Estados Unidos. Su misión es avanzar el estado del arte en ingeniería de software y ayudar a organizaciones a adoptar mejores prácticas.
+            </p>
+            <p>
+              Con el tiempo, el SEI se convirtió en la referencia mundial para temas como gestión de la calidad del software (CMMI), seguridad y, lo que nos interesa aquí: <strong>arquitectura de software</strong>. Sus métodos no son especulativos — nacieron del trabajo directo con sistemas reales, muchos de ellos de misión crítica.
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>What is the SEI?</h2>
+            <p>
+              The <strong>Software Engineering Institute (SEI)</strong> is a research center at Carnegie Mellon University, founded in 1984 with backing from the U.S. Department of Defense. Its mission: advance software engineering practices and help organizations adopt them at scale.
+            </p>
+            <p>
+              Over time, the SEI became the global reference for topics like software quality management (CMMI), cybersecurity, and — what we care about here — <strong>software architecture</strong>. Their methods aren't speculative; they were forged through direct work on real systems, many of them mission-critical.
+            </p>
+          </div>
+
+          <!-- Sección 2: El ciclo de vida de la arquitectura -->
+          <div class="lang-es">
+            <h2>El ciclo de vida de la arquitectura</h2>
+            <p>
+              El SEI entiende el trabajo de arquitectura como un ciclo de tres actividades complementarias. No son fases estrictamente secuenciales — en la práctica se solapan y se retroalimentan — pero esta división es útil para entender <em>qué tipo de problema resuelve cada método</em>.
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>The Architecture Lifecycle</h2>
+            <p>
+              The SEI frames architecture work as a cycle of three complementary activities. They're not strictly sequential — in practice they overlap and feed each other — but this division is useful to understand <em>what type of problem each method solves</em>.
+            </p>
+          </div>
+
+          <!-- Diagrama 1: Ciclo de vida -->
+          <figure class="diagram">
+            <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+
+              <!-- Título -->
+              <text x="350" y="24" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">SEI Architecture Lifecycle</text>
+
+              <!-- Caja 1: Diseño -->
+              <rect x="30" y="50" width="180" height="110" rx="10" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <text x="120" y="82" text-anchor="middle" fill="#00d4aa" font-size="12" font-weight="600">DISEÑO</text>
+              <text x="120" y="98" text-anchor="middle" fill="#8892b0" font-size="10">DESIGN</text>
+              <rect x="60" y="110" width="120" height="32" rx="6" fill="#0f1117" stroke="#2d3149" stroke-width="1"/>
+              <text x="120" y="130" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="500">ADD</text>
+
+              <!-- Flecha 1→2 -->
+              <line x1="210" y1="105" x2="260" y2="105" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+              <!-- Caja 2: Documentación -->
+              <rect x="260" y="50" width="180" height="110" rx="10" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="350" y="82" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">DOCUMENTACIÓN</text>
+              <text x="350" y="98" text-anchor="middle" fill="#8892b0" font-size="10">DOCUMENTATION</text>
+              <rect x="280" y="110" width="140" height="32" rx="6" fill="#0f1117" stroke="#2d3149" stroke-width="1"/>
+              <text x="350" y="130" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="500">Views &amp; Beyond</text>
+
+              <!-- Flecha 2→3 -->
+              <line x1="440" y1="105" x2="490" y2="105" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+              <!-- Caja 3: Evaluación -->
+              <rect x="490" y="50" width="180" height="110" rx="10" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="580" y="82" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">EVALUACIÓN</text>
+              <text x="580" y="98" text-anchor="middle" fill="#8892b0" font-size="10">EVALUATION</text>
+              <text x="580" y="122" text-anchor="middle" fill="#e2e8f0" font-size="11">QAW · SAAM · ATAM</text>
+
+              <!-- Flecha feedback -->
+              <path d="M 580 160 Q 580 195 350 195 Q 120 195 120 160"
+                    fill="none" stroke="#2d3149" stroke-width="1.5" stroke-dasharray="5,4"
+                    marker-end="url(#arrow-muted)"/>
+              <text x="350" y="212" text-anchor="middle" fill="#8892b0" font-size="10">feedback</text>
+
+              <!-- Marcadores de flecha -->
+              <defs>
+                <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#2d3149"/>
+                </marker>
+                <marker id="arrow-muted" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#2d3149"/>
+                </marker>
+              </defs>
+            </svg>
+            <figcaption>
+              <span class="lang-es">Los tres pilares del trabajo de arquitectura según el SEI. Cada uno tiene uno o más métodos asociados.</span>
+              <span class="lang-en">The three pillars of architecture work according to the SEI. Each has one or more methods associated with it.</span>
+            </figcaption>
+          </figure>
+
+          <!-- Sección 3: Los métodos -->
+          <div class="lang-es">
+            <h2>Los métodos principales</h2>
+            <p>
+              Veamos qué hace cada método y cuándo entra en juego. Hay cinco que vale la pena conocer:
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>The Main Methods</h2>
+            <p>
+              Let's look at what each method does and when it comes into play. There are five worth knowing:
+            </p>
+          </div>
+
+          <!-- Tabla comparativa -->
+          <div class="lang-es">
+            <table class="subdomain-table">
+              <thead>
+                <tr>
+                  <th>Método</th>
+                  <th>Fase</th>
+                  <th>Propósito</th>
+                  <th>Artefacto de salida</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>QAW</strong></td>
+                  <td>Pre-diseño</td>
+                  <td>Elicitar y priorizar atributos de calidad con stakeholders antes de que exista arquitectura</td>
+                  <td>Lista priorizada de escenarios de calidad</td>
+                </tr>
+                <tr>
+                  <td><strong>ADD</strong></td>
+                  <td>Diseño</td>
+                  <td>Diseñar la arquitectura guiada por atributos de calidad mediante descomposición iterativa</td>
+                  <td>Decisiones arquitectónicas documentadas + vistas iniciales</td>
+                </tr>
+                <tr>
+                  <td><strong>Views & Beyond</strong></td>
+                  <td>Documentación</td>
+                  <td>Documentar la arquitectura usando múltiples vistas (módulos, C&amp;C, asignación) para diferentes audiencias</td>
+                  <td>Documento de arquitectura con vistas y decisiones</td>
+                </tr>
+                <tr>
+                  <td><strong>SAAM</strong></td>
+                  <td>Evaluación</td>
+                  <td>Método de evaluación basado en escenarios, precursor de ATAM. Más simple y rápido.</td>
+                  <td>Análisis de escenarios y puntos de riesgo</td>
+                </tr>
+                <tr>
+                  <td><strong>ATAM</strong></td>
+                  <td>Evaluación</td>
+                  <td>Analizar cómo las decisiones arquitectónicas satisfacen atributos de calidad e identificar tradeoffs</td>
+                  <td>Árbol de utilidad, puntos de sensibilidad, tradeoffs, riesgos</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="lang-en">
+            <table class="subdomain-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Phase</th>
+                  <th>Purpose</th>
+                  <th>Output artifact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>QAW</strong></td>
+                  <td>Pre-design</td>
+                  <td>Elicit and prioritize quality attributes with stakeholders before any architecture exists</td>
+                  <td>Prioritized list of quality attribute scenarios</td>
+                </tr>
+                <tr>
+                  <td><strong>ADD</strong></td>
+                  <td>Design</td>
+                  <td>Design architecture driven by quality attributes through iterative decomposition</td>
+                  <td>Documented architectural decisions + initial views</td>
+                </tr>
+                <tr>
+                  <td><strong>Views & Beyond</strong></td>
+                  <td>Documentation</td>
+                  <td>Document the architecture using multiple views (module, C&amp;C, allocation) for different audiences</td>
+                  <td>Architecture document with views and decisions</td>
+                </tr>
+                <tr>
+                  <td><strong>SAAM</strong></td>
+                  <td>Evaluation</td>
+                  <td>Scenario-based evaluation method, precursor to ATAM. Simpler and faster.</td>
+                  <td>Scenario analysis and risk points</td>
+                </tr>
+                <tr>
+                  <td><strong>ATAM</strong></td>
+                  <td>Evaluation</td>
+                  <td>Analyze how architectural decisions satisfy quality attributes and identify tradeoffs</td>
+                  <td>Utility tree, sensitivity points, tradeoffs, risks</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Sección 3b: Notas por método -->
+          <div class="lang-es">
+            <h3>ADD — Attribute-Driven Design</h3>
+            <p>
+              ADD parte de los atributos de calidad del sistema — rendimiento, disponibilidad, seguridad, modificabilidad — y los usa como fuerza conductora del diseño. En cada iteración, eliges un elemento a descomponer, seleccionas un patrón arquitectónico que satisfaga los atributos más importantes y documentas la decisión. El resultado no es solo una arquitectura: es una arquitectura con <em>justificación</em>.
+            </p>
+            <h3>Views & Beyond</h3>
+            <p>
+              Una arquitectura que nadie entiende no sirve. Views & Beyond propone documentar la arquitectura desde múltiples perspectivas — vistas de módulos (estructura estática), vistas de componentes y conectores (comportamiento en tiempo de ejecución) y vistas de asignación (cómo se mapea al hardware y equipos). Cada vista responde a las preguntas de una audiencia diferente: desarrolladores, operaciones, gestión.
+            </p>
+            <h3>QAW — Quality Attribute Workshop</h3>
+            <p>
+              Antes de diseñar, es necesario entender qué le importa al negocio. El QAW es un taller facilitado donde los stakeholders expresan sus necesidades en forma de escenarios de calidad concretos: "el sistema debe responder en menos de 200ms bajo carga de 1000 usuarios simultáneos". Estos escenarios luego guían ADD y sirven como criterios de evaluación en ATAM.
+            </p>
+            <h3>SAAM y ATAM</h3>
+            <p>
+              SAAM (Software Architecture Analysis Method) fue el primer método de evaluación del SEI. Basado en escenarios, permite identificar dónde la arquitectura se queda corta. ATAM es su evolución: más riguroso, con un árbol de utilidad para priorizar atributos de calidad, análisis de sensibilidad y documentación explícita de tradeoffs. ATAM es el estándar de facto cuando se necesita una evaluación seria.
+            </p>
+          </div>
+          <div class="lang-en">
+            <h3>ADD — Attribute-Driven Design</h3>
+            <p>
+              ADD starts from the system's quality attributes — performance, availability, security, modifiability — and uses them as the driving force for design. In each iteration, you choose an element to decompose, select an architectural pattern that satisfies the most important attributes, and document the decision. The result isn't just an architecture: it's an architecture with <em>rationale</em>.
+            </p>
+            <h3>Views & Beyond</h3>
+            <p>
+              An architecture nobody understands is worthless. Views & Beyond proposes documenting architecture from multiple perspectives — module views (static structure), component-and-connector views (runtime behavior), and allocation views (how it maps to hardware and teams). Each view answers the questions of a different audience: developers, operations, management.
+            </p>
+            <h3>QAW — Quality Attribute Workshop</h3>
+            <p>
+              Before designing, you need to understand what the business actually cares about. The QAW is a facilitated workshop where stakeholders express their needs as concrete quality attribute scenarios: "the system must respond in under 200ms under a load of 1,000 concurrent users." These scenarios then guide ADD and serve as evaluation criteria in ATAM.
+            </p>
+            <h3>SAAM and ATAM</h3>
+            <p>
+              SAAM (Software Architecture Analysis Method) was the SEI's first evaluation method. Scenario-based, it helps identify where an architecture falls short. ATAM is its evolution: more rigorous, with a utility tree to prioritize quality attributes, sensitivity analysis, and explicit documentation of tradeoffs. ATAM is the de facto standard when a serious evaluation is needed.
+            </p>
+          </div>
+
+          <!-- Diagrama 2: Flujo ATAM -->
+          <figure class="diagram">
+            <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+
+              <text x="350" y="20" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">ATAM — Flujo simplificado</text>
+
+              <!-- Paso 1 -->
+              <rect x="10" y="45" width="110" height="50" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <text x="65" y="67" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Preparación</text>
+              <text x="65" y="83" text-anchor="middle" fill="#8892b0" font-size="9">equipo + contexto</text>
+
+              <line x1="120" y1="70" x2="140" y2="70" stroke="#2d3149" stroke-width="1.5" marker-end="url(#a2)"/>
+
+              <!-- Paso 2 -->
+              <rect x="140" y="45" width="110" height="50" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="195" y="67" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Presentación</text>
+              <text x="195" y="83" text-anchor="middle" fill="#8892b0" font-size="9">arq. + negocio</text>
+
+              <line x1="250" y1="70" x2="270" y2="70" stroke="#2d3149" stroke-width="1.5" marker-end="url(#a2)"/>
+
+              <!-- Paso 3 -->
+              <rect x="270" y="45" width="110" height="50" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="325" y="62" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Enfoques</text>
+              <text x="325" y="76" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Arquitectónicos</text>
+              <text x="325" y="90" text-anchor="middle" fill="#8892b0" font-size="9">decisiones clave</text>
+
+              <line x1="380" y1="70" x2="400" y2="70" stroke="#2d3149" stroke-width="1.5" marker-end="url(#a2)"/>
+
+              <!-- Paso 4 -->
+              <rect x="400" y="45" width="110" height="50" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="455" y="62" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Escenarios</text>
+              <text x="455" y="76" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">+ Árbol</text>
+              <text x="455" y="90" text-anchor="middle" fill="#8892b0" font-size="9">utility tree</text>
+
+              <line x1="510" y1="70" x2="530" y2="70" stroke="#2d3149" stroke-width="1.5" marker-end="url(#a2)"/>
+
+              <!-- Paso 5 -->
+              <rect x="530" y="45" width="160" height="50" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="610" y="62" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Análisis</text>
+              <text x="610" y="76" text-anchor="middle" fill="#e2e8f0" font-size="11">+ Reporte</text>
+              <text x="610" y="90" text-anchor="middle" fill="#8892b0" font-size="9">riesgos · tradeoffs · puntos de sensibilidad</text>
+
+              <defs>
+                <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#2d3149"/>
+                </marker>
+              </defs>
+
+              <!-- Leyenda -->
+              <text x="350" y="150" text-anchor="middle" fill="#8892b0" font-size="10">El resultado es un conjunto de riesgos, no-riesgos, puntos de sensibilidad y tradeoffs documentados.</text>
+              <text x="350" y="165" text-anchor="middle" fill="#8892b0" font-size="10">The output is a documented set of risks, non-risks, sensitivity points, and tradeoffs.</text>
+            </svg>
+            <figcaption>
+              <span class="lang-es">Flujo simplificado de ATAM. En la práctica el método tiene dos fases y puede extenderse varios días con múltiples stakeholders.</span>
+              <span class="lang-en">Simplified ATAM flow. In practice the method has two phases and can span several days with multiple stakeholders.</span>
+            </figcaption>
+          </figure>
+
+          <!-- Sección 4: ¿Cuándo usar cada uno? -->
+          <div class="lang-es">
+            <h2>¿Cuándo usar cada método?</h2>
+            <p>
+              La elección depende del momento del proyecto y del problema que estás tratando de resolver:
+            </p>
+            <ul style="color: var(--text-2); line-height: 2; padding-left: 1.5rem;">
+              <li><strong>Proyecto nuevo, sin arquitectura:</strong> empieza con QAW para alinear stakeholders en atributos de calidad, luego usa ADD para diseñar.</li>
+              <li><strong>Tienes arquitectura pero nadie la entiende:</strong> documenta con Views & Beyond antes de que el conocimiento se pierda.</li>
+              <li><strong>Revisión rápida de una arquitectura existente:</strong> SAAM es más ligero y puede ejecutarse en un día.</li>
+              <li><strong>Decisión arquitectónica crítica o auditoría formal:</strong> ATAM es la elección. Es más costoso en tiempo, pero el análisis de tradeoffs vale cada hora invertida.</li>
+            </ul>
+            <blockquote>
+              No necesitas implementar todos los métodos. Necesitas saber cuál usar en cada momento.
+            </blockquote>
+          </div>
+          <div class="lang-en">
+            <h2>When to Use Each Method?</h2>
+            <p>
+              The choice depends on where you are in the project and what problem you're trying to solve:
+            </p>
+            <ul style="color: var(--text-2); line-height: 2; padding-left: 1.5rem;">
+              <li><strong>New project, no architecture yet:</strong> start with QAW to align stakeholders on quality attributes, then use ADD to design.</li>
+              <li><strong>Architecture exists but nobody understands it:</strong> document with Views & Beyond before the knowledge is lost.</li>
+              <li><strong>Quick review of an existing architecture:</strong> SAAM is lighter and can be run in a day.</li>
+              <li><strong>Critical architectural decision or formal audit:</strong> ATAM is the choice. More time-intensive, but the tradeoff analysis is worth every hour invested.</li>
+            </ul>
+            <blockquote>
+              You don't need to implement every method. You need to know which one to reach for and when.
+            </blockquote>
+          </div>
+
+          <!-- Sección 5: Por dónde empezar -->
+          <div class="lang-es">
+            <h2>Por dónde empezar</h2>
+            <p>
+              Si estos métodos son nuevos para ti, la recomendación es sencilla: <strong>lee <a href="https://www.amazon.com/Software-Architecture-Practice-SEI-Engineering/dp/0136886094" target="_blank" rel="noopener">"Software Architecture in Practice" de Bass, Clements y Kazman</a></strong> (el libro canónico del SEI). Cubre ADD, Views & Beyond y ATAM con profundidad.
+            </p>
+            <p>
+              Si ya conoces los métodos y quieres practicarlos, el siguiente paso es aplicarlos en un proyecto real — aunque sea de manera simplificada. Un QAW de dos horas con tu equipo puede revelar supuestos contradictorios que nadie había articulado. Una sesión ATAM informal puede hacer emergir tradeoffs que llevan meses ocultos.
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>Where to Start</h2>
+            <p>
+              If these methods are new to you, the recommendation is simple: <strong>read <a href="https://www.amazon.com/Software-Architecture-Practice-SEI-Engineering/dp/0136886094" target="_blank" rel="noopener">"Software Architecture in Practice" by Bass, Clements, and Kazman</a></strong> (the SEI's canonical book). It covers ADD, Views & Beyond, and ATAM in depth.
+            </p>
+            <p>
+              If you already know the methods and want to practice them, the next step is applying them on a real project — even in a simplified form. A two-hour QAW with your team can surface contradictory assumptions nobody had articulated. An informal ATAM session can bring out tradeoffs that have been hidden for months.
+            </p>
+          </div>
+
+          <!-- Sección 6: Skill ATAM -->
+          <div class="lang-es">
+            <h2>Un skill para facilitar ATAM</h2>
+            <p>
+              ATAM es el método más poderoso del SEI, pero también el más difícil de facilitar. Requiere preparar escenarios, construir el árbol de utilidad, guiar la discusión con stakeholders y documentar tradeoffs en tiempo real. Es mucho para llevar en la cabeza.
+            </p>
+            <p>
+              Por eso construí <strong>atam-facilitator</strong> — un skill para Claude que actúa como co-facilitador y te lleva paso a paso por cada etapa del método: desde la preparación hasta el reporte final de riesgos y tradeoffs. El objetivo es que cualquier arquitecto pueda facilitar una sesión ATAM sin haber pasado por el entrenamiento formal del SEI.
+            </p>
+            <p>
+              <a href="https://github.com/fepc18/claude-skills/blob/main/atam-facilitator.plugin"
+                 target="_blank" rel="noopener"
+                 style="color: var(--green); font-family: var(--mono); font-size: 0.9rem;">
+                → Descargar atam-facilitator ↗
+              </a>
+            </p>
+            <p>
+              <a href="atam-ejemplo-api-bancaria.html"
+                 style="color: var(--text-3); font-family: var(--mono); font-size: 0.85rem;">
+                → Ver ejemplo práctico: ATAM sobre un API bancaria
+              </a>
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>An ATAM Facilitation Skill</h2>
+            <p>
+              ATAM is the most powerful SEI method, but also the hardest to facilitate. It requires preparing scenarios, building the utility tree, guiding stakeholder discussions, and documenting tradeoffs in real time. That's a lot to hold in your head.
+            </p>
+            <p>
+              That's why I built <strong>atam-facilitator</strong> — a Claude skill that acts as a co-facilitator and walks you through each stage of the method: from workshop preparation to the final risk and tradeoff report. The goal is to let any architect run an ATAM session without going through the SEI's formal training.
+            </p>
+            <p>
+              <a href="https://github.com/fepc18/claude-skills/blob/main/atam-facilitator.plugin"
+                 target="_blank" rel="noopener"
+                 style="color: var(--green); font-family: var(--mono); font-size: 0.9rem;">
+                → Download atam-facilitator ↗
+              </a>
+            </p>
+            <p>
+              <a href="atam-ejemplo-api-bancaria.html"
+                 style="color: var(--text-3); font-family: var(--mono); font-size: 0.85rem;">
+                → See it in practice: ATAM on a Banking API
+              </a>
+            </p>
+          </div>
+
+        </div><!-- /.article-body -->
+      </div>
+    </article>
+  </main>
+
+  <!-- ── Newsletter CTA ────────────────────────────────────── -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box">
+        <span class="newsletter-eyebrow">Newsletter</span>
+        <h2 data-es="¿Te gustó el contenido?" data-en="Enjoying the content?">
+          ¿Te gustó el contenido?
+        </h2>
+        <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo."
+           data-en="Subscribe to get new software architecture articles delivered to your inbox.">
+          Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo.
+        </p>
+        <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+          <input type="email" class="email-input" placeholder="tu@email.com" required />
+          <button type="submit" class="btn" data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
+        </form>
+        <p class="newsletter-note">
+          <span data-es="Publicado en" data-en="Published on">Publicado en</span>
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">Felipe Pabón © 2026</span>
+        <div class="footer-links">
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
+          <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/posts.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ejemplo práctico de ATAM aplicado a un API REST de consulta de movimientos bancarios: árbol de utilidad, enfoques arquitectónicos, tradeoffs y riesgos." />
+  <meta name="author" content="Felipe Pabón" />
+  <title>ATAM en Práctica: API de Movimientos Bancarios — Felipe Pabón</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">fp.</a>
+      <div class="nav-links">
+        <a href="../blog/" data-es="Blog" data-en="Blog">Blog</a>
+        <button class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <article class="article-container">
+      <div class="container">
+
+        <!-- ── Header ─────────────────────────────────────────── -->
+        <header class="article-header">
+          <div class="lang-es">
+            <div class="article-tags">
+              <span class="card-tag">Architecture</span>
+              <span class="card-tag">Design</span>
+            </div>
+            <h1>ATAM en Práctica: API de Movimientos Bancarios</h1>
+            <p class="article-subtitle">
+              Un análisis ATAM completo sobre un API REST de consulta de movimientos de cuenta. Árbol de utilidad, enfoques arquitectónicos, tradeoffs y riesgos documentados.
+            </p>
+            <div class="article-meta">
+              <span>May 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+          <div class="lang-en">
+            <div class="article-tags">
+              <span class="card-tag">Architecture</span>
+              <span class="card-tag">Design</span>
+            </div>
+            <h1>ATAM in Practice: A Banking Movements API</h1>
+            <p class="article-subtitle">
+              A complete ATAM analysis on a REST API for querying banking account movements. Utility tree, architectural approaches, tradeoffs, and documented risks.
+            </p>
+            <div class="article-meta">
+              <span>May 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- ── Body ───────────────────────────────────────────── -->
+        <div class="article-body">
+
+          <!-- Intro -->
+          <div class="lang-es">
+            <p>
+              En el <a href="sei-architecture-methods.html">artículo anterior</a> vimos qué es ATAM y cuándo usarlo. Ahora vamos a aplicarlo sobre un sistema concreto: un <strong>API REST de consulta de movimientos de cuenta bancaria</strong>.
+            </p>
+            <p>
+              Este es el tipo de sistema que parece simple desde afuera — "devuelve una lista de transacciones" — pero que esconde tensiones arquitectónicas serias: seguridad vs. rendimiento, disponibilidad vs. consistencia, flexibilidad vs. cumplimiento regulatorio. ATAM hace visibles exactamente esas tensiones.
+            </p>
+          </div>
+          <div class="lang-en">
+            <p>
+              In the <a href="sei-architecture-methods.html">previous article</a> we covered what ATAM is and when to use it. Now let's apply it to a concrete system: a <strong>REST API for querying banking account movements</strong>.
+            </p>
+            <p>
+              This is the kind of system that looks simple from the outside — "return a list of transactions" — but hides serious architectural tensions: security vs. performance, availability vs. consistency, flexibility vs. regulatory compliance. ATAM makes those tensions visible.
+            </p>
+          </div>
+
+          <!-- Sección 1: El sistema -->
+          <div class="lang-es">
+            <h2>El sistema</h2>
+            <p>
+              El API expone un endpoint que permite a los clientes del banco consultar los movimientos de sus cuentas. Es consumido por la app móvil y el portal web, y se conecta a un core bancario legado para obtener los datos.
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>The System</h2>
+            <p>
+              The API exposes an endpoint that allows bank customers to query their account movements. It's consumed by the mobile app and web portal, and connects to a legacy core banking system to retrieve data.
+            </p>
+          </div>
+
+          <!-- Diagrama 1: Arquitectura -->
+          <figure class="diagram">
+            <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+              <text x="350" y="18" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">Arquitectura del sistema / System Architecture</text>
+
+              <!-- Cliente -->
+              <rect x="20" y="40" width="100" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="70" y="58" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">App / Web</text>
+              <text x="70" y="72" text-anchor="middle" fill="#8892b0" font-size="9">cliente</text>
+
+              <!-- Flecha cliente → gateway -->
+              <line x1="120" y1="60" x2="155" y2="60" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr)"/>
+              <text x="137" y="54" text-anchor="middle" fill="#8892b0" font-size="8">HTTPS</text>
+
+              <!-- API Gateway -->
+              <rect x="155" y="35" width="120" height="50" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <text x="215" y="57" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">API Gateway</text>
+              <text x="215" y="71" text-anchor="middle" fill="#8892b0" font-size="9">rate limiting · TLS</text>
+
+              <!-- Flecha gateway → movements api -->
+              <line x1="275" y1="60" x2="310" y2="60" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr)"/>
+
+              <!-- Movements API -->
+              <rect x="310" y="35" width="130" height="50" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <text x="375" y="57" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Movements API</text>
+              <text x="375" y="71" text-anchor="middle" fill="#8892b0" font-size="9">OAuth2 + JWT · EA-1</text>
+
+              <!-- Flecha API → Cache -->
+              <line x1="375" y1="85" x2="375" y2="120" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr)"/>
+
+              <!-- Cache Redis -->
+              <rect x="300" y="120" width="150" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="375" y="138" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Redis Cache</text>
+              <text x="375" y="152" text-anchor="middle" fill="#8892b0" font-size="9">TTL 30s · EA-2</text>
+
+              <!-- Flecha API → Core (con circuit breaker) -->
+              <line x1="440" y1="60" x2="490" y2="60" stroke="#2d3149" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+              <text x="466" y="50" text-anchor="middle" fill="#8892b0" font-size="8">circuit</text>
+              <text x="466" y="60" text-anchor="middle" fill="#8892b0" font-size="8">breaker</text>
+              <text x="466" y="70" text-anchor="middle" fill="#8892b0" font-size="8">EA-3</text>
+
+              <!-- Core Bancario -->
+              <rect x="490" y="35" width="130" height="50" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="555" y="57" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Core Bancario</text>
+              <text x="555" y="71" text-anchor="middle" fill="#8892b0" font-size="9">sistema legado</text>
+
+              <!-- Flecha API → Audit Log -->
+              <line x1="375" y1="160" x2="375" y2="195" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr)"/>
+
+              <!-- Audit Log -->
+              <rect x="280" y="195" width="190" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="375" y="213" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Audit Log</text>
+              <text x="375" y="227" text-anchor="middle" fill="#8892b0" font-size="9">append-only · inmutable · EA-4</text>
+
+              <!-- Leyenda EA -->
+              <text x="20" y="248" fill="#8892b0" font-size="9">EA = Enfoque Arquitectónico / Architectural Approach</text>
+              <text x="20" y="258" fill="#8892b0" font-size="9">--- = comunicación con circuit breaker</text>
+
+              <defs>
+                <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#2d3149"/>
+                </marker>
+              </defs>
+            </svg>
+            <figcaption>
+              <span class="lang-es">Arquitectura del API de movimientos bancarios con los cuatro enfoques arquitectónicos identificados.</span>
+              <span class="lang-en">Architecture of the banking movements API with the four identified architectural approaches.</span>
+            </figcaption>
+          </figure>
+
+          <!-- Drivers -->
+          <div class="lang-es">
+            <h3>Drivers del negocio</h3>
+            <ul style="color:var(--text-2);line-height:2;padding-left:1.5rem">
+              <li>Disponibilidad 24/7 — los clientes acceden desde cualquier zona horaria</li>
+              <li>Cumplimiento PCI-DSS y normativa bancaria local</li>
+              <li>SLA de respuesta: p95 &lt; 500ms bajo carga normal</li>
+              <li>Dependencia del core bancario legado con ventanas de mantenimiento nocturnas</li>
+              <li>Obligación de mantener logs de auditoría por 90 días mínimo</li>
+            </ul>
+          </div>
+          <div class="lang-en">
+            <h3>Business Drivers</h3>
+            <ul style="color:var(--text-2);line-height:2;padding-left:1.5rem">
+              <li>24/7 availability — customers connect from any timezone</li>
+              <li>PCI-DSS compliance and local banking regulation</li>
+              <li>Response SLA: p95 &lt; 500ms under normal load</li>
+              <li>Dependency on legacy core banking with nightly maintenance windows</li>
+              <li>Mandatory audit log retention for at least 90 days</li>
+            </ul>
+          </div>
+
+          <!-- Sección 2: Árbol de utilidad -->
+          <div class="lang-es">
+            <h2>Árbol de Utilidad</h2>
+            <p>
+              Priorizamos cuatro atributos de calidad. Cada escenario tiene una prioridad expresada como <strong>(Importancia para el negocio, Dificultad técnica)</strong> — H = Alta, M = Media, B = Baja.
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>Utility Tree</h2>
+            <p>
+              We prioritized four quality attributes. Each scenario has a priority expressed as <strong>(Business importance, Technical difficulty)</strong> — H = High, M = Medium, L = Low.
+            </p>
+          </div>
+
+          <!-- Tabla árbol de utilidad ES -->
+          <div class="lang-es">
+            <table class="subdomain-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Atributo</th>
+                  <th>Escenario</th>
+                  <th>Prioridad</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Seg-1</strong></td>
+                  <td>Seguridad</td>
+                  <td>Un cliente autenticado intenta acceder a movimientos de otra cuenta → el sistema rechaza con 403 sin revelar que la cuenta existe → 100% de intentos bloqueados</td>
+                  <td><strong>(H, H)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Seg-2</strong></td>
+                  <td>Seguridad</td>
+                  <td>Un auditor requiere el historial completo de accesos a una cuenta → sistema provee log inmutable con usuario, timestamp y IP → disponible en &lt; 5 minutos</td>
+                  <td><strong>(H, M)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Dis-1</strong></td>
+                  <td>Disponibilidad</td>
+                  <td>El core bancario entra en mantenimiento nocturno (2:00–4:00 AM) → el API retorna movimientos del cache sin error → 0 errores visibles al usuario</td>
+                  <td><strong>(H, H)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Dis-2</strong></td>
+                  <td>Disponibilidad</td>
+                  <td>Fin de mes: 10x la carga normal simultánea → el sistema mantiene uptime 99.9% y no degrada a otros endpoints</td>
+                  <td><strong>(H, H)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Ren-1</strong></td>
+                  <td>Rendimiento</td>
+                  <td>1.000 usuarios consultan movimientos simultáneamente → p95 &lt; 500ms → p99 &lt; 1.200ms</td>
+                  <td><strong>(H, M)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Mod-1</strong></td>
+                  <td>Modificabilidad</td>
+                  <td>El regulador exige un nuevo campo obligatorio en la respuesta → cambio implementado, probado y desplegado en &lt; 1 semana sin afectar otros endpoints</td>
+                  <td><strong>(M, M)</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Tabla árbol de utilidad EN -->
+          <div class="lang-en">
+            <table class="subdomain-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Attribute</th>
+                  <th>Scenario</th>
+                  <th>Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Sec-1</strong></td>
+                  <td>Security</td>
+                  <td>An authenticated customer tries to access another account's movements → system rejects with 403 without revealing the account exists → 100% of attempts blocked</td>
+                  <td><strong>(H, H)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Sec-2</strong></td>
+                  <td>Security</td>
+                  <td>An auditor requests the full access history for an account → system provides an immutable log with user, timestamp, and IP → available in &lt; 5 minutes</td>
+                  <td><strong>(H, M)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Av-1</strong></td>
+                  <td>Availability</td>
+                  <td>Core banking enters nightly maintenance (2:00–4:00 AM) → API returns cached movements without error → 0 visible errors to the customer</td>
+                  <td><strong>(H, H)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Av-2</strong></td>
+                  <td>Availability</td>
+                  <td>End of month: 10x normal concurrent load → system maintains 99.9% uptime and does not degrade other endpoints</td>
+                  <td><strong>(H, H)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Perf-1</strong></td>
+                  <td>Performance</td>
+                  <td>1,000 users query movements simultaneously → p95 &lt; 500ms → p99 &lt; 1,200ms</td>
+                  <td><strong>(H, M)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Mod-1</strong></td>
+                  <td>Modifiability</td>
+                  <td>Regulator requires a new mandatory field in the response → change implemented, tested, and deployed in &lt; 1 week without affecting other endpoints</td>
+                  <td><strong>(M, M)</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Sección 3: Enfoques arquitectónicos -->
+          <div class="lang-es">
+            <h2>Enfoques Arquitectónicos</h2>
+            <p>Cuatro decisiones de diseño con impacto directo sobre los atributos de calidad identificados:</p>
+
+            <h3>EA-1: Autenticación con OAuth2 + JWT</h3>
+            <p><strong>Decisión:</strong> El API Gateway valida tokens JWT firmados por un servidor de autorización OAuth2. El payload del token incluye el ID de cuenta, scopes y expiración.</p>
+            <p><strong>Atributos satisfechos:</strong> Seguridad (Seg-1), cumplimiento PCI-DSS.</p>
+            <p><strong>Atributos en tensión:</strong> Rendimiento (validación del token añade ~20ms), Disponibilidad (si el servidor de autorización falla, el sistema queda inutilizable).</p>
+            <p><strong>Alternativas descartadas:</strong> API Keys estáticas (difíciles de revocar), sesiones en servidor (no escalan horizontalmente).</p>
+
+            <h3>EA-2: Cache Redis con TTL corto (30 segundos)</h3>
+            <p><strong>Decisión:</strong> Las respuestas del core bancario se cachean en Redis por 30 segundos. Las consultas repetidas dentro de ese ventana no llegan al core.</p>
+            <p><strong>Atributos satisfechos:</strong> Rendimiento (Ren-1), Disponibilidad durante mantenimiento (Dis-1).</p>
+            <p><strong>Atributos en tensión:</strong> Consistencia — un movimiento reciente puede tardar hasta 30 segundos en aparecer.</p>
+            <p><strong>Alternativas descartadas:</strong> Sin cache (core no soporta la carga), TTL largo (inaceptable para datos financieros).</p>
+
+            <h3>EA-3: Circuit Breaker hacia el core bancario</h3>
+            <p><strong>Decisión:</strong> Si el core bancario falla más del 50% de las solicitudes en una ventana de 10 segundos, el circuit breaker se abre y el sistema sirve exclusivamente desde cache.</p>
+            <p><strong>Atributos satisfechos:</strong> Disponibilidad (Dis-1, Dis-2).</p>
+            <p><strong>Atributos en tensión:</strong> Consistencia — en estado abierto, los datos son definitivamente obsoletos. Sin mitigación visible al usuario.</p>
+            <p><strong>Alternativas descartadas:</strong> Retry infinito (agrava la sobrecarga del core), timeout simple (no previene efecto cascada).</p>
+
+            <h3>EA-4: Logs de auditoría append-only en almacenamiento separado</h3>
+            <p><strong>Decisión:</strong> Cada consulta genera una entrada de auditoría (usuario, cuenta consultada, timestamp, IP) escrita en un store separado de solo escritura, inmutable por diseño.</p>
+            <p><strong>Atributos satisfechos:</strong> Seguridad (Seg-2), cumplimiento regulatorio.</p>
+            <p><strong>Atributos en tensión:</strong> Rendimiento — la escritura síncrona de auditoría añade latencia a cada operación.</p>
+            <p><strong>Alternativas descartadas:</strong> Logs en la misma BD (modificables, no cumplen con auditoría), escritura asíncrona (riesgo de pérdida de registros ante falla).</p>
+          </div>
+
+          <div class="lang-en">
+            <h2>Architectural Approaches</h2>
+            <p>Four design decisions with direct impact on the identified quality attributes:</p>
+
+            <h3>EA-1: Authentication with OAuth2 + JWT</h3>
+            <p><strong>Decision:</strong> The API Gateway validates JWT tokens signed by an OAuth2 authorization server. The token payload includes account ID, scopes, and expiration.</p>
+            <p><strong>Attributes satisfied:</strong> Security (Sec-1), PCI-DSS compliance.</p>
+            <p><strong>Attributes in tension:</strong> Performance (token validation adds ~20ms), Availability (if the auth server fails, the system becomes unusable).</p>
+            <p><strong>Discarded alternatives:</strong> Static API keys (hard to revoke), server-side sessions (don't scale horizontally).</p>
+
+            <h3>EA-2: Redis Cache with Short TTL (30 seconds)</h3>
+            <p><strong>Decision:</strong> Core banking responses are cached in Redis for 30 seconds. Repeated queries within that window don't reach the core.</p>
+            <p><strong>Attributes satisfied:</strong> Performance (Perf-1), Availability during maintenance (Av-1).</p>
+            <p><strong>Attributes in tension:</strong> Consistency — a recent movement may take up to 30 seconds to appear.</p>
+            <p><strong>Discarded alternatives:</strong> No cache (core can't handle the load), longer TTL (unacceptable for financial data).</p>
+
+            <h3>EA-3: Circuit Breaker to Core Banking</h3>
+            <p><strong>Decision:</strong> If the core banking system fails more than 50% of requests in a 10-second window, the circuit breaker opens and the system serves exclusively from cache.</p>
+            <p><strong>Attributes satisfied:</strong> Availability (Av-1, Av-2).</p>
+            <p><strong>Attributes in tension:</strong> Consistency — in open state, data is definitively stale. No visible indication to the user.</p>
+            <p><strong>Discarded alternatives:</strong> Infinite retry (worsens core overload), simple timeout (doesn't prevent cascade failures).</p>
+
+            <h3>EA-4: Append-Only Audit Logs in Separate Storage</h3>
+            <p><strong>Decision:</strong> Each query generates an audit entry (user, queried account, timestamp, IP) written to a separate write-only, immutable-by-design store.</p>
+            <p><strong>Attributes satisfied:</strong> Security (Sec-2), regulatory compliance.</p>
+            <p><strong>Attributes in tension:</strong> Performance — synchronous audit writes add latency to every operation.</p>
+            <p><strong>Discarded alternatives:</strong> Logs in the same DB (modifiable, fail audit requirements), async writes (risk of record loss on failure).</p>
+          </div>
+
+          <!-- Sección 4: Análisis ATAM -->
+          <div class="lang-es">
+            <h2>Análisis ATAM</h2>
+          </div>
+          <div class="lang-en">
+            <h2>ATAM Analysis</h2>
+          </div>
+
+          <!-- Diagrama 2: Mapa de tradeoffs -->
+          <figure class="diagram">
+            <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+              <text x="350" y="18" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">Mapa de Tradeoffs / Tradeoff Map</text>
+
+              <!-- TR-1: Cache vs Consistencia -->
+              <rect x="30" y="40" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <text x="100" y="56" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Rendimiento</text>
+              <text x="100" y="69" text-anchor="middle" fill="#8892b0" font-size="9">Ren-1 / Perf-1</text>
+
+              <rect x="530" y="40" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="600" y="56" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Consistencia</text>
+              <text x="600" y="69" text-anchor="middle" fill="#8892b0" font-size="9">datos en tiempo real</text>
+
+              <line x1="170" y1="58" x2="530" y2="58" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
+              <text x="350" y="46" text-anchor="middle" fill="#8892b0" font-size="10">TR-1: Cache Redis TTL 30s</text>
+              <text x="240" y="64" text-anchor="middle" fill="#00d4aa" font-size="9">↑ mejora</text>
+              <text x="460" y="64" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrada</text>
+
+              <!-- TR-2: Disponibilidad vs Integridad -->
+              <rect x="30" y="110" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <text x="100" y="126" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Disponibilidad</text>
+              <text x="100" y="139" text-anchor="middle" fill="#8892b0" font-size="9">Dis-1 / Av-1</text>
+
+              <rect x="530" y="110" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="600" y="126" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Integridad</text>
+              <text x="600" y="139" text-anchor="middle" fill="#8892b0" font-size="9">datos exactos siempre</text>
+
+              <line x1="170" y1="128" x2="530" y2="128" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
+              <text x="350" y="116" text-anchor="middle" fill="#8892b0" font-size="10">TR-2: Circuit Breaker (modo abierto)</text>
+              <text x="240" y="134" text-anchor="middle" fill="#00d4aa" font-size="9">↑ mejora</text>
+              <text x="460" y="134" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrada</text>
+
+              <!-- TR-3: Seguridad vs Rendimiento -->
+              <rect x="30" y="180" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <text x="100" y="196" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Seguridad</text>
+              <text x="100" y="209" text-anchor="middle" fill="#8892b0" font-size="9">Seg-2 / Sec-2</text>
+
+              <rect x="530" y="180" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="600" y="196" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Rendimiento</text>
+              <text x="600" y="209" text-anchor="middle" fill="#8892b0" font-size="9">latencia por operación</text>
+
+              <line x1="170" y1="198" x2="530" y2="198" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
+              <text x="350" y="186" text-anchor="middle" fill="#8892b0" font-size="10">TR-3: Audit log síncrono</text>
+              <text x="240" y="204" text-anchor="middle" fill="#00d4aa" font-size="9">↑ mejora</text>
+              <text x="460" y="204" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrada</text>
+            </svg>
+            <figcaption>
+              <span class="lang-es">Los tres tradeoffs principales del sistema. Cada línea representa una decisión que mejora un atributo a costa de otro.</span>
+              <span class="lang-en">The three main tradeoffs in the system. Each line represents a decision that improves one attribute at the cost of another.</span>
+            </figcaption>
+          </figure>
+
+          <!-- Tabla ATAM ES -->
+          <div class="lang-es">
+            <table class="subdomain-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Escenario(s)</th>
+                  <th>Enfoque</th>
+                  <th>Descripción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>PS-1</strong></td>
+                  <td>Punto de Sensibilidad</td>
+                  <td>Ren-1</td>
+                  <td>EA-2</td>
+                  <td>El TTL del cache es un punto de sensibilidad para Rendimiento y Consistencia. Reducirlo mejora frescura de datos pero aumenta la carga en el core. Aumentarlo mejora rendimiento pero degrada consistencia.</td>
+                </tr>
+                <tr>
+                  <td><strong>PS-2</strong></td>
+                  <td>Punto de Sensibilidad</td>
+                  <td>Seg-1</td>
+                  <td>EA-1</td>
+                  <td>La duración del JWT es un punto de sensibilidad para Seguridad. JWTs de corta duración (5 min) minimizan la ventana de compromiso pero requieren refresh frecuente, aumentando latencia y complejidad.</td>
+                </tr>
+                <tr>
+                  <td><strong>TR-1</strong></td>
+                  <td>Tradeoff</td>
+                  <td>Ren-1 / Consistencia</td>
+                  <td>EA-2</td>
+                  <td>El cache Redis mejora el rendimiento y la disponibilidad durante el mantenimiento del core, pero introduce hasta 30 segundos de desfase. Un cliente podría no ver un movimiento reciente en su consulta.</td>
+                </tr>
+                <tr>
+                  <td><strong>TR-2</strong></td>
+                  <td>Tradeoff</td>
+                  <td>Dis-1 / Integridad</td>
+                  <td>EA-3</td>
+                  <td>El circuit breaker garantiza disponibilidad ante fallos del core sirviendo desde cache, pero en modo abierto los datos son definitivamente obsoletos sin señal visible al usuario. El cliente asume que los datos son actuales.</td>
+                </tr>
+                <tr>
+                  <td><strong>TR-3</strong></td>
+                  <td>Tradeoff</td>
+                  <td>Seg-2 / Ren-1</td>
+                  <td>EA-4</td>
+                  <td>Los logs de auditoría síncronos garantizan integridad del registro ante cualquier falla, pero añaden latencia fija (~15-30ms) a cada operación, tensionando el SLA de 500ms bajo alta carga.</td>
+                </tr>
+                <tr>
+                  <td><strong>R-1</strong></td>
+                  <td>Riesgo</td>
+                  <td>Ren-1, Dis-1</td>
+                  <td>EA-2</td>
+                  <td>No existe estrategia de invalidación de cache. Si un movimiento se revierte en el core (ej: devolución), el usuario podría ver el estado incorrecto hasta que expire el TTL. En el contexto bancario, esto puede tener implicaciones regulatorias.</td>
+                </tr>
+                <tr>
+                  <td><strong>R-2</strong></td>
+                  <td>Riesgo</td>
+                  <td>Seg-1</td>
+                  <td>EA-1</td>
+                  <td>Los JWTs no tienen mecanismo de revocación activo. Si un token es comprometido (ej: robo de sesión), permanece válido hasta su expiración natural. Para tokens de 1 hora, la ventana de ataque es significativa.</td>
+                </tr>
+                <tr>
+                  <td><strong>R-3</strong></td>
+                  <td>Riesgo</td>
+                  <td>Dis-1</td>
+                  <td>EA-3</td>
+                  <td>El circuit breaker usa un threshold fijo (50% en 10s). Durante mantenimientos planificados del core, el breaker se abrirá de forma no controlada y permanecerá abierto hasta que el core recupere, sin manera de preconfigurar el evento.</td>
+                </tr>
+                <tr>
+                  <td><strong>NR-1</strong></td>
+                  <td>No-Riesgo</td>
+                  <td>Seg-1</td>
+                  <td>EA-1, Gateway</td>
+                  <td>TLS 1.3 en todas las comunicaciones cubre el escenario de interceptación en tránsito. La autorización por cuenta ID en el JWT cubre el acceso lateral entre cuentas. No es un riesgo activo.</td>
+                </tr>
+                <tr>
+                  <td><strong>NR-2</strong></td>
+                  <td>No-Riesgo</td>
+                  <td>Dis-2</td>
+                  <td>Gateway</td>
+                  <td>El rate limiting en el API Gateway mitiga picos de carga extremos y ataques de denegación de servicio básicos. El escenario Dis-2 está parcialmente cubierto en este frente.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Tabla ATAM EN -->
+          <div class="lang-en">
+            <table class="subdomain-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Scenario(s)</th>
+                  <th>Approach</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>PS-1</strong></td>
+                  <td>Sensitivity Point</td>
+                  <td>Perf-1</td>
+                  <td>EA-2</td>
+                  <td>Cache TTL is a sensitivity point for both Performance and Consistency. Reducing it improves data freshness but increases load on the core. Increasing it improves performance but degrades consistency.</td>
+                </tr>
+                <tr>
+                  <td><strong>PS-2</strong></td>
+                  <td>Sensitivity Point</td>
+                  <td>Sec-1</td>
+                  <td>EA-1</td>
+                  <td>JWT lifetime is a sensitivity point for Security. Short-lived JWTs (5 min) minimize the compromise window but require frequent refresh, increasing latency and complexity.</td>
+                </tr>
+                <tr>
+                  <td><strong>TR-1</strong></td>
+                  <td>Tradeoff</td>
+                  <td>Perf-1 / Consistency</td>
+                  <td>EA-2</td>
+                  <td>Redis cache improves performance and availability during core maintenance, but introduces up to 30 seconds of data lag. A customer might not see a recent movement in their query.</td>
+                </tr>
+                <tr>
+                  <td><strong>TR-2</strong></td>
+                  <td>Tradeoff</td>
+                  <td>Av-1 / Integrity</td>
+                  <td>EA-3</td>
+                  <td>The circuit breaker ensures availability during core failures by serving from cache, but in open state data is definitively stale with no visible signal to the user. The customer assumes the data is current.</td>
+                </tr>
+                <tr>
+                  <td><strong>TR-3</strong></td>
+                  <td>Tradeoff</td>
+                  <td>Sec-2 / Perf-1</td>
+                  <td>EA-4</td>
+                  <td>Synchronous audit logs guarantee record integrity on any failure, but add fixed latency (~15-30ms) to every operation, putting pressure on the 500ms SLA under high load.</td>
+                </tr>
+                <tr>
+                  <td><strong>R-1</strong></td>
+                  <td>Risk</td>
+                  <td>Perf-1, Av-1</td>
+                  <td>EA-2</td>
+                  <td>No cache invalidation strategy exists. If a movement is reversed in the core (e.g., a chargeback), the customer could see the incorrect state until the TTL expires. In a banking context, this may have regulatory implications.</td>
+                </tr>
+                <tr>
+                  <td><strong>R-2</strong></td>
+                  <td>Risk</td>
+                  <td>Sec-1</td>
+                  <td>EA-1</td>
+                  <td>JWTs have no active revocation mechanism. If a token is compromised (e.g., session hijacking), it remains valid until natural expiration. For 1-hour tokens, the attack window is significant.</td>
+                </tr>
+                <tr>
+                  <td><strong>R-3</strong></td>
+                  <td>Risk</td>
+                  <td>Av-1</td>
+                  <td>EA-3</td>
+                  <td>The circuit breaker uses a fixed threshold (50% in 10s). During planned core maintenance, the breaker will trip in an uncontrolled manner and remain open until the core recovers, with no way to pre-configure the event.</td>
+                </tr>
+                <tr>
+                  <td><strong>NR-1</strong></td>
+                  <td>Non-Risk</td>
+                  <td>Sec-1</td>
+                  <td>EA-1, Gateway</td>
+                  <td>TLS 1.3 on all communications covers the in-transit interception scenario. Account ID authorization in the JWT covers lateral account access. Not an active risk.</td>
+                </tr>
+                <tr>
+                  <td><strong>NR-2</strong></td>
+                  <td>Non-Risk</td>
+                  <td>Av-2</td>
+                  <td>Gateway</td>
+                  <td>Rate limiting at the API Gateway mitigates extreme load spikes and basic denial-of-service attacks. Scenario Av-2 is partially covered on this front.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Sección 5: Reporte resumido -->
+          <div class="lang-es">
+            <h2>Reporte Resumido</h2>
+            <p>El análisis identificó <strong>2 puntos de sensibilidad</strong>, <strong>3 tradeoffs</strong>, <strong>3 riesgos</strong> y <strong>2 no-riesgos</strong>. Las recomendaciones priorizadas:</p>
+
+            <h3>🔴 Crítico</h3>
+            <ul style="color:var(--text-2);line-height:2;padding-left:1.5rem">
+              <li><strong>R-1 — Implementar invalidación de cache por evento.</strong> Cuando el core emita un evento de reversión, invalidar proactivamente la entrada de cache afectada. Usar un event bus o webhook del core.</li>
+              <li><strong>R-2 — Implementar revocación de JWT.</strong> Introducir una blacklist de tokens con TTL en Redis. Al logout o detección de anomalía, agregar el JTI a la blacklist.</li>
+            </ul>
+
+            <h3>🟡 Importante</h3>
+            <ul style="color:var(--text-2);line-height:2;padding-left:1.5rem">
+              <li><strong>R-3 — Añadir modo de mantenimiento planificado al circuit breaker.</strong> Permitir que operaciones configuren el breaker en modo "mantenimiento" para evitar aperturas no controladas durante ventanas conocidas.</li>
+              <li><strong>TR-2 — Indicador visible de datos obsoletos.</strong> Cuando el circuit breaker esté abierto, agregar un header o campo en la respuesta que indique que los datos provienen de cache y pueden no ser recientes.</li>
+            </ul>
+
+            <h3>🟢 A considerar</h3>
+            <ul style="color:var(--text-2);line-height:2;padding-left:1.5rem">
+              <li><strong>TR-3 — Evaluar escritura asíncrona de auditoría con garantía de entrega.</strong> Si el SLA de 500ms se convierte en problema bajo alta carga, migrar el log de auditoría a escritura asíncrona con un broker de mensajes durable (ej: Kafka) que garantice no pérdida.</li>
+            </ul>
+
+            <blockquote>
+              Los tradeoffs no son errores de diseño — son decisiones conscientes. El objetivo de ATAM es documentarlos para que el equipo sepa exactamente qué está apostando con cada elección.
+            </blockquote>
+          </div>
+
+          <div class="lang-en">
+            <h2>Summary Report</h2>
+            <p>The analysis identified <strong>2 sensitivity points</strong>, <strong>3 tradeoffs</strong>, <strong>3 risks</strong>, and <strong>2 non-risks</strong>. Prioritized recommendations:</p>
+
+            <h3>🔴 Critical</h3>
+            <ul style="color:var(--text-2);line-height:2;padding-left:1.5rem">
+              <li><strong>R-1 — Implement event-driven cache invalidation.</strong> When the core emits a reversal event, proactively invalidate the affected cache entry. Use an event bus or core webhook.</li>
+              <li><strong>R-2 — Implement JWT revocation.</strong> Introduce a Redis-backed token blacklist with TTL. On logout or anomaly detection, add the JTI to the blacklist.</li>
+            </ul>
+
+            <h3>🟡 Important</h3>
+            <ul style="color:var(--text-2);line-height:2;padding-left:1.5rem">
+              <li><strong>R-3 — Add planned maintenance mode to the circuit breaker.</strong> Allow operations to configure the breaker in "maintenance" mode to avoid uncontrolled trips during known windows.</li>
+              <li><strong>TR-2 — Visible stale data indicator.</strong> When the circuit breaker is open, add a header or response field indicating that data comes from cache and may not be current.</li>
+            </ul>
+
+            <h3>🟢 To Consider</h3>
+            <ul style="color:var(--text-2);line-height:2;padding-left:1.5rem">
+              <li><strong>TR-3 — Evaluate async audit writes with delivery guarantee.</strong> If the 500ms SLA becomes a problem under high load, migrate audit logging to async writes with a durable message broker (e.g., Kafka) that guarantees no data loss.</li>
+            </ul>
+
+            <blockquote>
+              Tradeoffs are not design mistakes — they are conscious decisions. The goal of ATAM is to document them so the team knows exactly what they're betting on with each choice.
+            </blockquote>
+          </div>
+
+          <!-- CTA: skill -->
+          <div class="lang-es">
+            <h2>¿Quieres facilitar un ATAM sobre tu propio sistema?</h2>
+            <p>
+              Construí <strong>atam-facilitator</strong> — un skill para Claude que actúa como co-facilitador y te guía por cada etapa: árbol de utilidad, enfoques arquitectónicos, análisis y reporte final. Funciona con cualquier sistema, no solo APIs bancarias.
+            </p>
+            <p>
+              <a href="https://github.com/fepc18/claude-skills/blob/main/atam-facilitator.plugin"
+                 target="_blank" rel="noopener"
+                 style="color:var(--green);font-family:var(--mono);font-size:0.9rem">
+                → Descargar atam-facilitator ↗
+              </a>
+            </p>
+          </div>
+          <div class="lang-en">
+            <h2>Want to Facilitate an ATAM on Your Own System?</h2>
+            <p>
+              I built <strong>atam-facilitator</strong> — a Claude skill that acts as a co-facilitator and walks you through each stage: utility tree, architectural approaches, analysis, and final report. Works with any system, not just banking APIs.
+            </p>
+            <p>
+              <a href="https://github.com/fepc18/claude-skills/blob/main/atam-facilitator.plugin"
+                 target="_blank" rel="noopener"
+                 style="color:var(--green);font-family:var(--mono);font-size:0.9rem">
+                → Download atam-facilitator ↗
+              </a>
+            </p>
+          </div>
+
+        </div><!-- /.article-body -->
+      </div>
+    </article>
+  </main>
+
+  <!-- Newsletter CTA -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box">
+        <span class="newsletter-eyebrow">Newsletter</span>
+        <h2 data-es="¿Te gustó el contenido?" data-en="Enjoying the content?">¿Te gustó el contenido?</h2>
+        <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo."
+           data-en="Subscribe to get new software architecture articles delivered to your inbox.">
+          Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo.
+        </p>
+        <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+          <input type="email" class="email-input" placeholder="tu@email.com" required />
+          <button type="submit" class="btn" data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
+        </form>
+        <p class="newsletter-note">
+          <span data-es="Publicado en" data-en="Published on">Publicado en</span>
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">Felipe Pabón © 2026</span>
+        <div class="footer-links">
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
+          <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/posts.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
