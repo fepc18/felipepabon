@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="El proceso de diseño con DDD: cómo pasar de un dominio complejo a un modelo usable usando Event Storming, Context Maps y modelado táctico. Ejemplo práctico con Open Finance." />
+  <meta name="author" content="Felipe Pabón" />
+  <title>Cómo Aplicar DDD Sin Perderte en la Teoría: Consentimientos en Open Finance — Felipe Pabón</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">fp.</a>
+      <div class="nav-links">
+        <a href="../blog/" data-es="Blog" data-en="Blog">Blog</a>
+        <button class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container" style="padding-top:2rem">
+      <a href="../blog/" class="back-link">← <span data-es="Volver al Blog" data-en="Back to Blog">Volver al Blog</span></a>
+    </div>
+
+    <!-- Article Header -->
+    <header class="article-header">
+      <div class="container">
+        <div class="article-header-meta">
+          <span class="card-tag">DDD</span>
+          <span class="card-tag">Architecture</span>
+          <span class="card-tag">Design</span>
+          <span class="reading-time">~12 min</span>
+        </div>
+        <h1 class="article-title"
+            data-es="Cómo Aplicar DDD Sin Perderte en la Teoría: Consentimientos en Open Finance"
+            data-en="How to Apply DDD Without Getting Lost in Theory: Consent Management in Open Finance">
+          Cómo Aplicar DDD Sin Perderte en la Teoría: Consentimientos en Open Finance
+        </h1>
+        <p class="article-subtitle"
+           data-es="Event Storming, Context Maps y modelado táctico en la práctica — con un ejemplo real de Open Finance y gestión de consentimientos."
+           data-en="Event Storming, Context Maps and tactical modeling in practice — with a real Open Finance and consent management example.">
+          Event Storming, Context Maps y modelado táctico en la práctica — con un ejemplo real de Open Finance y gestión de consentimientos.
+        </p>
+        <div class="article-byline">
+          <span>Felipe Pabón</span>
+          <span data-es="Mayo 2026" data-en="May 2026">Mayo 2026</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══ ESPAÑOL ══════════════════════════════════════════════ -->
+    <div class="lang-es">
+      <div class="container article-body">
+
+        <p>
+          En el <a href="ddd-strategic-overview.html">post anterior sobre DDD Estratégico</a> vimos los conceptos clave: subdominios, Bounded Contexts, Lenguaje Ubicuo y Context Maps. Pero queda la pregunta que siempre aparece después de leer teoría: <strong>¿por dónde empiezo?</strong>
+        </p>
+        <p>
+          Este post responde exactamente eso. Vamos a recorrer el proceso de diseño con DDD — desde un problema nebuloso hasta un modelo concreto — usando como hilo conductor un dominio de <strong>Open Finance</strong>: la gestión de consentimientos para compartir datos financieros con terceros.
+        </p>
+
+        <h2>El proceso en cuatro pasos</h2>
+        <p>
+          DDD no es lineal, pero sí tiene un flujo natural que la mayoría de los equipos siguen. Empieza con exploración colaborativa, avanza hacia la separación de contextos y termina con el modelado interno de cada uno.
+        </p>
+
+      </div><!-- /container -->
+    </div><!-- /lang-es -->
+
+    <!-- ══ ENGLISH ══════════════════════════════════════════════ -->
+    <div class="lang-en">
+      <div class="container article-body">
+
+        <p>
+          In the <a href="ddd-strategic-overview.html">previous post on Strategic DDD</a> we covered the key concepts: subdomains, Bounded Contexts, Ubiquitous Language and Context Maps. But one question always comes up after reading theory: <strong>where do I actually start?</strong>
+        </p>
+        <p>
+          This post answers exactly that. We'll walk through the DDD design process — from a fuzzy problem to a concrete model — using an <strong>Open Finance</strong> domain as our running example: consent management for sharing financial data with third parties.
+        </p>
+
+        <h2>The process in four steps</h2>
+        <p>
+          DDD is not strictly linear, but it does have a natural flow that most teams follow. It starts with collaborative exploration, moves to context separation, and ends with modeling the internals of each context.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ── Diagram 1: Process Flow ────────────────────────────── -->
+    <div class="container">
+      <figure class="diagram">
+        <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+          <defs>
+            <marker id="arrow1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#00d4aa"/>
+            </marker>
+          </defs>
+
+          <!-- Step 1 -->
+          <rect x="10" y="30" width="150" height="90" rx="10" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+          <text x="85" y="58" fill="#00d4aa" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">01</text>
+          <text x="85" y="76" fill="#e2e8f0" font-size="12" font-weight="600" text-anchor="middle" font-family="sans-serif">Event Storming</text>
+          <text x="85" y="95" fill="#8892b0" font-size="10" text-anchor="middle" font-family="sans-serif">Explorar el dominio</text>
+          <text x="85" y="110" fill="#8892b0" font-size="10" text-anchor="middle" font-family="sans-serif">con el negocio</text>
+
+          <!-- Arrow 1→2 -->
+          <line x1="162" y1="75" x2="188" y2="75" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arrow1)"/>
+
+          <!-- Step 2 -->
+          <rect x="190" y="30" width="150" height="90" rx="10" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+          <text x="265" y="58" fill="#00d4aa" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">02</text>
+          <text x="265" y="76" fill="#e2e8f0" font-size="12" font-weight="600" text-anchor="middle" font-family="sans-serif">Context Map</text>
+          <text x="265" y="95" fill="#8892b0" font-size="10" text-anchor="middle" font-family="sans-serif">Identificar Bounded</text>
+          <text x="265" y="110" fill="#8892b0" font-size="10" text-anchor="middle" font-family="sans-serif">Contexts y relaciones</text>
+
+          <!-- Arrow 2→3 -->
+          <line x1="342" y1="75" x2="368" y2="75" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arrow1)"/>
+
+          <!-- Step 3 -->
+          <rect x="370" y="30" width="150" height="90" rx="10" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+          <text x="445" y="58" fill="#00d4aa" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">03</text>
+          <text x="445" y="76" fill="#e2e8f0" font-size="12" font-weight="600" text-anchor="middle" font-family="sans-serif">Modelado Táctico</text>
+          <text x="445" y="95" fill="#8892b0" font-size="10" text-anchor="middle" font-family="sans-serif">Agregados, Entidades,</text>
+          <text x="445" y="110" fill="#8892b0" font-size="10" text-anchor="middle" font-family="sans-serif">Value Objects, Eventos</text>
+
+          <!-- Arrow 3→4 -->
+          <line x1="522" y1="75" x2="548" y2="75" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arrow1)"/>
+
+          <!-- Step 4 -->
+          <rect x="550" y="30" width="150" height="90" rx="10" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+          <text x="625" y="58" fill="#00d4aa" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">04</text>
+          <text x="625" y="76" fill="#e2e8f0" font-size="12" font-weight="600" text-anchor="middle" font-family="sans-serif">Iterar</text>
+          <text x="625" y="95" fill="#8892b0" font-size="10" text-anchor="middle" font-family="sans-serif">Validar con el negocio</text>
+          <text x="625" y="110" fill="#8892b0" font-size="10" text-anchor="middle" font-family="sans-serif">y refinar el modelo</text>
+        </svg>
+        <figcaption>
+          <span class="lang-es">El proceso DDD no es lineal — es una iteración constante entre descubrimiento y modelado.</span>
+          <span class="lang-en">The DDD process is not linear — it's a constant iteration between discovery and modeling.</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- ══ ESPAÑOL — Paso 1: Event Storming ══════════════════════ -->
+    <div class="lang-es">
+      <div class="container article-body">
+
+        <h2>Paso 1 — Event Storming: escucha antes de modelar</h2>
+        <p>
+          El error más común al aplicar DDD es abrir un editor de clases y empezar a diseñar entidades. El problema: todavía no entienden el dominio. La solución es <strong>Event Storming</strong>, una técnica de taller creada por Alberto Brandolini que pone a todo el equipo — técnicos y negocio — en la misma habitación con post-its.
+        </p>
+
+        <blockquote>
+          El objetivo del Event Storming no es producir un diagrama perfecto. Es generar conversaciones que descubran lo que nadie había documentado.
+        </blockquote>
+
+        <p>
+          La mecánica es simple: el equipo escribe <strong>eventos de dominio</strong> (cosas que pasaron, en tiempo pasado) en post-its naranjas y los coloca en una línea de tiempo. Luego agregan los <strong>comandos</strong> que los causaron (azules), los <strong>actores</strong> que ejecutaron esos comandos (amarillos), y las <strong>políticas</strong> o reglas que conectan eventos con nuevos comandos (morados).
+        </p>
+
+        <h3>Event Storming en Open Finance</h3>
+        <p>
+          Imagina que estás diseñando la plataforma de Open Finance de un banco. Convocas un taller con el equipo de producto, compliance, y los desarrolladores. En dos horas, el tablero revela algo así:
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ══ ENGLISH — Step 1: Event Storming ══════════════════════ -->
+    <div class="lang-en">
+      <div class="container article-body">
+
+        <h2>Step 1 — Event Storming: listen before you model</h2>
+        <p>
+          The most common mistake when applying DDD is opening a class editor and starting to design entities. The problem: you don't understand the domain yet. The solution is <strong>Event Storming</strong>, a workshop technique created by Alberto Brandolini that puts the whole team — technical and business — in the same room with sticky notes.
+        </p>
+
+        <blockquote>
+          The goal of Event Storming is not to produce a perfect diagram. It's to generate conversations that surface what nobody had documented.
+        </blockquote>
+
+        <p>
+          The mechanics are simple: the team writes <strong>domain events</strong> (things that happened, in past tense) on orange stickies and places them on a timeline. Then they add the <strong>commands</strong> that caused them (blue), the <strong>actors</strong> who executed those commands (yellow), and the <strong>policies</strong> or rules connecting events to new commands (purple).
+        </p>
+
+        <h3>Event Storming in Open Finance</h3>
+        <p>
+          Imagine you're designing an Open Finance platform for a bank. You convene a workshop with product, compliance, and developers. In two hours, the board reveals something like this:
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ── Diagram 2: Event Storming Board ───────────────────────── -->
+    <div class="container">
+      <figure class="diagram">
+        <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+
+          <!-- Timeline -->
+          <line x1="20" y1="230" x2="700" y2="230" stroke="#2d3149" stroke-width="1.5"/>
+          <text x="30" y="250" fill="#8892b0" font-size="9" font-family="monospace">TIMELINE →</text>
+
+          <!-- Legend -->
+          <rect x="520" y="8" width="12" height="12" rx="2" fill="#f59e0b"/>
+          <text x="536" y="19" fill="#8892b0" font-size="9" font-family="sans-serif">Actor</text>
+          <rect x="570" y="8" width="12" height="12" rx="2" fill="#3b82f6"/>
+          <text x="586" y="19" fill="#8892b0" font-size="9" font-family="sans-serif">Comando</text>
+          <rect x="640" y="8" width="12" height="12" rx="2" fill="#f97316"/>
+          <text x="656" y="19" fill="#8892b0" font-size="9" font-family="sans-serif">Evento</text>
+
+          <!-- ── Col 1: Consent Request ── -->
+          <!-- Actor: Usuario -->
+          <rect x="20" y="60" width="90" height="36" rx="4" fill="#f59e0b"/>
+          <text x="65" y="76" fill="#0f1117" font-size="9" font-weight="700" text-anchor="middle" font-family="sans-serif">Usuario /</text>
+          <text x="65" y="88" fill="#0f1117" font-size="9" font-weight="700" text-anchor="middle" font-family="sans-serif">TPP App</text>
+
+          <!-- Command: Solicitar Consentimiento -->
+          <rect x="20" y="110" width="90" height="36" rx="4" fill="#3b82f6"/>
+          <text x="65" y="124" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Solicitar</text>
+          <text x="65" y="136" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Consentimiento</text>
+
+          <!-- Event: ConsentimientoSolicitado -->
+          <rect x="20" y="175" width="90" height="50" rx="4" fill="#f97316"/>
+          <text x="65" y="192" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Consentimiento</text>
+          <text x="65" y="204" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Solicitado</text>
+          <text x="65" y="218" fill="#0f1117" font-size="8" text-anchor="middle" font-family="sans-serif">(ConsentRequested)</text>
+
+          <!-- ── Col 2: User Auth ── -->
+          <rect x="130" y="110" width="90" height="36" rx="4" fill="#3b82f6"/>
+          <text x="175" y="124" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Autenticar</text>
+          <text x="175" y="136" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Usuario</text>
+
+          <rect x="130" y="175" width="90" height="50" rx="4" fill="#f97316"/>
+          <text x="175" y="192" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Usuario</text>
+          <text x="175" y="204" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Autenticado</text>
+          <text x="175" y="218" fill="#0f1117" font-size="8" text-anchor="middle" font-family="sans-serif">(UserAuthenticated)</text>
+
+          <!-- ── Col 3: Policy → Grant ── -->
+          <!-- Policy -->
+          <rect x="240" y="60" width="90" height="50" rx="4" fill="#7c3aed"/>
+          <text x="285" y="78" fill="#fff" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Política:</text>
+          <text x="285" y="90" fill="#fff" font-size="8" text-anchor="middle" font-family="sans-serif">Si autenticado,</text>
+          <text x="285" y="102" fill="#fff" font-size="8" text-anchor="middle" font-family="sans-serif">mostrar alcances</text>
+
+          <rect x="240" y="110" width="90" height="36" rx="4" fill="#3b82f6"/>
+          <text x="285" y="124" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Otorgar</text>
+          <text x="285" y="136" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Consentimiento</text>
+
+          <rect x="240" y="175" width="90" height="50" rx="4" fill="#f97316"/>
+          <text x="285" y="192" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Consentimiento</text>
+          <text x="285" y="204" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Otorgado</text>
+          <text x="285" y="218" fill="#0f1117" font-size="8" text-anchor="middle" font-family="sans-serif">(ConsentGranted)</text>
+
+          <!-- ── Col 4: Data Shared ── -->
+          <rect x="350" y="110" width="90" height="36" rx="4" fill="#3b82f6"/>
+          <text x="395" y="124" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Compartir</text>
+          <text x="395" y="136" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Datos Cuenta</text>
+
+          <rect x="350" y="175" width="90" height="50" rx="4" fill="#f97316"/>
+          <text x="395" y="192" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Datos de Cuenta</text>
+          <text x="395" y="204" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Compartidos</text>
+          <text x="395" y="218" fill="#0f1117" font-size="8" text-anchor="middle" font-family="sans-serif">(AccountDataShared)</text>
+
+          <!-- ── Col 5: Consent Revoke ── -->
+          <rect x="460" y="60" width="90" height="36" rx="4" fill="#f59e0b"/>
+          <text x="505" y="76" fill="#0f1117" font-size="9" font-weight="700" text-anchor="middle" font-family="sans-serif">Usuario</text>
+          <text x="505" y="88" fill="#0f1117" font-size="9" font-weight="700" text-anchor="middle" font-family="sans-serif">(más tarde)</text>
+
+          <rect x="460" y="110" width="90" height="36" rx="4" fill="#3b82f6"/>
+          <text x="505" y="124" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Revocar</text>
+          <text x="505" y="136" fill="#fff" font-size="8.5" font-weight="600" text-anchor="middle" font-family="sans-serif">Consentimiento</text>
+
+          <rect x="460" y="175" width="90" height="50" rx="4" fill="#f97316"/>
+          <text x="505" y="192" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Consentimiento</text>
+          <text x="505" y="204" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Revocado</text>
+          <text x="505" y="218" fill="#0f1117" font-size="8" text-anchor="middle" font-family="sans-serif">(ConsentRevoked)</text>
+
+          <!-- ── Col 6: Expiry ── -->
+          <rect x="570" y="60" width="90" height="50" rx="4" fill="#7c3aed"/>
+          <text x="615" y="78" fill="#fff" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Política:</text>
+          <text x="615" y="90" fill="#fff" font-size="8" text-anchor="middle" font-family="sans-serif">Verificar expiración</text>
+          <text x="615" y="102" fill="#fff" font-size="8" text-anchor="middle" font-family="sans-serif">periódicamente</text>
+
+          <rect x="570" y="175" width="90" height="50" rx="4" fill="#f97316"/>
+          <text x="615" y="192" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Consentimiento</text>
+          <text x="615" y="204" fill="#0f1117" font-size="8.5" font-weight="700" text-anchor="middle" font-family="sans-serif">Expirado</text>
+          <text x="615" y="218" fill="#0f1117" font-size="8" text-anchor="middle" font-family="sans-serif">(ConsentExpired)</text>
+
+        </svg>
+        <figcaption>
+          <span class="lang-es">Event Storming del dominio Open Finance: eventos (naranja), comandos (azul), actores (amarillo) y políticas (morado).</span>
+          <span class="lang-en">Event Storming of the Open Finance domain: events (orange), commands (blue), actors (yellow) and policies (purple).</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- ══ ESPAÑOL — Agrupando en Bounded Contexts ══════════════ -->
+    <div class="lang-es">
+      <div class="container article-body">
+
+        <p>
+          Lo que salta a la vista en el tablero es que hay grupos naturales de eventos: todo lo relacionado con solicitar y otorgar consentimientos se agrupa solo. La autenticación vive aparte. El acceso a datos de cuenta tiene su propia lógica. Esos grupos son candidatos a Bounded Contexts.
+        </p>
+
+        <h2>Paso 2 — Del mapa de eventos al Context Map</h2>
+        <p>
+          Una vez que tienes el tablero de Event Storming, el siguiente paso es <strong>agrupar eventos por afinidad conceptual</strong> e identificar los lotes de preguntas que cada grupo genera. Cada grupo coherente se convierte en un candidato a Bounded Context.
+        </p>
+        <p>
+          Para nuestro dominio de Open Finance, emergen cuatro contextos:
+        </p>
+
+        <ul>
+          <li><strong>Consent Context</strong> — Core subdomain. Es lo que diferencia a la plataforma. Gestiona el ciclo de vida completo del consentimiento: solicitud, otorgamiento, revocación y expiración.</li>
+          <li><strong>Account Information Context</strong> — Supporting subdomain. Expone los datos de cuentas del banco al ecosistema Open Finance, siempre validando que exista un consentimiento activo.</li>
+          <li><strong>Payment Initiation Context</strong> — Supporting subdomain. Orquesta pagos iniciados por terceros (TPPs) en nombre del usuario, con validación de consentimiento en cada operación.</li>
+          <li><strong>Identity Context</strong> — Generic subdomain. Autenticación y autorización. Podría ser un producto de terceros (Keycloak, Auth0) en lugar de desarrollo propio.</li>
+        </ul>
+
+        <p>
+          La clasificación Core / Supporting / Generic no es cosmética: te dice <strong>dónde invertir</strong>. El Consent Context es donde tu equipo más senior debe estar. El Identity Context puede comprarse o externalizarse.
+        </p>
+
+        <h2>Paso 3 — Modelado táctico: dentro del Consent Context</h2>
+        <p>
+          Una vez definidos los contextos, entramos al modelado interno. Tomamos el <strong>Consent Context</strong> — nuestro Core — y definimos sus bloques de construcción tácticos: Agregados, Entidades, Value Objects y Domain Events.
+        </p>
+
+        <blockquote>
+          Un Agregado es la unidad de consistencia del dominio. Todo lo que está dentro del mismo Agregado cambia junto, bajo una sola transacción.
+        </blockquote>
+
+        <p>
+          En el Consent Context, el Agregado central es <code>Consent</code>. Es la raíz que garantiza que todas las reglas de negocio se cumplan antes de que el consentimiento cambie de estado.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ══ ENGLISH — Context Map ══════════════════════════════════ -->
+    <div class="lang-en">
+      <div class="container article-body">
+
+        <p>
+          What stands out in the board is that there are natural clusters of events: everything related to requesting and granting consents groups together on its own. Authentication lives apart. Account data access has its own logic. Those clusters are Bounded Context candidates.
+        </p>
+
+        <h2>Step 2 — From event map to Context Map</h2>
+        <p>
+          Once you have the Event Storming board, the next step is to <strong>group events by conceptual affinity</strong> and identify the cluster of questions each group generates. Each coherent cluster becomes a Bounded Context candidate.
+        </p>
+        <p>
+          For our Open Finance domain, four contexts emerge:
+        </p>
+
+        <ul>
+          <li><strong>Consent Context</strong> — Core subdomain. This is what differentiates the platform. It manages the full consent lifecycle: request, grant, revoke and expiry.</li>
+          <li><strong>Account Information Context</strong> — Supporting subdomain. Exposes bank account data to the Open Finance ecosystem, always validating that an active consent exists.</li>
+          <li><strong>Payment Initiation Context</strong> — Supporting subdomain. Orchestrates payments initiated by third parties (TPPs) on behalf of the user, validating consent on every operation.</li>
+          <li><strong>Identity Context</strong> — Generic subdomain. Authentication and authorization. Could be a third-party product (Keycloak, Auth0) instead of custom development.</li>
+        </ul>
+
+        <p>
+          The Core / Supporting / Generic classification is not cosmetic: it tells you <strong>where to invest</strong>. The Consent Context is where your most senior engineers should be. The Identity Context can be bought or outsourced.
+        </p>
+
+        <h2>Step 3 — Tactical modeling: inside the Consent Context</h2>
+        <p>
+          Once contexts are defined, we move to internal modeling. We take the <strong>Consent Context</strong> — our Core — and define its tactical building blocks: Aggregates, Entities, Value Objects, and Domain Events.
+        </p>
+
+        <blockquote>
+          An Aggregate is the unit of domain consistency. Everything inside the same Aggregate changes together, within a single transaction.
+        </blockquote>
+
+        <p>
+          In the Consent Context, the central Aggregate is <code>Consent</code>. It's the root that ensures all business rules are enforced before the consent can change state.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ── Diagram 3: Consent Aggregate ───────────────────────── -->
+    <div class="container">
+      <figure class="diagram">
+        <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+          <defs>
+            <marker id="arr2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 z" fill="#8892b0"/>
+            </marker>
+            <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 z" fill="#00d4aa"/>
+            </marker>
+          </defs>
+
+          <!-- Aggregate Root: Consent -->
+          <rect x="220" y="10" width="280" height="180" rx="12" fill="#0f1117" stroke="#00d4aa" stroke-width="2" stroke-dasharray="0"/>
+          <text x="360" y="34" fill="#00d4aa" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace" letter-spacing="1">AGGREGATE ROOT</text>
+          <text x="360" y="55" fill="#e2e8f0" font-size="16" font-weight="700" text-anchor="middle" font-family="sans-serif">Consent</text>
+
+          <!-- Consent fields -->
+          <text x="238" y="78" fill="#8892b0" font-size="10" font-family="monospace">id:          ConsentId</text>
+          <text x="238" y="94" fill="#8892b0" font-size="10" font-family="monospace">status:      ConsentStatus</text>
+          <text x="238" y="110" fill="#8892b0" font-size="10" font-family="monospace">period:      ConsentPeriod</text>
+          <text x="238" y="126" fill="#8892b0" font-size="10" font-family="monospace">scopes:      ConsentScope[]</text>
+          <text x="238" y="142" fill="#8892b0" font-size="10" font-family="monospace">tppId:       TPPIdentifier</text>
+          <text x="238" y="158" fill="#8892b0" font-size="10" font-family="monospace">items:       ConsentItem[]</text>
+
+          <!-- Entity: ConsentItem -->
+          <rect x="30" y="90" width="160" height="100" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+          <text x="110" y="110" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">ENTITY</text>
+          <text x="110" y="128" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle" font-family="sans-serif">ConsentItem</text>
+          <text x="48" y="148" fill="#8892b0" font-size="9.5" font-family="monospace">resource: AccountId</text>
+          <text x="48" y="162" fill="#8892b0" font-size="9.5" font-family="monospace">type:     DataType</text>
+          <text x="48" y="176" fill="#8892b0" font-size="9.5" font-family="monospace">granted:  boolean</text>
+
+          <!-- Arrow Consent → ConsentItem -->
+          <line x1="220" y1="158" x2="192" y2="158" stroke="#8892b0" stroke-width="1.2" marker-end="url(#arr2)"/>
+
+          <!-- Value Object: ConsentPeriod -->
+          <rect x="30" y="215" width="160" height="85" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+          <text x="110" y="235" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">VALUE OBJECT</text>
+          <text x="110" y="253" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle" font-family="sans-serif">ConsentPeriod</text>
+          <text x="48" y="273" fill="#8892b0" font-size="9.5" font-family="monospace">startDate: Date</text>
+          <text x="48" y="287" fill="#8892b0" font-size="9.5" font-family="monospace">endDate:   Date</text>
+          <text x="48" y="295" fill="#8892b0" font-size="9.5" font-family="monospace">isExpired(): bool</text>
+
+          <!-- Arrow Consent → ConsentPeriod -->
+          <line x1="220" y1="130" x2="110" y2="130" stroke="#8892b0" stroke-width="1.2"/>
+          <line x1="110" y1="130" x2="110" y2="213" stroke="#8892b0" stroke-width="1.2" marker-end="url(#arr2)"/>
+
+          <!-- Value Object: ConsentScope -->
+          <rect x="530" y="90" width="160" height="85" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+          <text x="610" y="110" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">VALUE OBJECT</text>
+          <text x="610" y="128" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle" font-family="sans-serif">ConsentScope</text>
+          <text x="548" y="148" fill="#8892b0" font-size="9.5" font-family="monospace">ACCOUNTS_READ</text>
+          <text x="548" y="162" fill="#8892b0" font-size="9.5" font-family="monospace">BALANCES_READ</text>
+          <text x="548" y="176" fill="#8892b0" font-size="9.5" font-family="monospace">PAYMENTS_WRITE</text>
+
+          <!-- Arrow Consent → ConsentScope -->
+          <line x1="500" y1="135" x2="528" y2="135" stroke="#8892b0" stroke-width="1.2" marker-end="url(#arr2)"/>
+
+          <!-- Domain Events -->
+          <rect x="530" y="215" width="160" height="100" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.2"/>
+          <text x="610" y="235" fill="#00d4aa" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">DOMAIN EVENTS</text>
+          <text x="548" y="256" fill="#e2e8f0" font-size="10" font-family="monospace">ConsentGranted</text>
+          <text x="548" y="272" fill="#e2e8f0" font-size="10" font-family="monospace">ConsentRevoked</text>
+          <text x="548" y="288" fill="#e2e8f0" font-size="10" font-family="monospace">ConsentExpired</text>
+          <text x="548" y="304" fill="#e2e8f0" font-size="10" font-family="monospace">ConsentRequested</text>
+
+          <!-- Arrow Consent → Domain Events -->
+          <line x1="500" y1="165" x2="610" y2="165" stroke="#8892b0" stroke-width="1.2"/>
+          <line x1="610" y1="165" x2="610" y2="213" stroke="#00d4aa" stroke-width="1.2" marker-end="url(#arr3)"/>
+
+        </svg>
+        <figcaption>
+          <span class="lang-es">Modelo táctico del Consent Context: el Agregado <code>Consent</code> con sus Entidades, Value Objects y Domain Events.</span>
+          <span class="lang-en">Tactical model of the Consent Context: the <code>Consent</code> Aggregate with its Entities, Value Objects, and Domain Events.</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- ══ ESPAÑOL — Reglas de negocio y código ══════════════════ -->
+    <div class="lang-es">
+      <div class="container article-body">
+
+        <h3>Las reglas de negocio viven en el Agregado</h3>
+        <p>
+          La ventaja de este diseño es que el Agregado <code>Consent</code> es quien protege sus invariantes. Nadie puede cambiar el estado de un consentimiento sin pasar por sus métodos:
+        </p>
+
+        <pre><code>// El Agregado protege sus propias reglas de negocio
+class Consent {
+  private status: ConsentStatus;
+  private period: ConsentPeriod;
+  private events: DomainEvent[] = [];
+
+  grant(): void {
+    if (this.status !== ConsentStatus.PENDING) {
+      throw new DomainError('Solo se puede otorgar un consentimiento pendiente');
+    }
+    if (this.period.isExpired()) {
+      throw new DomainError('El período del consentimiento ya expiró');
+    }
+    this.status = ConsentStatus.ACTIVE;
+    this.events.push(new ConsentGranted(this.id, new Date()));
+  }
+
+  revoke(reason: string): void {
+    if (this.status !== ConsentStatus.ACTIVE) {
+      throw new DomainError('Solo se puede revocar un consentimiento activo');
+    }
+    this.status = ConsentStatus.REVOKED;
+    this.events.push(new ConsentRevoked(this.id, reason, new Date()));
+  }
+}</code></pre>
+
+        <p>
+          Nota algo importante: el método <code>grant()</code> no sabe nada de bases de datos, HTTP, ni mensajería. Solo entiende las reglas del dominio. Eso es exactamente lo que buscamos: un modelo rico, sin anemia.
+        </p>
+
+        <h2>Paso 4 — Iterar: señales de que algo está mal</h2>
+        <p>
+          DDD no termina cuando tienes el primer modelo. El diseño evoluciona a medida que el equipo entiende mejor el dominio. Hay algunas señales de que un Bounded Context o un modelo táctico necesita revisión:
+        </p>
+
+        <ul>
+          <li><strong>El Agregado sabe demasiado.</strong> Si <code>Consent</code> necesita cargar datos de cuentas, pagos y usuarios para tomar una decisión, el contexto está mal delimitado.</li>
+          <li><strong>Dos equipos siempre esperan al mismo modelo.</strong> Señal de que un Bounded Context está sirviendo a dos dominios distintos y debería partirse.</li>
+          <li><strong>El Lenguaje Ubicuo falla.</strong> Si el equipo de negocio no reconoce los nombres de tus clases, el modelo no refleja el dominio real.</li>
+          <li><strong>Los Domain Events no significan nada para el negocio.</strong> <code>ConsentGranted</code> es un buen evento. <code>RecordUpdated</code> es un evento técnico sin valor semántico.</li>
+        </ul>
+
+        <h2>Conclusión</h2>
+        <p>
+          El proceso DDD es una disciplina de <strong>descubrimiento continuo</strong>. Event Storming te da el mapa. El Context Map te da las fronteras. El modelado táctico te da los detalles. Y la iteración asegura que el modelo no se aleje del dominio real.
+        </p>
+        <p>
+          En el caso de Open Finance, el resultado no es solo un sistema que funciona — es un sistema cuyo código habla el lenguaje del regulador, del equipo de producto y del desarrollador. Eso, a largo plazo, es lo que hace sostenible un proyecto.
+        </p>
+        <p>
+          En los próximos posts vamos a profundizar en los patrones de integración entre Bounded Contexts (ACL, Shared Kernel, Open Host Service) y cómo aplicarlos cuando los contextos de Open Finance necesitan comunicarse entre sí.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ══ ENGLISH — Business rules and iteration ══════════════════ -->
+    <div class="lang-en">
+      <div class="container article-body">
+
+        <h3>Business rules live in the Aggregate</h3>
+        <p>
+          The advantage of this design is that the <code>Consent</code> Aggregate is the one protecting its own invariants. Nobody can change a consent's state without going through its methods:
+        </p>
+
+        <pre><code>// The Aggregate enforces its own business rules
+class Consent {
+  private status: ConsentStatus;
+  private period: ConsentPeriod;
+  private events: DomainEvent[] = [];
+
+  grant(): void {
+    if (this.status !== ConsentStatus.PENDING) {
+      throw new DomainError('Can only grant a pending consent');
+    }
+    if (this.period.isExpired()) {
+      throw new DomainError('The consent period has already expired');
+    }
+    this.status = ConsentStatus.ACTIVE;
+    this.events.push(new ConsentGranted(this.id, new Date()));
+  }
+
+  revoke(reason: string): void {
+    if (this.status !== ConsentStatus.ACTIVE) {
+      throw new DomainError('Can only revoke an active consent');
+    }
+    this.status = ConsentStatus.REVOKED;
+    this.events.push(new ConsentRevoked(this.id, reason, new Date()));
+  }
+}</code></pre>
+
+        <p>
+          Notice something important: the <code>grant()</code> method knows nothing about databases, HTTP, or messaging. It only understands domain rules. That's exactly what we're after: a rich model, free of anemia.
+        </p>
+
+        <h2>Step 4 — Iterate: signals that something is wrong</h2>
+        <p>
+          DDD doesn't end when you have the first model. The design evolves as the team deepens its understanding of the domain. Some signals that a Bounded Context or a tactical model needs revision:
+        </p>
+
+        <ul>
+          <li><strong>The Aggregate knows too much.</strong> If <code>Consent</code> needs to load account data, payments and user profiles to make a decision, the context boundary is wrong.</li>
+          <li><strong>Two teams always wait on the same model.</strong> A sign that a Bounded Context is serving two distinct domains and should be split.</li>
+          <li><strong>Ubiquitous Language breaks down.</strong> If the business team doesn't recognize your class names, the model doesn't reflect the real domain.</li>
+          <li><strong>Domain Events mean nothing to the business.</strong> <code>ConsentGranted</code> is a good event. <code>RecordUpdated</code> is a technical event with no semantic value.</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+        <p>
+          The DDD process is a discipline of <strong>continuous discovery</strong>. Event Storming gives you the map. The Context Map gives you the boundaries. Tactical modeling gives you the details. And iteration keeps you honest about the real domain.
+        </p>
+        <p>
+          In the Open Finance case, the result isn't just a system that works — it's a system whose code speaks the language of regulators, product teams, and developers. That, over the long term, is what makes a project sustainable.
+        </p>
+        <p>
+          In the next posts we'll dig into integration patterns between Bounded Contexts (ACL, Shared Kernel, Open Host Service) and how to apply them when Open Finance contexts need to talk to each other.
+        </p>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Newsletter CTA -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box">
+        <span class="newsletter-eyebrow">Newsletter</span>
+        <h2 data-es="¿Te gustó el contenido?" data-en="Enjoying the content?">
+          ¿Te gustó el contenido?
+        </h2>
+        <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo."
+           data-en="Subscribe to get new software architecture articles delivered to your inbox.">
+          Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo.
+        </p>
+        <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+          <input type="email" class="email-input" placeholder="tu@email.com" required />
+          <button type="submit" class="btn" data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
+        </form>
+        <p class="newsletter-note">
+          <span data-es="Publicado en" data-en="Published on">Publicado en</span>
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">Felipe Pabón © 2026</span>
+        <div class="footer-links">
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
+          <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/posts.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

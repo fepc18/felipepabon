@@ -45,6 +45,17 @@ const POSTS = [
   },
 
   {
+    id: 'ddd-design-process',
+    titleEs: 'Cómo Aplicar DDD Sin Perderte en la Teoría: Consentimientos en Open Finance',
+    titleEn: 'How to Apply DDD Without Getting Lost in Theory: Consent Management in Open Finance',
+    tags: ['DDD', 'Architecture', 'Design'],
+    date: 'May 2026',
+    href: 'ddd-design-process.html',
+    external: false,
+    published: true,
+  },
+
+  {
     id: 'atam-ejemplo-api-bancaria',
     titleEs: 'ATAM en Práctica: API de Movimientos Bancarios',
     titleEn: 'ATAM in Practice: A Banking Movements API',
