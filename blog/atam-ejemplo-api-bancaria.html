@@ -91,75 +91,93 @@
             </p>
           </div>
 
-          <!-- Diagrama 1: Arquitectura -->
-          <figure class="diagram">
-            <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
-              <text x="350" y="18" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">Arquitectura del sistema / System Architecture</text>
+          <!-- Diagrama 1: Arquitectura ES -->
+          <div class="lang-es">
+            <figure class="diagram">
+              <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+                <text x="350" y="18" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">Arquitectura del sistema</text>
+                <rect x="20" y="40" width="100" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="70" y="58" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">App / Web</text>
+                <text x="70" y="72" text-anchor="middle" fill="#8892b0" font-size="9">cliente</text>
+                <line x1="120" y1="60" x2="155" y2="60" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr-es)"/>
+                <text x="137" y="54" text-anchor="middle" fill="#8892b0" font-size="8">HTTPS</text>
+                <rect x="155" y="35" width="120" height="50" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="215" y="57" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">API Gateway</text>
+                <text x="215" y="71" text-anchor="middle" fill="#8892b0" font-size="9">rate limiting · TLS</text>
+                <line x1="275" y1="60" x2="310" y2="60" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr-es)"/>
+                <rect x="310" y="35" width="130" height="50" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="375" y="57" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Movements API</text>
+                <text x="375" y="71" text-anchor="middle" fill="#8892b0" font-size="9">OAuth2 + JWT · EA-1</text>
+                <line x1="375" y1="85" x2="375" y2="120" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr-es)"/>
+                <rect x="300" y="120" width="150" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="375" y="138" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Redis Cache</text>
+                <text x="375" y="152" text-anchor="middle" fill="#8892b0" font-size="9">TTL 30s · EA-2</text>
+                <line x1="440" y1="60" x2="490" y2="60" stroke="#2d3149" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-es)"/>
+                <text x="466" y="50" text-anchor="middle" fill="#8892b0" font-size="8">circuit</text>
+                <text x="466" y="60" text-anchor="middle" fill="#8892b0" font-size="8">breaker</text>
+                <text x="466" y="70" text-anchor="middle" fill="#8892b0" font-size="8">EA-3</text>
+                <rect x="490" y="35" width="130" height="50" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="555" y="57" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Core Bancario</text>
+                <text x="555" y="71" text-anchor="middle" fill="#8892b0" font-size="9">sistema legado</text>
+                <line x1="375" y1="160" x2="375" y2="195" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr-es)"/>
+                <rect x="280" y="195" width="190" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="375" y="213" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Audit Log</text>
+                <text x="375" y="227" text-anchor="middle" fill="#8892b0" font-size="9">append-only · inmutable · EA-4</text>
+                <text x="20" y="248" fill="#8892b0" font-size="9">EA = Enfoque Arquitectónico</text>
+                <text x="20" y="258" fill="#8892b0" font-size="9">--- = comunicación con circuit breaker</text>
+                <defs>
+                  <marker id="arr-es" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#2d3149"/>
+                  </marker>
+                </defs>
+              </svg>
+              <figcaption>Arquitectura del API de movimientos bancarios con los cuatro enfoques arquitectónicos identificados.</figcaption>
+            </figure>
+          </div>
 
-              <!-- Cliente -->
-              <rect x="20" y="40" width="100" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="70" y="58" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">App / Web</text>
-              <text x="70" y="72" text-anchor="middle" fill="#8892b0" font-size="9">cliente</text>
-
-              <!-- Flecha cliente → gateway -->
-              <line x1="120" y1="60" x2="155" y2="60" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr)"/>
-              <text x="137" y="54" text-anchor="middle" fill="#8892b0" font-size="8">HTTPS</text>
-
-              <!-- API Gateway -->
-              <rect x="155" y="35" width="120" height="50" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
-              <text x="215" y="57" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">API Gateway</text>
-              <text x="215" y="71" text-anchor="middle" fill="#8892b0" font-size="9">rate limiting · TLS</text>
-
-              <!-- Flecha gateway → movements api -->
-              <line x1="275" y1="60" x2="310" y2="60" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr)"/>
-
-              <!-- Movements API -->
-              <rect x="310" y="35" width="130" height="50" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
-              <text x="375" y="57" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Movements API</text>
-              <text x="375" y="71" text-anchor="middle" fill="#8892b0" font-size="9">OAuth2 + JWT · EA-1</text>
-
-              <!-- Flecha API → Cache -->
-              <line x1="375" y1="85" x2="375" y2="120" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr)"/>
-
-              <!-- Cache Redis -->
-              <rect x="300" y="120" width="150" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="375" y="138" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Redis Cache</text>
-              <text x="375" y="152" text-anchor="middle" fill="#8892b0" font-size="9">TTL 30s · EA-2</text>
-
-              <!-- Flecha API → Core (con circuit breaker) -->
-              <line x1="440" y1="60" x2="490" y2="60" stroke="#2d3149" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
-              <text x="466" y="50" text-anchor="middle" fill="#8892b0" font-size="8">circuit</text>
-              <text x="466" y="60" text-anchor="middle" fill="#8892b0" font-size="8">breaker</text>
-              <text x="466" y="70" text-anchor="middle" fill="#8892b0" font-size="8">EA-3</text>
-
-              <!-- Core Bancario -->
-              <rect x="490" y="35" width="130" height="50" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="555" y="57" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Core Bancario</text>
-              <text x="555" y="71" text-anchor="middle" fill="#8892b0" font-size="9">sistema legado</text>
-
-              <!-- Flecha API → Audit Log -->
-              <line x1="375" y1="160" x2="375" y2="195" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr)"/>
-
-              <!-- Audit Log -->
-              <rect x="280" y="195" width="190" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="375" y="213" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Audit Log</text>
-              <text x="375" y="227" text-anchor="middle" fill="#8892b0" font-size="9">append-only · inmutable · EA-4</text>
-
-              <!-- Leyenda EA -->
-              <text x="20" y="248" fill="#8892b0" font-size="9">EA = Enfoque Arquitectónico / Architectural Approach</text>
-              <text x="20" y="258" fill="#8892b0" font-size="9">--- = comunicación con circuit breaker</text>
-
-              <defs>
-                <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                  <path d="M0,0 L0,6 L8,3 z" fill="#2d3149"/>
-                </marker>
-              </defs>
-            </svg>
-            <figcaption>
-              <span class="lang-es">Arquitectura del API de movimientos bancarios con los cuatro enfoques arquitectónicos identificados.</span>
-              <span class="lang-en">Architecture of the banking movements API with the four identified architectural approaches.</span>
-            </figcaption>
-          </figure>
+          <!-- Diagrama 1: Arquitectura EN -->
+          <div class="lang-en">
+            <figure class="diagram">
+              <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+                <text x="350" y="18" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">System Architecture</text>
+                <rect x="20" y="40" width="100" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="70" y="58" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">App / Web</text>
+                <text x="70" y="72" text-anchor="middle" fill="#8892b0" font-size="9">client</text>
+                <line x1="120" y1="60" x2="155" y2="60" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr-en)"/>
+                <text x="137" y="54" text-anchor="middle" fill="#8892b0" font-size="8">HTTPS</text>
+                <rect x="155" y="35" width="120" height="50" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="215" y="57" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">API Gateway</text>
+                <text x="215" y="71" text-anchor="middle" fill="#8892b0" font-size="9">rate limiting · TLS</text>
+                <line x1="275" y1="60" x2="310" y2="60" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr-en)"/>
+                <rect x="310" y="35" width="130" height="50" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="375" y="57" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Movements API</text>
+                <text x="375" y="71" text-anchor="middle" fill="#8892b0" font-size="9">OAuth2 + JWT · EA-1</text>
+                <line x1="375" y1="85" x2="375" y2="120" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr-en)"/>
+                <rect x="300" y="120" width="150" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="375" y="138" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Redis Cache</text>
+                <text x="375" y="152" text-anchor="middle" fill="#8892b0" font-size="9">TTL 30s · EA-2</text>
+                <line x1="440" y1="60" x2="490" y2="60" stroke="#2d3149" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-en)"/>
+                <text x="466" y="50" text-anchor="middle" fill="#8892b0" font-size="8">circuit</text>
+                <text x="466" y="60" text-anchor="middle" fill="#8892b0" font-size="8">breaker</text>
+                <text x="466" y="70" text-anchor="middle" fill="#8892b0" font-size="8">EA-3</text>
+                <rect x="490" y="35" width="130" height="50" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="555" y="57" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Core Banking</text>
+                <text x="555" y="71" text-anchor="middle" fill="#8892b0" font-size="9">legacy system</text>
+                <line x1="375" y1="160" x2="375" y2="195" stroke="#2d3149" stroke-width="1.5" marker-end="url(#arr-en)"/>
+                <rect x="280" y="195" width="190" height="40" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="375" y="213" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Audit Log</text>
+                <text x="375" y="227" text-anchor="middle" fill="#8892b0" font-size="9">append-only · immutable · EA-4</text>
+                <text x="20" y="248" fill="#8892b0" font-size="9">EA = Architectural Approach</text>
+                <text x="20" y="258" fill="#8892b0" font-size="9">--- = circuit breaker communication</text>
+                <defs>
+                  <marker id="arr-en" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#2d3149"/>
+                  </marker>
+                </defs>
+              </svg>
+              <figcaption>Architecture of the banking movements API with the four identified architectural approaches.</figcaption>
+            </figure>
+          </div>
 
           <!-- Drivers -->
           <div class="lang-es">
@@ -368,58 +386,85 @@
             <h2>ATAM Analysis</h2>
           </div>
 
-          <!-- Diagrama 2: Mapa de tradeoffs -->
-          <figure class="diagram">
-            <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
-              <text x="350" y="18" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">Mapa de Tradeoffs / Tradeoff Map</text>
+          <!-- Diagrama 2: Mapa de tradeoffs ES -->
+          <div class="lang-es">
+            <figure class="diagram">
+              <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+                <text x="350" y="18" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">Mapa de Tradeoffs</text>
+                <rect x="30" y="40" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="100" y="56" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Rendimiento</text>
+                <text x="100" y="69" text-anchor="middle" fill="#8892b0" font-size="9">Ren-1</text>
+                <rect x="530" y="40" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="600" y="56" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Consistencia</text>
+                <text x="600" y="69" text-anchor="middle" fill="#8892b0" font-size="9">datos en tiempo real</text>
+                <line x1="170" y1="58" x2="530" y2="58" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="350" y="46" text-anchor="middle" fill="#8892b0" font-size="10">TR-1: Cache Redis TTL 30s</text>
+                <text x="240" y="64" text-anchor="middle" fill="#00d4aa" font-size="9">↑ mejora</text>
+                <text x="460" y="64" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrada</text>
+                <rect x="30" y="110" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="100" y="126" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Disponibilidad</text>
+                <text x="100" y="139" text-anchor="middle" fill="#8892b0" font-size="9">Dis-1</text>
+                <rect x="530" y="110" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="600" y="126" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Integridad</text>
+                <text x="600" y="139" text-anchor="middle" fill="#8892b0" font-size="9">datos exactos siempre</text>
+                <line x1="170" y1="128" x2="530" y2="128" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="350" y="116" text-anchor="middle" fill="#8892b0" font-size="10">TR-2: Circuit Breaker (modo abierto)</text>
+                <text x="240" y="134" text-anchor="middle" fill="#00d4aa" font-size="9">↑ mejora</text>
+                <text x="460" y="134" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrada</text>
+                <rect x="30" y="180" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="100" y="196" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Seguridad</text>
+                <text x="100" y="209" text-anchor="middle" fill="#8892b0" font-size="9">Seg-2</text>
+                <rect x="530" y="180" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="600" y="196" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Rendimiento</text>
+                <text x="600" y="209" text-anchor="middle" fill="#8892b0" font-size="9">latencia por operación</text>
+                <line x1="170" y1="198" x2="530" y2="198" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="350" y="186" text-anchor="middle" fill="#8892b0" font-size="10">TR-3: Audit log síncrono</text>
+                <text x="240" y="204" text-anchor="middle" fill="#00d4aa" font-size="9">↑ mejora</text>
+                <text x="460" y="204" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrada</text>
+              </svg>
+              <figcaption>Los tres tradeoffs principales del sistema. Cada línea representa una decisión que mejora un atributo a costa de otro.</figcaption>
+            </figure>
+          </div>
 
-              <!-- TR-1: Cache vs Consistencia -->
-              <rect x="30" y="40" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
-              <text x="100" y="56" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Rendimiento</text>
-              <text x="100" y="69" text-anchor="middle" fill="#8892b0" font-size="9">Ren-1 / Perf-1</text>
-
-              <rect x="530" y="40" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="600" y="56" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Consistencia</text>
-              <text x="600" y="69" text-anchor="middle" fill="#8892b0" font-size="9">datos en tiempo real</text>
-
-              <line x1="170" y1="58" x2="530" y2="58" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
-              <text x="350" y="46" text-anchor="middle" fill="#8892b0" font-size="10">TR-1: Cache Redis TTL 30s</text>
-              <text x="240" y="64" text-anchor="middle" fill="#00d4aa" font-size="9">↑ mejora</text>
-              <text x="460" y="64" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrada</text>
-
-              <!-- TR-2: Disponibilidad vs Integridad -->
-              <rect x="30" y="110" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
-              <text x="100" y="126" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Disponibilidad</text>
-              <text x="100" y="139" text-anchor="middle" fill="#8892b0" font-size="9">Dis-1 / Av-1</text>
-
-              <rect x="530" y="110" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="600" y="126" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Integridad</text>
-              <text x="600" y="139" text-anchor="middle" fill="#8892b0" font-size="9">datos exactos siempre</text>
-
-              <line x1="170" y1="128" x2="530" y2="128" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
-              <text x="350" y="116" text-anchor="middle" fill="#8892b0" font-size="10">TR-2: Circuit Breaker (modo abierto)</text>
-              <text x="240" y="134" text-anchor="middle" fill="#00d4aa" font-size="9">↑ mejora</text>
-              <text x="460" y="134" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrada</text>
-
-              <!-- TR-3: Seguridad vs Rendimiento -->
-              <rect x="30" y="180" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
-              <text x="100" y="196" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Seguridad</text>
-              <text x="100" y="209" text-anchor="middle" fill="#8892b0" font-size="9">Seg-2 / Sec-2</text>
-
-              <rect x="530" y="180" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="600" y="196" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Rendimiento</text>
-              <text x="600" y="209" text-anchor="middle" fill="#8892b0" font-size="9">latencia por operación</text>
-
-              <line x1="170" y1="198" x2="530" y2="198" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
-              <text x="350" y="186" text-anchor="middle" fill="#8892b0" font-size="10">TR-3: Audit log síncrono</text>
-              <text x="240" y="204" text-anchor="middle" fill="#00d4aa" font-size="9">↑ mejora</text>
-              <text x="460" y="204" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrada</text>
-            </svg>
-            <figcaption>
-              <span class="lang-es">Los tres tradeoffs principales del sistema. Cada línea representa una decisión que mejora un atributo a costa de otro.</span>
-              <span class="lang-en">The three main tradeoffs in the system. Each line represents a decision that improves one attribute at the cost of another.</span>
-            </figcaption>
-          </figure>
+          <!-- Diagrama 2: Mapa de tradeoffs EN -->
+          <div class="lang-en">
+            <figure class="diagram">
+              <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+                <text x="350" y="18" text-anchor="middle" fill="#8892b0" font-size="11" font-family="monospace">Tradeoff Map</text>
+                <rect x="30" y="40" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="100" y="56" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Performance</text>
+                <text x="100" y="69" text-anchor="middle" fill="#8892b0" font-size="9">Perf-1</text>
+                <rect x="530" y="40" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="600" y="56" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Consistency</text>
+                <text x="600" y="69" text-anchor="middle" fill="#8892b0" font-size="9">real-time data</text>
+                <line x1="170" y1="58" x2="530" y2="58" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="350" y="46" text-anchor="middle" fill="#8892b0" font-size="10">TR-1: Redis Cache TTL 30s</text>
+                <text x="240" y="64" text-anchor="middle" fill="#00d4aa" font-size="9">↑ improves</text>
+                <text x="460" y="64" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrades</text>
+                <rect x="30" y="110" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="100" y="126" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Availability</text>
+                <text x="100" y="139" text-anchor="middle" fill="#8892b0" font-size="9">Av-1</text>
+                <rect x="530" y="110" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="600" y="126" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Integrity</text>
+                <text x="600" y="139" text-anchor="middle" fill="#8892b0" font-size="9">always accurate data</text>
+                <line x1="170" y1="128" x2="530" y2="128" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="350" y="116" text-anchor="middle" fill="#8892b0" font-size="10">TR-2: Circuit Breaker (open state)</text>
+                <text x="240" y="134" text-anchor="middle" fill="#00d4aa" font-size="9">↑ improves</text>
+                <text x="460" y="134" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrades</text>
+                <rect x="30" y="180" width="140" height="36" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+                <text x="100" y="196" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">Security</text>
+                <text x="100" y="209" text-anchor="middle" fill="#8892b0" font-size="9">Sec-2</text>
+                <rect x="530" y="180" width="140" height="36" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+                <text x="600" y="196" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">Performance</text>
+                <text x="600" y="209" text-anchor="middle" fill="#8892b0" font-size="9">per-operation latency</text>
+                <line x1="170" y1="198" x2="530" y2="198" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="350" y="186" text-anchor="middle" fill="#8892b0" font-size="10">TR-3: Synchronous audit log</text>
+                <text x="240" y="204" text-anchor="middle" fill="#00d4aa" font-size="9">↑ improves</text>
+                <text x="460" y="204" text-anchor="middle" fill="#8892b0" font-size="9">↓ degrades</text>
+              </svg>
+              <figcaption>The three main tradeoffs in the system. Each line represents a decision that improves one attribute at the cost of another.</figcaption>
+            </figure>
+          </div>
 
           <!-- Tabla ATAM ES -->
           <div class="lang-es">
