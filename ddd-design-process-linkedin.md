@@ -1,19 +1,22 @@
-La mayoría de los equipos leen DDD, entienden los conceptos... y luego abren un editor de clases sin saber por dónde empezar.
+Most teams read about DDD, understand the concepts... and then open a class editor with no idea where to actually start.
 
-El proceso tiene una secuencia natural que nadie te explica claramente:
+This is the new edition of my newsletter — and it answers exactly that: the DDD design process, from a fuzzy problem to a working model, using an Open Finance consent management system as the end-to-end example.
 
-→ **Event Storming** — antes de modelar, explora. Pon a negocio y técnicos en la misma sala con post-its. Mapea qué *sucede* en el dominio, no cómo está implementado.
+**1. Event Storming before you model anything**
+The biggest mistake teams make is jumping straight to entities and classes. Event Storming flips that — you get business, product, and compliance in the same room, mapping what *happens* in the domain before touching any code. In the Open Finance example, a two-hour session surfaces events like ConsentRequested, ConsentGranted, ConsentRevoked, and ConsentExpired — and more importantly, the questions nobody had documented yet (like: can a TPP request consent for future payments that haven't happened yet?).
 
-→ **Context Map** — agrupa los eventos por afinidad. Identifica cuál es tu Core subdomain (donde vive tu diferenciación real) vs. los que puedes comprar o externalizar.
+**2. From sticky notes to a Context Map**
+Once you have the event timeline, natural clusters emerge. In Open Finance, four Bounded Contexts appear: a Consent Context (Core — the real differentiator), Account Information and Payment Initiation (Supporting), and an Identity Context (Generic — buy it, don't build it). That Core/Supporting/Generic split isn't cosmetic. It tells you where your best engineers should spend their time.
 
-→ **Modelado táctico** — entra al Bounded Context Core y define tus Agregados. Las reglas de negocio viven ahí, no en los servicios ni en la base de datos.
+**3. Tactical modeling inside the Consent Context**
+This is where it gets concrete. The `Consent` aggregate enforces all business rules: you can't grant a consent that's already active, you can't revoke one that's expired, and every state change publishes a Domain Event. No database logic, no HTTP calls — just domain rules. The article walks through the full model: Aggregate, Entities, Value Objects, and Domain Events.
 
-→ **Iterar** — el modelo es una hipótesis. El Lenguaje Ubicuo te dirá cuándo está desalineado con el dominio real.
+**4. Signals that your model needs revision**
+DDD isn't a one-shot exercise. The edition closes with the warning signs that a context boundary is wrong — like when your aggregate starts loading data from three other contexts to make a single decision, or when the business team stops recognizing your class names in a conversation.
 
-Lo ilustré con un ejemplo de **Open Finance**: el Consent Context, donde un banco gestiona los consentimientos para compartir datos financieros con terceros. Un dominio con reglas complejas, actores múltiples y presión regulatoria — exactamente donde DDD brilla.
+If the previous edition was the "what" of Strategic DDD, this one is the "how."
 
-Si el post anterior era el "qué" de DDD Estratégico, este es el "cómo".
-
+Read the full edition + diagrams on Substack 👇
 🔗 https://felipepabon.substack.com
 
 #SoftwareArchitecture #DDD #DomainDrivenDesign #OpenFinance #CleanArchitecture #TechLead #SoftwareDevelopment

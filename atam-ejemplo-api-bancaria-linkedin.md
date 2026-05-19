@@ -2,6 +2,8 @@
 
 Después de un ATAM aparecen 3 tradeoffs, 3 riesgos y 2 puntos de sensibilidad que nadie había articulado.
 
+La semana pasada hablé de los métodos de arquitectura del SEI: ADD, ATAM, QAW y cómo encajan en el ciclo de vida de una arquitectura. Hoy el ejemplo práctico.
+
 Hice el ejercicio sobre un API de consulta de movimientos bancarios:
 
 → El cache de 30s mejora rendimiento y disponibilidad, pero un cliente puede ver un movimiento revertido como si aún existiera
