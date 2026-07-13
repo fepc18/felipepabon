@@ -77,6 +77,28 @@ const POSTS = [
     published: true,
   },
 
+  {
+    id: 'owasp-top-10-llm',
+    titleEs: 'OWASP Top 10 para LLMs: Las vulnerabilidades que todo arquitecto de IA debe conocer',
+    titleEn: 'OWASP Top 10 for LLMs: What Every AI Architect Needs to Know',
+    tags: ['Architecture', 'Security', 'AI'],
+    date: 'July 2026',
+    href: 'owasp-top-10-llm.html',
+    external: false,
+    published: true,
+  },
+
+  {
+    id: 'harness-engineering-claude-code',
+    titleEs: 'Harness Engineering con Claude Code',
+    titleEn: 'Harness Engineering with Claude Code',
+    tags: ['Architecture', 'AI', 'Clean Architecture'],
+    date: 'July 2026',
+    href: 'harness-engineering-claude-code.html',
+    external: false,
+    published: true,
+  },
+
   /* ── Previous site posts (coming soon) ────────────────────── */
   {
     id: 'ddd-intro',

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Harness Engineering: cómo estructurar agentes de Claude Code que desarrollan aplicaciones de forma predecible y segura en producción." />
+  <meta name="author" content="Felipe Pabón" />
+  <title>Harness Engineering con Claude Code — Felipe Pabón</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">fp.</a>
+      <div class="nav-links">
+        <a href="../blog/" data-es="Blog" data-en="Blog">Blog</a>
+        <button class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <article class="article-container">
+      <div class="container">
+
+        <!-- Article header -->
+        <header class="article-header">
+          <div class="lang-es">
+            <div class="article-tags">
+              <span class="card-tag">Architecture</span>
+              <span class="card-tag">AI</span>
+              <span class="card-tag">Clean Architecture</span>
+            </div>
+            <h1>Harness Engineering con Claude Code</h1>
+            <p class="article-subtitle">Cómo estructurar un agente de desarrollo para que trabaje de forma predecible, segura y auditable — sin necesidad de mirarlo en cada paso.</p>
+            <div class="article-meta">
+              <span>July 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+          <div class="lang-en">
+            <div class="article-tags">
+              <span class="card-tag">Architecture</span>
+              <span class="card-tag">AI</span>
+              <span class="card-tag">Clean Architecture</span>
+            </div>
+            <h1>Harness Engineering with Claude Code</h1>
+            <p class="article-subtitle">How to structure a coding agent so it works predictably, safely, and auditably — without watching every single step it takes.</p>
+            <div class="article-meta">
+              <span>July 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article body -->
+        <div class="article-body">
+
+          <!-- Section 1: El problema -->
+          <div class="lang-es">
+            <h2>El agente que nadie controla</h2>
+            <p>Dale a Claude Code acceso a tu repositorio, dile "implementa el módulo de pagos" y espera. Lo más probable es que lo haga. Pero también es probable que reescriba archivos que no debía tocar, que omita los tests porque nadie se los exigió, que use una librería que ya estaba deprecada en tu proyecto, o que genere código que funciona en su cabeza pero no en tu pipeline de CI.</p>
+            <p>El problema no es el agente. El problema es que lo soltaste sin un harness.</p>
+            <p>Un agente de desarrollo sin estructura es como un desarrollador brillante en su primer día: talentoso, rápido, y completamente capaz de romper producción si nadie le explica las reglas del juego.</p>
+          </div>
+          <div class="lang-en">
+            <h2>The agent nobody controls</h2>
+            <p>Give Claude Code access to your repository, tell it "implement the payments module," and wait. Chances are it'll do it. But it might also rewrite files it shouldn't have touched, skip tests because nobody demanded them, use a library that's already deprecated in your project, or generate code that works in its own reasoning but breaks your CI pipeline.</p>
+            <p>The problem isn't the agent. The problem is you let it loose without a harness.</p>
+            <p>An unstructured coding agent is like a brilliant developer on their first day: talented, fast, and fully capable of breaking production if nobody explains the rules of the game.</p>
+          </div>
+
+          <!-- Section 2: Qué es Harness Engineering -->
+          <div class="lang-es">
+            <h2>Qué es Harness Engineering</h2>
+            <p>Harness Engineering es la disciplina de envolver a tu agente de IA con una capa de estructura que define cómo trabaja, detecta cuándo se desvía, verifica antes de producción y entrega outputs controlados.</p>
+            <p>No se trata de limitar al agente — se trata de hacerlo confiable. La diferencia entre un agente que "a veces funciona bien" y uno en el que puedes delegar trabajo real es, precisamente, el harness.</p>
+          </div>
+          <div class="lang-en">
+            <h2>What is Harness Engineering</h2>
+            <p>Harness Engineering is the discipline of wrapping your AI agent with a layer of structure that defines how it works, detects when it deviates, verifies before production, and delivers controlled outputs.</p>
+            <p>It's not about limiting the agent — it's about making it reliable. The difference between an agent that "sometimes works well" and one you can actually delegate real work to is, precisely, the harness.</p>
+          </div>
+
+          <!-- Main diagram -->
+          <figure class="diagram">
+            <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" style="font-family: system-ui, sans-serif;">
+              <!-- Background -->
+              <rect width="720" height="400" fill="#0f1117" rx="12"/>
+
+              <!-- Harness boundary (dashed) -->
+              <rect x="30" y="50" width="660" height="320" rx="12" fill="none" stroke="#f0b429" stroke-width="2" stroke-dasharray="10,5" opacity="0.7"/>
+              <text x="55" y="44" fill="#f0b429" font-size="12" font-weight="600" opacity="0.9">HARNESS</text>
+
+              <!-- GUIDES box (top center) -->
+              <rect x="275" y="75" width="170" height="64" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="360" y="104" fill="#e2e8f0" font-size="14" font-weight="700" text-anchor="middle">GUIDES</text>
+              <text x="360" y="123" fill="#8892b0" font-size="11" text-anchor="middle">CLAUDE.md · Convenciones</text>
+
+              <!-- Arrow: Guides → Agent -->
+              <line x1="360" y1="139" x2="360" y2="178" stroke="#8892b0" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+              <!-- AGENT box (center) -->
+              <rect x="255" y="180" width="210" height="74" rx="8" fill="#1a2a1a" stroke="#00d4aa" stroke-width="2"/>
+              <text x="360" y="210" fill="#00d4aa" font-size="15" font-weight="700" text-anchor="middle">AGENT</text>
+              <text x="360" y="230" fill="#8892b0" font-size="11" text-anchor="middle">Claude Code</text>
+              <text x="360" y="246" fill="#8892b0" font-size="10" text-anchor="middle">claude-sonnet · claude-opus</text>
+
+              <!-- Arrow: Agent → Output -->
+              <line x1="255" y1="217" x2="192" y2="217" stroke="#8892b0" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+              <!-- OUTPUT box (left) -->
+              <rect x="60" y="183" width="130" height="68" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="125" y="211" fill="#00d4aa" font-size="13" font-weight="700" text-anchor="middle">OUTPUT</text>
+              <text x="125" y="230" fill="#8892b0" font-size="11" text-anchor="middle">Git commit · PR</text>
+              <text x="125" y="246" fill="#8892b0" font-size="10" text-anchor="middle">Revisable · Auditable</text>
+
+              <!-- Arrow: Sensors → Agent (feedback) -->
+              <line x1="465" y1="217" x2="530" y2="217" stroke="#8892b0" stroke-width="1.5" marker-end="url(#arrow-rev)"/>
+              <line x1="530" y1="217" x2="465" y2="217" stroke="#8892b0" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+              <!-- SENSORS box (right) -->
+              <rect x="530" y="183" width="140" height="68" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="600" y="211" fill="#e2e8f0" font-size="13" font-weight="700" text-anchor="middle">SENSORS</text>
+              <text x="600" y="230" fill="#8892b0" font-size="11" text-anchor="middle">Hooks · pre/post</text>
+              <text x="600" y="246" fill="#8892b0" font-size="10" text-anchor="middle">Detecta desviaciones</text>
+
+              <!-- Arrow: Agent → Sandbox -->
+              <line x1="360" y1="254" x2="360" y2="293" stroke="#8892b0" stroke-width="1.5" marker-end="url(#arrow)"/>
+              <line x1="360" y1="293" x2="360" y2="254" stroke="#8892b0" stroke-width="1.5" marker-end="url(#arrow-up)"/>
+
+              <!-- SANDBOX box (bottom center) -->
+              <rect x="265" y="295" width="190" height="60" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="360" y="322" fill="#e2e8f0" font-size="13" font-weight="700" text-anchor="middle">SANDBOX</text>
+              <text x="360" y="341" fill="#8892b0" font-size="11" text-anchor="middle">Tests · Linting · Build</text>
+
+              <!-- Arrow markers -->
+              <defs>
+                <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#8892b0"/>
+                </marker>
+                <marker id="arrow-rev" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
+                  <path d="M8,0 L8,6 L0,3 z" fill="#8892b0"/>
+                </marker>
+                <marker id="arrow-up" markerWidth="8" markerHeight="8" refX="3" refY="0" orient="auto">
+                  <path d="M0,8 L6,8 L3,0 z" fill="#8892b0"/>
+                </marker>
+              </defs>
+            </svg>
+            <figcaption>
+              <span class="lang-es">Los 4 componentes del harness envuelven al agente y controlan cada dimensión de su trabajo.</span>
+              <span class="lang-en">The 4 harness components wrap the agent and control every dimension of its work.</span>
+            </figcaption>
+          </figure>
+
+          <!-- Running example intro -->
+          <div class="lang-es" style="background:#1a1d27;border-left:3px solid #f0b429;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.4rem;font-size:0.75rem;font-weight:700;color:#f0b429;text-transform:uppercase;letter-spacing:0.08em;">Ejemplo que usaremos</p>
+            <p style="margin:0;color:#e2e8f0;">Un equipo tiene este ticket: <strong>"Implementar <code>POST /payments</code> — crear un pago con validación de monto y moneda."</strong> Van a delegárselo a Claude Code. Veamos cómo el harness actúa en cada etapa.</p>
+          </div>
+          <div class="lang-en" style="background:#1a1d27;border-left:3px solid #f0b429;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.4rem;font-size:0.75rem;font-weight:700;color:#f0b429;text-transform:uppercase;letter-spacing:0.08em;">Running example</p>
+            <p style="margin:0;color:#e2e8f0;">A team has this ticket: <strong>"Implement <code>POST /payments</code> — create a payment with amount and currency validation."</strong> They're going to delegate it to Claude Code. Let's see how the harness acts at each stage.</p>
+          </div>
+
+          <!-- Section 3: Guides -->
+          <div class="lang-es">
+            <h2>Guides: el CLAUDE.md como contrato de trabajo</h2>
+            <p>El componente <strong>Guides</strong> define cómo trabaja el agente antes de que ejecute su primer comando. En Claude Code, este rol lo cumple el archivo <code>CLAUDE.md</code> — un archivo de instrucciones que el agente lee al inicio de cada sesión.</p>
+            <p>Un <code>CLAUDE.md</code> bien diseñado no es un README. Es un contrato. Le dice al agente qué puede tocar y qué no, qué convenciones usa el proyecto, qué tests debe correr antes de hacer commit, y cuál es la estructura de carpetas esperada.</p>
+          </div>
+          <div class="lang-en">
+            <h2>Guides: CLAUDE.md as a work contract</h2>
+            <p>The <strong>Guides</strong> component defines how the agent works before it runs its first command. In Claude Code, this role belongs to the <code>CLAUDE.md</code> file — an instruction file the agent reads at the start of every session.</p>
+            <p>A well-designed <code>CLAUDE.md</code> is not a README. It's a contract. It tells the agent what it can touch and what it can't, what conventions the project uses, what tests must pass before committing, and what the expected folder structure looks like.</p>
+          </div>
+
+          <blockquote>
+            <div class="lang-es">Un agente sin CLAUDE.md es como un desarrollador sin onboarding: adivina las reglas del proyecto, y a veces adivina mal.</div>
+            <div class="lang-en">An agent without CLAUDE.md is like a developer without onboarding: it guesses the project rules, and sometimes guesses wrong.</div>
+          </blockquote>
+
+          <div class="lang-es">
+            <p>Un buen Guide para un agente de desarrollo incluye: el stack tecnológico y las versiones exactas en uso, los comandos para correr tests y linting, las carpetas que nunca debe modificar (como <code>/migrations</code> o configs de infraestructura), y el estilo de commits que esperas. También puedes indicarle cuándo debe detenerse a preguntar en lugar de decidir solo — por ejemplo, antes de eliminar cualquier archivo o antes de cambiar la firma de una función pública.</p>
+          </div>
+          <div class="lang-en">
+            <p>A good Guide for a coding agent includes: the tech stack and exact versions in use, commands to run tests and linting, folders it should never modify (like <code>/migrations</code> or infrastructure configs), and the commit style you expect. You can also tell it when to stop and ask rather than decide alone — for example, before deleting any file or before changing a public function's signature.</p>
+          </div>
+
+          <!-- Example: Guides -->
+          <div class="lang-es" style="background:#1a1d27;border-left:3px solid #00d4aa;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.75rem;font-size:0.75rem;font-weight:700;color:#00d4aa;text-transform:uppercase;letter-spacing:0.08em;">Ejemplo — CLAUDE.md</p>
+            <p style="margin:0 0 0.5rem;color:#8892b0;font-size:0.9rem;">Antes de recibir el ticket de pagos, el agente lee este contrato:</p>
+            <pre style="margin:0;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#8892b0">## Stack</span>
+Node 20 · Express 4 · PostgreSQL 15 · Jest
+
+<span style="color:#8892b0">## Carpetas protegidas — nunca modificar</span>
+/migrations   → cambios de DB requieren aprobación
+/infra        → configuración de infraestructura
+.env*         → nunca tocar variables de entorno
+
+<span style="color:#8892b0">## Antes de cada commit</span>
+npm test && npm run lint
+Si alguno falla → corrígelo antes de continuar.
+
+<span style="color:#8892b0">## Convenciones</span>
+- Rutas en src/routes/, lógica en src/services/
+- Tests en __tests__/ junto al archivo que prueban
+- Commits: feat|fix|test|refactor: descripción corta
+
+<span style="color:#8892b0">## Cuándo detenerse a preguntar</span>
+- Antes de eliminar cualquier archivo
+- Antes de cambiar la firma de una función pública
+- Si el ticket requiere cambio de esquema de DB</code></pre>
+            <p style="margin:0.75rem 0 0;color:#8892b0;font-size:0.85rem;">Con este contrato cargado, el agente sabe exactamente dónde implementar el endpoint (<code>src/routes/</code>), dónde poner la lógica (<code>src/services/</code>), y que si necesita un cambio de DB debe parar y preguntar.</p>
+          </div>
+          <div class="lang-en" style="background:#1a1d27;border-left:3px solid #00d4aa;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.75rem;font-size:0.75rem;font-weight:700;color:#00d4aa;text-transform:uppercase;letter-spacing:0.08em;">Example — CLAUDE.md</p>
+            <p style="margin:0 0 0.5rem;color:#8892b0;font-size:0.9rem;">Before receiving the payments ticket, the agent reads this contract:</p>
+            <pre style="margin:0;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#8892b0">## Stack</span>
+Node 20 · Express 4 · PostgreSQL 15 · Jest
+
+<span style="color:#8892b0">## Protected folders — never modify</span>
+/migrations   → DB changes require human approval
+/infra        → infrastructure configuration
+.env*         → never touch env vars
+
+<span style="color:#8892b0">## Before every commit</span>
+npm test && npm run lint
+If either fails → fix it before continuing.
+
+<span style="color:#8892b0">## Conventions</span>
+- Routes in src/routes/, logic in src/services/
+- Tests in __tests__/ next to the file they cover
+- Commits: feat|fix|test|refactor: short description
+
+<span style="color:#8892b0">## When to stop and ask</span>
+- Before deleting any file
+- Before changing a public function signature
+- If the ticket requires a DB schema change</code></pre>
+            <p style="margin:0.75rem 0 0;color:#8892b0;font-size:0.85rem;">With this contract loaded, the agent knows exactly where to implement the endpoint (<code>src/routes/</code>), where to put the logic (<code>src/services/</code>), and that if it needs a DB change it must stop and ask.</p>
+          </div>
+
+          <!-- Section 4: Sensors -->
+          <div class="lang-es">
+            <h2>Sensors: hooks que detectan desviaciones</h2>
+            <p>Los <strong>Sensors</strong> son el sistema nervioso del harness. En Claude Code, se implementan mediante hooks — scripts que se ejecutan automáticamente antes o después de cada herramienta que usa el agente.</p>
+            <p>Claude Code soporta 4 tipos de hooks: <code>PreToolUse</code> (antes de ejecutar una herramienta), <code>PostToolUse</code> (después), <code>Notification</code> (cuando el agente quiere notificar algo) y <code>Stop</code> (cuando el agente termina). Los más útiles para un harness de desarrollo son los dos primeros.</p>
+          </div>
+          <div class="lang-en">
+            <h2>Sensors: hooks that detect deviations</h2>
+            <p><strong>Sensors</strong> are the harness's nervous system. In Claude Code, they're implemented via hooks — scripts that run automatically before or after each tool the agent uses.</p>
+            <p>Claude Code supports 4 hook types: <code>PreToolUse</code> (before a tool runs), <code>PostToolUse</code> (after), <code>Notification</code> (when the agent wants to notify something), and <code>Stop</code> (when the agent finishes). The most useful for a coding harness are the first two.</p>
+          </div>
+
+          <!-- Hooks diagram -->
+          <figure class="diagram">
+            <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" style="font-family: system-ui, sans-serif;">
+              <rect width="720" height="260" fill="#0f1117" rx="12"/>
+
+              <!-- Title -->
+              <text x="360" y="32" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle">Flujo de un Hook PreToolUse</text>
+
+              <!-- Step 1: Agent decides -->
+              <rect x="40" y="55" width="140" height="56" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="110" y="80" fill="#e2e8f0" font-size="12" font-weight="600" text-anchor="middle">Agente decide</text>
+              <text x="110" y="98" fill="#8892b0" font-size="10" text-anchor="middle">ejecutar herramienta</text>
+
+              <!-- Arrow -->
+              <line x1="180" y1="83" x2="220" y2="83" stroke="#8892b0" stroke-width="1.5" marker-end="url(#a1)"/>
+
+              <!-- Step 2: PreToolUse sensor -->
+              <rect x="220" y="55" width="150" height="56" rx="8" fill="#1a2a1a" stroke="#00d4aa" stroke-width="1.5"/>
+              <text x="295" y="80" fill="#00d4aa" font-size="12" font-weight="600" text-anchor="middle">PreToolUse</text>
+              <text x="295" y="98" fill="#8892b0" font-size="10" text-anchor="middle">hook se ejecuta</text>
+
+              <!-- Arrow to decision -->
+              <line x1="370" y1="83" x2="410" y2="83" stroke="#8892b0" stroke-width="1.5" marker-end="url(#a1)"/>
+
+              <!-- Decision diamond -->
+              <polygon points="460,55 520,83 460,111 400,83" fill="#1a1d27" stroke="#f0b429" stroke-width="1.5"/>
+              <text x="460" y="88" fill="#f0b429" font-size="11" font-weight="600" text-anchor="middle">¿OK?</text>
+
+              <!-- Arrow: Yes → tool runs -->
+              <line x1="520" y1="83" x2="560" y2="83" stroke="#8892b0" stroke-width="1.5" marker-end="url(#a1)"/>
+              <text x="540" y="76" fill="#8892b0" font-size="10" text-anchor="middle">Sí</text>
+
+              <!-- Tool runs -->
+              <rect x="560" y="55" width="120" height="56" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="620" y="80" fill="#e2e8f0" font-size="12" font-weight="600" text-anchor="middle">Herramienta</text>
+              <text x="620" y="98" fill="#8892b0" font-size="10" text-anchor="middle">se ejecuta</text>
+
+              <!-- Arrow: No → block -->
+              <line x1="460" y1="111" x2="460" y2="160" stroke="#e05252" stroke-width="1.5" marker-end="url(#a2)"/>
+              <text x="472" y="143" fill="#e05252" font-size="10">No</text>
+
+              <!-- Block box -->
+              <rect x="370" y="160" width="180" height="56" rx="8" fill="#2a1a1a" stroke="#e05252" stroke-width="1.5"/>
+              <text x="460" y="185" fill="#e05252" font-size="12" font-weight="600" text-anchor="middle">Bloqueado</text>
+              <text x="460" y="203" fill="#8892b0" font-size="10" text-anchor="middle">Agente recibe feedback</text>
+
+              <!-- Example labels -->
+              <text x="40" y="200" fill="#8892b0" font-size="10">Ejemplos de bloqueo:</text>
+              <text x="40" y="218" fill="#8892b0" font-size="10">→ rm -rf sobre carpeta crítica</text>
+              <text x="40" y="234" fill="#8892b0" font-size="10">→ editar /migrations sin flag</text>
+              <text x="40" y="250" fill="#8892b0" font-size="10">→ uso de librería deprecada</text>
+
+              <defs>
+                <marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#8892b0"/>
+                </marker>
+                <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#e05252"/>
+                </marker>
+              </defs>
+            </svg>
+            <figcaption>
+              <span class="lang-es">Un hook PreToolUse intercepta cada acción del agente antes de ejecutarse. Si el sensor detecta una desviación, bloquea la herramienta y devuelve feedback al agente.</span>
+              <span class="lang-en">A PreToolUse hook intercepts every agent action before it runs. If the sensor detects a deviation, it blocks the tool and returns feedback to the agent.</span>
+            </figcaption>
+          </figure>
+
+          <div class="lang-es">
+            <p>Un sensor típico para un agente de desarrollo puede verificar: que el agente no ejecute comandos destructivos sin confirmación, que no escriba sobre archivos de configuración de infraestructura, que no instale dependencias fuera del package manager del proyecto, o que no haga push directamente a main. Estos controles parecen obvios — pero sin hooks, dependen de que el agente "recuerde" las instrucciones del CLAUDE.md en cada paso.</p>
+            <p>Los hooks en Claude Code se configuran en <code>.claude/settings.json</code> o via <code>claude settings</code>, y pueden ser scripts de bash, Python, o cualquier ejecutable. El hook recibe como stdin un JSON con el nombre de la herramienta y sus argumentos, y puede retornar un código de salida distinto de 0 para bloquear la ejecución.</p>
+          </div>
+          <div class="lang-en">
+            <p>A typical sensor for a coding agent might check: that the agent doesn't run destructive commands without confirmation, that it doesn't write to infrastructure config files, that it doesn't install dependencies outside the project's package manager, or that it doesn't push directly to main. These checks seem obvious — but without hooks, they rely on the agent "remembering" the CLAUDE.md instructions at every step.</p>
+            <p>Hooks in Claude Code are configured in <code>.claude/settings.json</code> or via <code>claude settings</code>, and can be bash scripts, Python, or any executable. The hook receives a JSON with the tool name and its arguments via stdin, and can return a non-zero exit code to block execution.</p>
+          </div>
+
+          <!-- Example: Sensors -->
+          <div class="lang-es" style="background:#1a1d27;border-left:3px solid #00d4aa;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.75rem;font-size:0.75rem;font-weight:700;color:#00d4aa;text-transform:uppercase;letter-spacing:0.08em;">Ejemplo — Sensor en acción</p>
+            <p style="margin:0 0 0.75rem;color:#8892b0;font-size:0.9rem;">El agente está implementando <code>POST /payments</code> y decide que necesita una nueva columna en la tabla <code>payments</code>. Sin preguntar, intenta crear un archivo en <code>/migrations/</code>. El hook <code>PreToolUse</code> intercepta:</p>
+            <pre style="margin:0 0 0.75rem;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#8892b0"># Hook recibe este payload via stdin:</span>
+{
+  "tool_name": "Write",
+  "tool_input": {
+    "file_path": "/migrations/20260713_add_currency.sql",
+    "content": "ALTER TABLE payments ADD COLUMN currency VARCHAR(3)..."
+  }
+}
+
+<span style="color:#e05252"># guard.py detecta la ruta protegida → exit(1)</span>
+BLOCKED: /migrations/ es una ruta protegida.
+Los cambios de esquema requieren aprobación humana.
+Crea un script en /scripts/pending-migrations/ y
+abre un comentario en el PR para revisión.</code></pre>
+            <p style="margin:0;color:#8892b0;font-size:0.85rem;">El agente recibe el mensaje de bloqueo, lo incorpora como contexto, y en lugar de crear la migración procede a implementar el endpoint asumiendo que la columna ya existe — y agrega una nota en su PR summary indicando que se requiere una migración pendiente.</p>
+          </div>
+          <div class="lang-en" style="background:#1a1d27;border-left:3px solid #00d4aa;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.75rem;font-size:0.75rem;font-weight:700;color:#00d4aa;text-transform:uppercase;letter-spacing:0.08em;">Example — Sensor in action</p>
+            <p style="margin:0 0 0.75rem;color:#8892b0;font-size:0.9rem;">The agent is implementing <code>POST /payments</code> and decides it needs a new column in the <code>payments</code> table. Without asking, it tries to create a file in <code>/migrations/</code>. The <code>PreToolUse</code> hook intercepts:</p>
+            <pre style="margin:0 0 0.75rem;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#8892b0"># Hook receives this payload via stdin:</span>
+{
+  "tool_name": "Write",
+  "tool_input": {
+    "file_path": "/migrations/20260713_add_currency.sql",
+    "content": "ALTER TABLE payments ADD COLUMN currency VARCHAR(3)..."
+  }
+}
+
+<span style="color:#e05252"># guard.py detects the protected path → exit(1)</span>
+BLOCKED: /migrations/ is a protected path.
+Schema changes require human approval.
+Create a script in /scripts/pending-migrations/ and
+add a comment in the PR summary for review.</code></pre>
+            <p style="margin:0;color:#8892b0;font-size:0.85rem;">The agent receives the block message, incorporates it as context, and instead of creating the migration it proceeds to implement the endpoint assuming the column already exists — and adds a note in its PR summary flagging the pending migration.</p>
+          </div>
+
+          <!-- Section 5: Sandbox -->
+          <div class="lang-es">
+            <h2>Sandbox: verificar antes de que llegue a producción</h2>
+            <p>El <strong>Sandbox</strong> es el entorno de verificación donde el código del agente debe sobrevivir antes de poder considerarse output válido. Para un agente de desarrollo, el sandbox mínimo incluye: correr los tests unitarios, pasar el linter, y compilar el proyecto sin errores.</p>
+            <p>Lo poderoso del sandbox en este contexto es que el agente puede ejecutarlo solo. Claude Code puede correr <code>npm test</code>, leer el output, identificar qué test falló, corregirlo, y volver a correr — sin intervención humana. El sandbox convierte al agente en un loop de feedback autónomo.</p>
+            <p>Un buen harness define explícitamente en el CLAUDE.md cuáles son los comandos del sandbox y cuándo deben ejecutarse: "antes de cada commit, corre <code>make test</code> y <code>make lint</code>. Si alguno falla, corrígelo antes de continuar." Esa instrucción, combinada con un hook <code>PostToolUse</code> que verifica el estado del repo, hace que el agente rara vez entregue código roto.</p>
+          </div>
+          <div class="lang-en">
+            <h2>Sandbox: verify before it reaches production</h2>
+            <p>The <strong>Sandbox</strong> is the verification environment where the agent's code must survive before it can be considered valid output. For a coding agent, the minimum sandbox includes: running unit tests, passing the linter, and compiling the project without errors.</p>
+            <p>The powerful thing about the sandbox in this context is that the agent can run it on its own. Claude Code can run <code>npm test</code>, read the output, identify which test failed, fix it, and re-run — without human intervention. The sandbox turns the agent into an autonomous feedback loop.</p>
+            <p>A good harness explicitly defines in CLAUDE.md what the sandbox commands are and when to run them: "before each commit, run <code>make test</code> and <code>make lint</code>. If either fails, fix it before continuing." That instruction, combined with a <code>PostToolUse</code> hook that checks repo state, means the agent rarely delivers broken code.</p>
+          </div>
+
+          <!-- Example: Sandbox -->
+          <div class="lang-es" style="background:#1a1d27;border-left:3px solid #00d4aa;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.75rem;font-size:0.75rem;font-weight:700;color:#00d4aa;text-transform:uppercase;letter-spacing:0.08em;">Ejemplo — Loop de autocorrección</p>
+            <p style="margin:0 0 0.75rem;color:#8892b0;font-size:0.9rem;">El agente termina de implementar el endpoint y, según las instrucciones del CLAUDE.md, corre <code>npm test</code> antes de hacer commit:</p>
+            <pre style="margin:0 0 0.75rem;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#8892b0">$ npm test</span>
+
+  POST /payments
+    <span style="color:#e05252">✗ should reject negative amounts (12ms)</span>
+      Expected 400, received 201
+    <span style="color:#00d4aa">✓ should create payment with valid data (8ms)</span>
+    <span style="color:#00d4aa">✓ should require currency field (5ms)</span>
+
+  2 passing, 1 failing</code></pre>
+            <p style="margin:0 0 0.75rem;color:#8892b0;font-size:0.9rem;">El agente lee el output, identifica que falta validación de monto negativo, edita <code>src/services/paymentsService.js</code>, y vuelve a correr los tests:</p>
+            <pre style="margin:0 0 0.75rem;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#8892b0">$ npm test</span>
+
+  POST /payments
+    <span style="color:#00d4aa">✓ should reject negative amounts (9ms)</span>
+    <span style="color:#00d4aa">✓ should create payment with valid data (8ms)</span>
+    <span style="color:#00d4aa">✓ should require currency field (5ms)</span>
+
+  3 passing</code></pre>
+            <p style="margin:0;color:#8892b0;font-size:0.85rem;">Sin intervención humana. El agente detectó el fallo, lo corrigió, y verificó la corrección — todo dentro del sandbox.</p>
+          </div>
+          <div class="lang-en" style="background:#1a1d27;border-left:3px solid #00d4aa;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.75rem;font-size:0.75rem;font-weight:700;color:#00d4aa;text-transform:uppercase;letter-spacing:0.08em;">Example — Self-correction loop</p>
+            <p style="margin:0 0 0.75rem;color:#8892b0;font-size:0.9rem;">The agent finishes implementing the endpoint and, per CLAUDE.md, runs <code>npm test</code> before committing:</p>
+            <pre style="margin:0 0 0.75rem;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#8892b0">$ npm test</span>
+
+  POST /payments
+    <span style="color:#e05252">✗ should reject negative amounts (12ms)</span>
+      Expected 400, received 201
+    <span style="color:#00d4aa">✓ should create payment with valid data (8ms)</span>
+    <span style="color:#00d4aa">✓ should require currency field (5ms)</span>
+
+  2 passing, 1 failing</code></pre>
+            <p style="margin:0 0 0.75rem;color:#8892b0;font-size:0.9rem;">The agent reads the output, identifies the missing negative amount validation, edits <code>src/services/paymentsService.js</code>, and re-runs:</p>
+            <pre style="margin:0 0 0.75rem;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#8892b0">$ npm test</span>
+
+  POST /payments
+    <span style="color:#00d4aa">✓ should reject negative amounts (9ms)</span>
+    <span style="color:#00d4aa">✓ should create payment with valid data (8ms)</span>
+    <span style="color:#00d4aa">✓ should require currency field (5ms)</span>
+
+  3 passing</code></pre>
+            <p style="margin:0;color:#8892b0;font-size:0.85rem;">No human intervention. The agent detected the failure, fixed it, and verified the fix — all inside the sandbox.</p>
+          </div>
+
+          <!-- Section 6: Output -->
+          <div class="lang-es">
+            <h2>Output: el resultado debe ser auditable</h2>
+            <p>El <strong>Output</strong> no es solo "el código que produce el agente". Es la forma en que ese código entra al sistema de control del equipo. Un output bien diseñado dentro del harness siempre es revisable, atribuible y reversible.</p>
+            <p>En la práctica, esto significa que el agente trabaja en branches, hace commits atómicos con mensajes descriptivos, y genera un Pull Request con un resumen de lo que hizo y por qué. El equipo puede revisar, aprobar o rechazar — y si algo salió mal, el diff es claro.</p>
+            <p>Un patrón que funciona bien es pedirle al agente que termine cada sesión con un resumen estructurado: qué archivos modificó, qué tests añadió, qué decisiones tomó y cuáles decisiones dejó pendientes para revisión humana. Eso convierte al agente en un colaborador explicable, no en una caja negra.</p>
+          </div>
+          <div class="lang-en">
+            <h2>Output: the result must be auditable</h2>
+            <p><strong>Output</strong> isn't just "the code the agent produces." It's how that code enters the team's control system. Well-designed output within the harness is always reviewable, attributable, and reversible.</p>
+            <p>In practice, this means the agent works on branches, makes atomic commits with descriptive messages, and generates a Pull Request with a summary of what it did and why. The team can review, approve, or reject — and if something went wrong, the diff is clear.</p>
+            <p>A pattern that works well is asking the agent to end each session with a structured summary: what files it modified, what tests it added, what decisions it made, and which decisions it left pending for human review. That turns the agent into an explainable collaborator, not a black box.</p>
+          </div>
+
+          <!-- Example: Output -->
+          <div class="lang-es" style="background:#1a1d27;border-left:3px solid #00d4aa;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.75rem;font-size:0.75rem;font-weight:700;color:#00d4aa;text-transform:uppercase;letter-spacing:0.08em;">Ejemplo — El PR que genera el agente</p>
+            <p style="margin:0 0 0.75rem;color:#8892b0;font-size:0.9rem;">Con los tests en verde, el agente hace commit en su branch y abre el PR con este resumen estructurado:</p>
+            <pre style="margin:0;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#00d4aa">feat: add POST /payments endpoint</span>
+
+<span style="color:#8892b0">## Qué hice</span>
+- Implementé POST /payments en src/routes/payments.js
+- Lógica de negocio en src/services/paymentsService.js
+- Validación: monto > 0, currency en lista de permitidas
+- 3 tests unitarios en __tests__/paymentsService.test.js
+
+<span style="color:#8892b0">## Tests</span>
+✓ 3 passing, 0 failing (npm test)
+✓ 0 lint errors (npm run lint)
+
+<span style="color:#f0b429">## Pendiente para revisión humana</span>
+⚠ Se requiere migración: agregar columna currency a
+  tabla payments. Script preparado en:
+  /scripts/pending-migrations/add_currency_to_payments.sql
+
+<span style="color:#8892b0">## Decisiones tomadas</span>
+- Usé la lista de currencies de src/config/currencies.js
+  (ya existía en el proyecto)
+- No modifiqué el schema porque /migrations está protegido</code></pre>
+          </div>
+          <div class="lang-en" style="background:#1a1d27;border-left:3px solid #00d4aa;border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;">
+            <p style="margin:0 0 0.75rem;font-size:0.75rem;font-weight:700;color:#00d4aa;text-transform:uppercase;letter-spacing:0.08em;">Example — The PR the agent opens</p>
+            <p style="margin:0 0 0.75rem;color:#8892b0;font-size:0.9rem;">With tests green, the agent commits on its branch and opens a PR with this structured summary:</p>
+            <pre style="margin:0;background:#0f1117;border-radius:6px;padding:1rem;font-size:0.82rem;color:#e2e8f0;overflow-x:auto;line-height:1.6;"><code><span style="color:#00d4aa">feat: add POST /payments endpoint</span>
+
+<span style="color:#8892b0">## What I did</span>
+- Implemented POST /payments in src/routes/payments.js
+- Business logic in src/services/paymentsService.js
+- Validation: amount > 0, currency in allowed list
+- 3 unit tests in __tests__/paymentsService.test.js
+
+<span style="color:#8892b0">## Tests</span>
+✓ 3 passing, 0 failing (npm test)
+✓ 0 lint errors (npm run lint)
+
+<span style="color:#f0b429">## Pending for human review</span>
+⚠ Migration needed: add currency column to payments table.
+  Script ready at:
+  /scripts/pending-migrations/add_currency_to_payments.sql
+
+<span style="color:#8892b0">## Decisions made</span>
+- Used the currencies list from src/config/currencies.js
+  (already existed in the project)
+- Did not modify schema because /migrations is protected</code></pre>
+          </div>
+
+          <!-- Section 7: Putting it together -->
+          <div class="lang-es">
+            <h2>Un harness completo en la práctica</h2>
+            <p>Poner los 4 componentes juntos no requiere infraestructura compleja. Un harness mínimo pero efectivo para un agente de desarrollo con Claude Code puede verse así:</p>
+            <p>En el repositorio, un <code>CLAUDE.md</code> en la raíz define las reglas: stack, convenciones, comandos de test, carpetas protegidas y protocolo de commits. En <code>.claude/settings.json</code>, dos hooks: un <code>PreToolUse</code> que verifica comandos de escritura contra una lista de rutas protegidas, y un <code>PostToolUse</code> que verifica que los tests sigan pasando después de cualquier cambio. El agente trabaja siempre en un branch y abre un PR al terminar. El equipo revisa el PR en el pipeline de CI.</p>
+            <p>Con eso, el agente puede trabajar de forma autónoma en tickets de complejidad media — implementar features, corregir bugs, añadir tests, refactorizar módulos — con una tasa de output válido significativamente mayor que sin harness, y con la tranquilidad de que lo que produce puede revisarse y revertirse.</p>
+          </div>
+          <div class="lang-en">
+            <h2>A complete harness in practice</h2>
+            <p>Putting the 4 components together doesn't require complex infrastructure. A minimal but effective harness for a coding agent with Claude Code can look like this:</p>
+            <p>In the repository, a <code>CLAUDE.md</code> at the root defines the rules: stack, conventions, test commands, protected folders, and commit protocol. In <code>.claude/settings.json</code>, two hooks: a <code>PreToolUse</code> that checks write commands against a list of protected paths, and a <code>PostToolUse</code> that verifies tests still pass after any change. The agent always works on a branch and opens a PR when done. The team reviews the PR in the CI pipeline.</p>
+            <p>With that, the agent can work autonomously on medium-complexity tickets — implementing features, fixing bugs, adding tests, refactoring modules — with a significantly higher rate of valid output than without a harness, and with the peace of mind that what it produces can be reviewed and reverted.</p>
+          </div>
+
+          <!-- Section 8: Conclusion -->
+          <div class="lang-es">
+            <h2>El harness no limita al agente — lo hace confiable</h2>
+            <p>La tentación cuando se trabaja con agentes de código es ir rápido: darle acceso total, pedirle la feature, y ver qué produce. A veces funciona. Pero a medida que la base de código crece, el equipo escala, o los stakes aumentan, ese enfoque se vuelve frágil.</p>
+            <p>Harness Engineering no es burocracia — es lo que permite que delegar trabajo a un agente se convierta en una práctica sostenible. Un agente con un buen harness no solo produce mejor código: produce código en el que el equipo puede confiar, auditar y evolucionar.</p>
+            <p>La ingeniería de IA no termina en el modelo. Termina en el sistema que lo rodea.</p>
+          </div>
+          <div class="lang-en">
+            <h2>The harness doesn't limit the agent — it makes it reliable</h2>
+            <p>The temptation when working with coding agents is to move fast: give it full access, ask for the feature, and see what it produces. Sometimes it works. But as the codebase grows, the team scales, or the stakes increase, that approach becomes fragile.</p>
+            <p>Harness Engineering isn't bureaucracy — it's what allows delegating work to an agent to become a sustainable practice. An agent with a good harness doesn't just produce better code: it produces code the team can trust, audit, and evolve.</p>
+            <p>AI engineering doesn't end at the model. It ends at the system surrounding it.</p>
+          </div>
+
+        </div><!-- /.article-body -->
+      </div>
+    </article>
+  </main>
+
+  <!-- Newsletter CTA -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box">
+        <span class="newsletter-eyebrow">Newsletter</span>
+        <h2 data-es="¿Te gustó el contenido?" data-en="Enjoying the content?">
+          ¿Te gustó el contenido?
+        </h2>
+        <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo."
+           data-en="Subscribe to get new software architecture articles delivered to your inbox.">
+          Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo.
+        </p>
+        <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+          <input type="email" class="email-input" placeholder="tu@email.com" required />
+          <button type="submit" class="btn" data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
+        </form>
+        <p class="newsletter-note">
+          <span data-es="Publicado en" data-en="Published on">Publicado en</span>
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">Felipe Pabón © 2026</span>
+        <div class="footer-links">
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
+          <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/posts.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-"Devuelve los movimientos de la cuenta" — parece simple.
+"Necesito un API que devuelva los movimientos de la cuenta" — parece simple.
 
 Después de un ATAM aparecen 3 tradeoffs, 3 riesgos y 2 puntos de sensibilidad que nadie había articulado.
 
