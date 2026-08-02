@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cómo construí un plugin de Claude que guía proyectos de software de inicio a fin — PRD, arquitectura, specs funcionales, técnicas, tests y despliegue, todo en un pipeline orquestado." />
+  <meta name="author" content="Felipe Pabón" />
+  <title>SDLC Toolkit: El pipeline completo de desarrollo con Claude — Felipe Pabón</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">fp.</a>
+      <div class="nav-links">
+        <a href="../blog/" data-es="Blog" data-en="Blog">Blog</a>
+        <button class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <article class="article-container">
+      <div class="container">
+
+        <!-- Article header -->
+        <header class="article-header">
+          <div class="lang-es">
+            <div class="article-tags">
+              <span class="card-tag">Architecture</span>
+              <span class="card-tag">Clean Architecture</span>
+              <span class="card-tag">DDD</span>
+              <span class="card-tag">Golang</span>
+            </div>
+            <h1>SDLC Toolkit: El pipeline completo de desarrollo con Claude</h1>
+            <p class="article-subtitle">Cómo un plugin convierte una idea en specs listas para código — PRD, arquitectura, evaluación ATAM, specs funcionales y técnicas, estrategia de tests y despliegue, todo orquestado en 8 etapas.</p>
+            <div class="article-meta">
+              <span>Julio 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+          <div class="lang-en">
+            <div class="article-tags">
+              <span class="card-tag">Architecture</span>
+              <span class="card-tag">Clean Architecture</span>
+              <span class="card-tag">DDD</span>
+              <span class="card-tag">Golang</span>
+            </div>
+            <h1>SDLC Toolkit: A Full Development Pipeline with Claude</h1>
+            <p class="article-subtitle">How a plugin turns an idea into code-ready specs — PRD, architecture, ATAM evaluation, functional and technical specs, test strategy and deployment, all orchestrated across 8 stages.</p>
+            <div class="article-meta">
+              <span>July 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article body -->
+        <div class="article-body">
+
+          <!-- Section 1: El problema -->
+          <div class="lang-es">
+            <h2>El problema que quería resolver</h2>
+            <p>Cada vez que arranca un proyecto de software, el equipo repite el mismo ciclo: conversaciones dispersas sobre el producto, un PRD incompleto, una arquitectura que vive en la cabeza del tech lead, specs funcionales que nadie actualiza y documentos técnicos que quedan obsoletos al tercer sprint. El conocimiento se fragmenta, las decisiones se toman sin contexto y los desarrolladores empiezan a codear sin una base sólida.</p>
+            <p>Llevo tiempo trabajando con Claude Code y viendo cómo los skills pueden cambiar la forma de trabajar. La pregunta natural fue: ¿qué pasa si el <em>proceso de discovery y diseño completo</em> — no solo una parte — se convierte en un pipeline orquestado?</p>
+            <p>Así nació el <strong>SDLC Toolkit</strong>: un plugin de Claude que guía un proyecto desde la idea inicial hasta las specs listas para implementar, siguiendo estándares de arquitectura limpia, seguridad y buenas prácticas de React y Go.</p>
+          </div>
+          <div class="lang-en">
+            <h2>The problem I wanted to solve</h2>
+            <p>Every time a software project kicks off, the team repeats the same cycle: scattered product conversations, an incomplete PRD, an architecture that lives only in the tech lead's head, functional specs nobody updates, and technical documents that are obsolete by the third sprint. Knowledge fragments, decisions get made without context, and developers start coding without a solid foundation.</p>
+            <p>I've been working with Claude Code for a while, watching how skills can change the way teams work. The natural question arose: what if the <em>entire discovery and design process</em> — not just one piece — became an orchestrated pipeline?</p>
+            <p>That's how the <strong>SDLC Toolkit</strong> was born: a Claude plugin that guides a project from initial idea to implementation-ready specs, following clean architecture standards, security rules, and React/Go best practices.</p>
+          </div>
+
+          <!-- Diagram 1: Pipeline overview -->
+          <figure class="diagram">
+            <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+              <!-- Background -->
+              <rect width="720" height="340" fill="#0f1117" rx="12"/>
+
+              <!-- Title -->
+              <text x="360" y="30" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="600">SDLC Toolkit — 8-Stage Pipeline</text>
+
+              <!-- Stage boxes — two rows of 4 -->
+              <!-- Row 1 -->
+              <rect x="20" y="55" width="155" height="52" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="98" y="77" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">1. Product Design</text>
+              <text x="98" y="95" text-anchor="middle" fill="#8892b0" font-size="10">PRD + Personas</text>
+
+              <rect x="195" y="55" width="155" height="52" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="273" y="77" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">2. Architecture</text>
+              <text x="273" y="95" text-anchor="middle" fill="#8892b0" font-size="10">arc42 System Design</text>
+
+              <rect x="370" y="55" width="155" height="52" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="448" y="77" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">3. ATAM Eval</text>
+              <text x="448" y="95" text-anchor="middle" fill="#8892b0" font-size="10">Quality Trade-offs</text>
+
+              <rect x="545" y="55" width="155" height="52" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="623" y="77" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">4. Arch Review</text>
+              <text x="623" y="95" text-anchor="middle" fill="#8892b0" font-size="10">Gaps + Risks</text>
+
+              <!-- Arrows row 1 -->
+              <line x1="175" y1="81" x2="195" y2="81" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arr)"/>
+              <line x1="350" y1="81" x2="370" y2="81" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arr)"/>
+              <line x1="525" y1="81" x2="545" y2="81" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+              <!-- Down arrow from row 1 to row 2 -->
+              <line x1="623" y1="107" x2="623" y2="170" stroke="#2d3149" stroke-width="1.5"/>
+              <line x1="623" y1="170" x2="545" y2="170" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+              <!-- Row 2 -->
+              <rect x="20" y="145" width="155" height="52" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="98" y="167" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">8. Deployment</text>
+              <text x="98" y="185" text-anchor="middle" fill="#8892b0" font-size="10">Cloud + CI/CD</text>
+
+              <rect x="195" y="145" width="155" height="52" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="273" y="167" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">7. Test Strategy</text>
+              <text x="273" y="185" text-anchor="middle" fill="#8892b0" font-size="10">Tests + Smoke Tests</text>
+
+              <rect x="370" y="145" width="155" height="52" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="448" y="167" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">6. Technical Specs</text>
+              <text x="448" y="185" text-anchor="middle" fill="#8892b0" font-size="10">API + Components</text>
+
+              <rect x="545" y="145" width="155" height="52" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="623" y="167" text-anchor="middle" fill="#00d4aa" font-size="11" font-weight="600">5. Functional Specs</text>
+              <text x="623" y="185" text-anchor="middle" fill="#8892b0" font-size="10">Flows + Gherkin</text>
+
+              <!-- Arrows row 2 (right to left) -->
+              <line x1="545" y1="171" x2="525" y2="171" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arr2)"/>
+              <line x1="370" y1="171" x2="350" y2="171" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arr2)"/>
+              <line x1="195" y1="171" x2="175" y2="171" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+              <!-- Output section -->
+              <rect x="20" y="235" width="680" height="88" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1"/>
+              <text x="360" y="258" text-anchor="middle" fill="#8892b0" font-size="11" font-weight="600">Outputs → Markdown files ready for the team</text>
+              <text x="100" y="282" text-anchor="middle" fill="#e2e8f0" font-size="10">[project]-prd.md</text>
+              <text x="240" y="282" text-anchor="middle" fill="#e2e8f0" font-size="10">[project]-arc42.md</text>
+              <text x="380" y="282" text-anchor="middle" fill="#e2e8f0" font-size="10">[feature]-functional-spec.md</text>
+              <text x="550" y="282" text-anchor="middle" fill="#e2e8f0" font-size="10">[service]-technical-spec.md</text>
+              <text x="180" y="305" text-anchor="middle" fill="#e2e8f0" font-size="10">[project]-atam.md</text>
+              <text x="370" y="305" text-anchor="middle" fill="#e2e8f0" font-size="10">[project]-test-strategy.md</text>
+              <text x="560" y="305" text-anchor="middle" fill="#e2e8f0" font-size="10">[project]-deployment-spec.md</text>
+
+              <!-- Arrow markers -->
+              <defs>
+                <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L6,3 z" fill="#00d4aa"/>
+                </marker>
+                <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                  <path d="M6,0 L6,6 L0,3 z" fill="#00d4aa"/>
+                </marker>
+              </defs>
+            </svg>
+            <figcaption>
+              <span class="lang-es">El pipeline de 8 etapas del SDLC Toolkit, de la idea al despliegue.</span>
+              <span class="lang-en">The 8-stage SDLC Toolkit pipeline, from idea to deployment.</span>
+            </figcaption>
+          </figure>
+
+          <!-- Section 2: Cómo funciona -->
+          <div class="lang-es">
+            <h2>Cómo funciona el toolkit</h2>
+            <p>El plugin expone un skill maestro, el <code>sdlc-orchestrator</code>, que actúa como punto de entrada para cualquier proyecto. Al invocarlo, Claude te hace tres preguntas clave — nombre del proyecto, descripción breve y stakeholders — y luego presenta el pipeline completo con sus 8 etapas.</p>
+            <p>Cada etapa es un skill especializado que sabe exactamente qué necesita de la etapa anterior y qué produce para la siguiente. El orchestrator mantiene el estado del pipeline y te permite avanzar secuencialmente o saltar a cualquier etapa si ya tienes parte del trabajo hecho.</p>
+
+            <blockquote>
+              "Start a new project to build an online marketplace" — Claude recoge contexto, genera el PRD, guía la arquitectura arc42, corre el análisis ATAM, produce las specs funcionales y técnicas, diseña la estrategia de tests y genera las specs de despliegue. Todo en una sesión.
+            </blockquote>
+
+            <p>Lo interesante no es que Claude "haga las cosas" — es que cada skill sabe a qué estándar atenerse. Los skills de technical specs consultan automáticamente cuatro referencias compartidas:</p>
+            <ul>
+              <li><strong>security-rules.md</strong> — OWASP Top 10, JWT, validación de inputs, manejo de secretos</li>
+              <li><strong>clean-architecture.md</strong> — separación de capas, inyección de dependencias, patrones</li>
+              <li><strong>react-standards.md</strong> — TypeScript, Atomic Design, React Query, WCAG 2.1 AA</li>
+              <li><strong>golang-standards.md</strong> — package structure, middleware, error handling explícito, zerolog</li>
+            </ul>
+            <p>El resultado son specs que un desarrollador puede tomar y empezar a codear sin tener que adivinar decisiones de arquitectura ni recordar las reglas de seguridad del equipo.</p>
+          </div>
+          <div class="lang-en">
+            <h2>How the toolkit works</h2>
+            <p>The plugin exposes a master skill, the <code>sdlc-orchestrator</code>, which acts as the entry point for any project. When invoked, Claude asks three key questions — project name, brief description, and stakeholders — and then presents the full pipeline with its 8 stages.</p>
+            <p>Each stage is a specialized skill that knows exactly what it needs from the previous stage and what it produces for the next. The orchestrator maintains pipeline state and lets you advance sequentially or jump to any stage if you already have some work done.</p>
+
+            <blockquote>
+              "Start a new project to build an online marketplace" — Claude collects context, generates the PRD, guides arc42 architecture, runs the ATAM analysis, produces functional and technical specs, designs the test strategy, and generates deployment specs. All in one session.
+            </blockquote>
+
+            <p>The interesting part isn't that Claude "does things" — it's that each skill knows which standard to follow. The technical specs skills automatically consult four shared references:</p>
+            <ul>
+              <li><strong>security-rules.md</strong> — OWASP Top 10, JWT, input validation, secrets management</li>
+              <li><strong>clean-architecture.md</strong> — layer separation, dependency injection, design patterns</li>
+              <li><strong>react-standards.md</strong> — TypeScript, Atomic Design, React Query, WCAG 2.1 AA</li>
+              <li><strong>golang-standards.md</strong> — package structure, middleware, explicit error handling, zerolog</li>
+            </ul>
+            <p>The result is specs a developer can pick up and start coding from — without having to guess architectural decisions or remember the team's security rules.</p>
+          </div>
+
+          <!-- Section 3: Las etapas en detalle -->
+          <div class="lang-es">
+            <h2>Las 8 etapas en detalle</h2>
+            <p>Cada etapa del pipeline tiene un propósito preciso y un output concreto. Aquí un resumen de lo que produce cada una:</p>
+            <p><strong>1. Product Design:</strong> Genera el PRD completo — visión del producto, personas de usuario (2-3), epics y features priorizados (P0/P1/P2), user stories en formato "As [role], I want [action], so that [benefit]", KPIs y restricciones.</p>
+            <p><strong>2. Architecture (arc42):</strong> Documenta la arquitectura siguiendo el estándar arc42 del SEI — contexto del sistema, decisiones arquitectónicas (ADRs), vista de componentes, vista de despliegue, conceptos transversales (logging, seguridad, cache).</p>
+            <p><strong>3. ATAM Evaluation:</strong> Analiza los tradeoffs de la arquitectura usando el método ATAM — escenarios de calidad, árboles de utilidad, sensitivity points y tradeoff points. Identifica riesgos arquitectónicos antes de empezar a construir.</p>
+            <p><strong>4. Architecture Review:</strong> Evalúa el documento arc42, puntúa cada dimensión e identifica gaps. Produce un reporte con recomendaciones Must Have / Nice to Have, listo para compartir con stakeholders.</p>
+            <p><strong>5. Functional Specs:</strong> Detalla cada feature con flujos principales y alternativos, criterios de aceptación en Gherkin, wireframes SVG inline, reglas de negocio y dependencias de API.</p>
+            <p><strong>6. Technical Specs:</strong> Genera los contratos técnicos listos para código — OpenAPI YAML para los endpoints, estructura de componentes React con Atomic Design, arquitectura del microservicio Go con las capas domain/application/infrastructure/interface, schemas de base de datos y checklist de seguridad.</p>
+            <p><strong>7. Test Strategy:</strong> Define la estrategia de testing completa — pirámide de tests (unitarios, integración, E2E), smoke tests para validar el despliegue, cobertura mínima por capa y fixtures de datos de prueba.</p>
+            <p><strong>8. Deployment Specs:</strong> Diseña la infraestructura en Azure/AWS/GCP — recursos necesarios, configuración de CI/CD, variables de entorno, estrategia de rollout y runbook de despliegue inicial.</p>
+          </div>
+          <div class="lang-en">
+            <h2>The 8 stages in detail</h2>
+            <p>Each pipeline stage has a precise purpose and a concrete output. Here's a summary of what each one produces:</p>
+            <p><strong>1. Product Design:</strong> Generates the complete PRD — product vision, user personas (2-3), prioritized epics and features (P0/P1/P2), user stories in "As [role], I want [action], so that [benefit]" format, KPIs, and constraints.</p>
+            <p><strong>2. Architecture (arc42):</strong> Documents the architecture following the SEI's arc42 standard — system context, architectural decisions (ADRs), component view, deployment view, cross-cutting concerns (logging, security, cache).</p>
+            <p><strong>3. ATAM Evaluation:</strong> Analyzes architectural trade-offs using the ATAM method — quality scenarios, utility trees, sensitivity points, and tradeoff points. Identifies architectural risks before you start building.</p>
+            <p><strong>4. Architecture Review:</strong> Evaluates the arc42 document, scores each dimension, and identifies gaps. Produces a report with Must Have / Nice to Have recommendations, ready to share with stakeholders.</p>
+            <p><strong>5. Functional Specs:</strong> Details each feature with main and alternative flows, Gherkin acceptance criteria, inline SVG wireframes, business rules, and API dependencies.</p>
+            <p><strong>6. Technical Specs:</strong> Generates code-ready technical contracts — OpenAPI YAML for endpoints, React component structures with Atomic Design, Go microservice architecture with domain/application/infrastructure/interface layers, database schemas, and security checklists.</p>
+            <p><strong>7. Test Strategy:</strong> Defines the complete testing strategy — test pyramid (unit, integration, E2E), smoke tests to validate deployment, minimum coverage per layer, and test data fixtures.</p>
+            <p><strong>8. Deployment Specs:</strong> Designs the infrastructure on Azure/AWS/GCP — required resources, CI/CD configuration, environment variables, rollout strategy, and initial deployment runbook.</p>
+          </div>
+
+          <!-- Diagram 2: Skill architecture -->
+          <figure class="diagram">
+            <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+              <rect width="700" height="280" fill="#0f1117" rx="12"/>
+              <text x="350" y="28" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="600">Skill Architecture &amp; Shared Standards</text>
+
+              <!-- Orchestrator -->
+              <rect x="250" y="45" width="200" height="48" rx="8" fill="#00d4aa" fill-opacity="0.15" stroke="#00d4aa" stroke-width="1.5"/>
+              <text x="350" y="65" text-anchor="middle" fill="#00d4aa" font-size="12" font-weight="700">sdlc-orchestrator</text>
+              <text x="350" y="82" text-anchor="middle" fill="#8892b0" font-size="10">Master pipeline skill</text>
+
+              <!-- Skills row -->
+              <rect x="30" y="130" width="120" height="44" rx="6" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="90" y="150" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="600">product-design</text>
+              <text x="90" y="165" text-anchor="middle" fill="#8892b0" font-size="9">PRD</text>
+
+              <rect x="165" y="130" width="120" height="44" rx="6" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="225" y="150" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="600">functional-specs</text>
+              <text x="225" y="165" text-anchor="middle" fill="#8892b0" font-size="9">Gherkin + Flows</text>
+
+              <rect x="300" y="130" width="120" height="44" rx="6" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="360" y="150" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="600">technical-specs</text>
+              <text x="360" y="165" text-anchor="middle" fill="#8892b0" font-size="9">OpenAPI + Code</text>
+
+              <rect x="435" y="130" width="120" height="44" rx="6" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="495" y="150" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="600">test-strategy</text>
+              <text x="495" y="165" text-anchor="middle" fill="#8892b0" font-size="9">Pyramid + Smoke</text>
+
+              <rect x="570" y="130" width="110" height="44" rx="6" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="625" y="150" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="600">deployment-specs</text>
+              <text x="625" y="165" text-anchor="middle" fill="#8892b0" font-size="9">Cloud + CI/CD</text>
+
+              <!-- Lines from orchestrator to skills -->
+              <line x1="290" y1="93" x2="90" y2="130" stroke="#2d3149" stroke-width="1"/>
+              <line x1="320" y1="93" x2="225" y2="130" stroke="#2d3149" stroke-width="1"/>
+              <line x1="350" y1="93" x2="360" y2="130" stroke="#2d3149" stroke-width="1"/>
+              <line x1="380" y1="93" x2="495" y2="130" stroke="#2d3149" stroke-width="1"/>
+              <line x1="415" y1="93" x2="625" y2="130" stroke="#2d3149" stroke-width="1"/>
+
+              <!-- Shared references -->
+              <rect x="30" y="210" width="640" height="54" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1"/>
+              <text x="350" y="230" text-anchor="middle" fill="#8892b0" font-size="10" font-weight="600">Shared References (all skills read these)</text>
+              <text x="105" y="252" text-anchor="middle" fill="#e2e8f0" font-size="10">security-rules.md</text>
+              <text x="270" y="252" text-anchor="middle" fill="#e2e8f0" font-size="10">clean-architecture.md</text>
+              <text x="430" y="252" text-anchor="middle" fill="#e2e8f0" font-size="10">react-standards.md</text>
+              <text x="590" y="252" text-anchor="middle" fill="#e2e8f0" font-size="10">golang-standards.md</text>
+
+              <!-- Lines to shared refs -->
+              <line x1="90" y1="174" x2="150" y2="210" stroke="#2d3149" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="360" y1="174" x2="350" y2="210" stroke="#2d3149" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="625" y1="174" x2="560" y2="210" stroke="#2d3149" stroke-width="1" stroke-dasharray="3,3"/>
+            </svg>
+            <figcaption>
+              <span class="lang-es">El orchestrator invoca skills especializados; todos leen las mismas referencias de estándares.</span>
+              <span class="lang-en">The orchestrator invokes specialized skills; all of them read the same standards references.</span>
+            </figcaption>
+          </figure>
+
+          <!-- Section 4: Lo que aprendí -->
+          <div class="lang-es">
+            <h2>Lo que aprendí construyendo esto</h2>
+            <p>Construir este toolkit enseña cosas que no son obvias cuando empiezas a trabajar con skills de Claude.</p>
+            <p>La primera lección es que <strong>los estándares compartidos son la clave de la consistencia</strong>. Si cada skill tiene sus propias reglas de seguridad o sus propias convenciones de arquitectura, los outputs son inconsistentes y no se pueden encadenar. Los cuatro archivos de referencias (security, clean-arch, react, golang) actúan como la "constitución" del toolkit — todos los skills la leen, todos los outputs la respetan.</p>
+            <p>La segunda lección es que <strong>la flexibilidad vale más que el orden estricto</strong>. El pipeline es secuencial por diseño, pero el orchestrator permite saltar etapas. Si ya tienes un PRD aprobado, empiezas en la etapa 2. Si solo necesitas las specs técnicas de un feature, invocas ese skill directamente. El usuario sabe más que el pipeline sobre dónde está parado.</p>
+            <p>La tercera es que <strong>el modelo mental importa más que la herramienta</strong>. El SDLC Toolkit no reemplaza al equipo de producto ni al arquitecto — los amplifica. Un PM puede ir de "tengo una idea" a "tengo un PRD estructurado con personas y KPIs" en minutos. Un arquitecto puede detectar tradeoffs críticos en su diseño sin esperar al architecture review formal. La velocidad cambia el juego.</p>
+          </div>
+          <div class="lang-en">
+            <h2>What I learned building this</h2>
+            <p>Building this toolkit teaches things that aren't obvious when you first start working with Claude skills.</p>
+            <p>The first lesson: <strong>shared standards are the key to consistency</strong>. If each skill has its own security rules or its own architecture conventions, the outputs are inconsistent and can't be chained together. The four reference files (security, clean-arch, react, golang) act as the toolkit's "constitution" — all skills read it, all outputs respect it.</p>
+            <p>The second lesson: <strong>flexibility is worth more than strict ordering</strong>. The pipeline is sequential by design, but the orchestrator lets you skip stages. If you already have an approved PRD, start at stage 2. If you only need technical specs for one feature, invoke that skill directly. The user knows more than the pipeline about where they're standing.</p>
+            <p>The third: <strong>the mental model matters more than the tool</strong>. The SDLC Toolkit doesn't replace the product team or the architect — it amplifies them. A PM can go from "I have an idea" to "I have a structured PRD with personas and KPIs" in minutes. An architect can detect critical trade-offs in their design without waiting for the formal architecture review. The velocity shift is game-changing.</p>
+          </div>
+
+          <!-- Section 5: Skills complementarios -->
+          <div class="lang-es">
+            <h2>Más allá del pipeline: skills complementarios</h2>
+            <p>Al completar las 8 etapas, el orchestrator ofrece cinco skills adicionales pensados para acelerar la implementación y operar el sistema de forma segura en producción:</p>
+            <p><strong>database-schema</strong> — Genera esquemas SQL production-ready con UUID como primary keys, timestamps en todas las tablas, scripts de migración con golang-migrate (forward-only), estrategia de índices y datos de seed. Ideal si el backend tiene una capa de persistencia no trivial.</p>
+            <p><strong>implementation-scaffolding</strong> — Genera la estructura base del proyecto lista para codear. Para Go, sigue clean-architecture (<code>cmd/</code> → <code>internal/domain/application/infrastructure/interface/</code>). Para React, pregunta la estructura preferida (Atomic Design, Feature-Based, Page-Based o Flat) y genera el árbol de directorios, archivos de configuración y stubs de componentes.</p>
+            <p><strong>observability-specs</strong> — Define la estrategia completa de observabilidad: logging estructurado con zerolog (zero PII), métricas con Prometheus/CloudWatch/Azure Monitor, alertas con thresholds, dashboards en Grafana/Azure, SLO/SLI targets y distributed tracing con OpenTelemetry.</p>
+            <p><strong>security-validation</strong> — Valida specs, código y configuraciones contra OWASP Top 10. Produce un reporte de vulnerabilidades con sugerencias de fix y un compliance checklist. Se puede invocar en cualquier etapa del pipeline, no solo al final.</p>
+            <p><strong>harness-setup</strong> — Genera el <code>CLAUDE.md</code> y hooks de seguridad pre-configurados para que los equipos deleguen trabajo a Claude Code de forma controlada y auditable: protege carpetas críticas, enforza las convenciones del proyecto, verifica tests antes de commits y define cuándo el agente debe detenerse a preguntar.</p>
+            <p>Estos cinco skills también se pueden invocar de forma completamente independiente, sin necesidad de haber corrido el pipeline completo.</p>
+          </div>
+          <div class="lang-en">
+            <h2>Beyond the pipeline: complementary skills</h2>
+            <p>Once the 8 stages are complete, the orchestrator offers five additional skills designed to accelerate implementation and operate the system safely in production:</p>
+            <p><strong>database-schema</strong> — Generates production-ready SQL schemas with UUIDs as primary keys, timestamps on all tables, golang-migrate migration scripts (forward-only), index strategy, and seed data. Ideal when the backend has a non-trivial persistence layer.</p>
+            <p><strong>implementation-scaffolding</strong> — Generates the base project structure ready to code. For Go, it follows clean-architecture (<code>cmd/</code> → <code>internal/domain/application/infrastructure/interface/</code>). For React, it asks your preferred structure (Atomic Design, Feature-Based, Page-Based, or Flat) and generates the directory tree, config files, and component stubs.</p>
+            <p><strong>observability-specs</strong> — Defines the complete observability strategy: structured logging with zerolog (zero PII), metrics with Prometheus/CloudWatch/Azure Monitor, alerts with thresholds, Grafana/Azure dashboards, SLO/SLI targets, and distributed tracing with OpenTelemetry.</p>
+            <p><strong>security-validation</strong> — Validates specs, code, and configurations against OWASP Top 10. Produces a vulnerability report with fix suggestions and a compliance checklist. Can be invoked at any pipeline stage, not just at the end.</p>
+            <p><strong>harness-setup</strong> — Generates the <code>CLAUDE.md</code> and pre-configured security hooks so teams can delegate work to Claude Code in a controlled, auditable way: protects critical folders, enforces project conventions, verifies tests before commits, and defines when the agent should stop and ask.</p>
+            <p>These five skills can also be invoked completely independently, without having run the full pipeline first.</p>
+          </div>
+
+          <!-- Section 6: Cómo usarlo -->
+          <div class="lang-es">
+            <h2>Cómo instalarlo y usarlo</h2>
+            <p>El toolkit está publicado como plugin de Claude en GitHub. Para instalarlo en Claude Code:</p>
+            <pre><code>claude plugins add https://github.com/fepc18/claude-skills/tree/main/sdlc-toolkit</code></pre>
+            <p>Una vez instalado, basta con escribir:</p>
+            <pre><code>sdlc</code></pre>
+            <p>...y el orchestrator toma el control. También puedes invocar skills individuales directamente con sus frases de activación: <code>crear un PRD</code>, <code>specs técnicas del servicio de pagos</code>, <code>estrategia de testing</code>.</p>
+            <p>El repo de ejemplos en <a href="https://github.com/fepc18/sdlc-toolkit-examples" target="_blank" rel="noopener">github.com/fepc18/sdlc-toolkit-examples</a> tiene outputs reales de proyectos de ejemplo — un buen punto de partida para entender qué produce cada etapa.</p>
+            <p>Si lo usas y tienes feedback, abre un issue en el repo o escríbeme en LinkedIn. Estoy iterando activamente sobre el toolkit.</p>
+          </div>
+          <div class="lang-en" id="install">
+            <h2>How to install and use it</h2>
+            <p>The toolkit is published as a Claude plugin on GitHub. To install it in Claude Code:</p>
+            <pre><code>claude plugins add https://github.com/fepc18/claude-skills/tree/main/sdlc-toolkit</code></pre>
+            <p>Once installed, simply write:</p>
+            <pre><code>sdlc</code></pre>
+            <p>...and the orchestrator takes over. You can also invoke individual skills directly using their trigger phrases: <code>create a PRD</code>, <code>technical specs for the payments service</code>, <code>test strategy</code>.</p>
+            <p>The examples repo at <a href="https://github.com/fepc18/sdlc-toolkit-examples" target="_blank" rel="noopener">github.com/fepc18/sdlc-toolkit-examples</a> has real outputs from example projects — a great starting point to understand what each stage produces.</p>
+            <p>If you use it and have feedback, open an issue on the repo or reach out on LinkedIn. I'm actively iterating on the toolkit.</p>
+          </div>
+
+        </div><!-- /.article-body -->
+      </div>
+    </article>
+  </main>
+
+  <!-- Newsletter CTA -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box">
+        <span class="newsletter-eyebrow">Newsletter</span>
+        <h2 data-es="¿Te gustó el contenido?" data-en="Enjoying the content?">
+          ¿Te gustó el contenido?
+        </h2>
+        <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo."
+           data-en="Subscribe to get new software architecture articles delivered to your inbox.">
+          Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo.
+        </p>
+        <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+          <input type="email" class="email-input" placeholder="tu@email.com" required />
+          <button type="submit" class="btn" data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
+        </form>
+        <p class="newsletter-note">
+          <span data-es="Publicado en" data-en="Published on">Publicado en</span>
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">Felipe Pabón © 2026</span>
+        <div class="footer-links">
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
+          <a href="https://github.com/fepc18" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/posts.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

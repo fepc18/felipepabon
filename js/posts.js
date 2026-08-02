@@ -99,6 +99,17 @@ const POSTS = [
     published: true,
   },
 
+  {
+    id: 'sdlc-toolkit',
+    titleEs: 'SDLC Toolkit: El pipeline completo de desarrollo con Claude',
+    titleEn: 'SDLC Toolkit: A Full Development Pipeline with Claude',
+    tags: ['Architecture', 'Clean Architecture', 'DDD', 'Golang'],
+    date: 'July 2026',
+    href: 'sdlc-toolkit.html',
+    external: false,
+    published: true,
+  },
+
   /* ── Previous site posts (coming soon) ────────────────────── */
   {
     id: 'ddd-intro',
