@@ -57,6 +57,27 @@
       color: var(--text-2);
       line-height: 1.5;
     }
+    .ref-img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .ref-img-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 700px) {
+      .ref-img-grid, .ref-img-grid-3 { grid-template-columns: 1fr; }
+    }
+    .ref-img-label {
+      text-align: center;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 600;
+      margin: 0 0 0.4rem;
+      font-family: sans-serif;
+    }
   </style>
 </head>
 <body>
@@ -281,6 +302,32 @@
             </figcaption>
           </figure>
 
+          <!-- Reference images: Section 1 — Load Balancer, Latency, CDN, API Gateway, Reverse Proxy -->
+          <figure class="diagram">
+            <div class="ref-img-grid">
+              <div>
+                <p class="ref-img-label">4. Load Balancer</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!wKsb!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffd3e0243-a537-4d7e-95e2-56caa1ff0d98_1448x1086.png" alt="Load Balancer diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">5. Latency</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!2Yir!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F66c74354-8651-46dc-bd81-b4ac4f4daeb2_1200x750.jpeg" alt="Latency concept diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">7. CDN</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!1_54!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F19113e00-60dc-4efb-8a0a-3b52e1f9191c_1536x1024.png" alt="CDN diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">9. API Gateway</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!RRcr!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F78296589-b3c6-451b-99ac-41c5d5585d27_1448x1086.png" alt="API Gateway diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+            </div>
+            <div style="margin-top:1rem;">
+              <p class="ref-img-label">10. Reverse Proxy</p>
+              <img src="https://substackcdn.com/image/fetch/$s_!Acsj!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F85c249eb-3561-48e7-9348-f5d8a53308b5_1536x880.png" alt="Reverse Proxy diagram" style="width:100%;border-radius:8px;display:block;"/>
+            </div>
+          </figure>
+
           <!-- ─── SECTION 2: DATA & STORAGE ─── -->
           <div class="lang-es">
             <h2>2. Datos y Almacenamiento</h2>
@@ -451,69 +498,51 @@
             </div>
           </div>
 
+          <!-- Reference images: Section 2 — SQL, NoSQL, Sharding, Replication, Data Partitioning -->
+          <figure class="diagram">
+            <div class="ref-img-grid">
+              <div>
+                <p class="ref-img-label">12. SQL Database</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!8WO9!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe73a416a-f004-4828-a86d-2a83bb7b5554_1536x1024.png" alt="SQL Database diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">13. NoSQL Database</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!J2-s!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F15bf78e0-beee-4c61-ad37-337bbc5f2b61_1448x1086.png" alt="NoSQL Database diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">16. Sharding</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!0NfW!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9ba0ea2c-f287-4dd4-b49c-ff772999fcdc_1448x1086.png" alt="Sharding diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">17. Replication</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!KDb1!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcd86a955-bfd6-44a6-9bd2-e7739a5d98fc_1536x1024.png" alt="Replication diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+            </div>
+            <div style="margin-top:1rem;">
+              <p class="ref-img-label">24. Data Partitioning</p>
+              <img src="https://substackcdn.com/image/fetch/$s_!lPAe!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5e804db5-bd21-4df1-8ba4-576c0b5b3439_1536x1024.png" alt="Data Partitioning diagram" style="width:100%;border-radius:8px;display:block;"/>
+            </div>
+          </figure>
+
           <!-- Diagram 2: Cache Strategies -->
           <figure class="diagram">
-            <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="background:#0f1117;border-radius:8px;">
-              <defs>
-                <marker id="arr-g2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-                  <path d="M0,0 L0,6 L7,3 z" fill="#00d4aa"/>
-                </marker>
-                <marker id="arr-m2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-                  <path d="M0,0 L0,6 L7,3 z" fill="#8892b0"/>
-                </marker>
-              </defs>
-              <text x="350" y="24" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="12">Cache Strategies</text>
-
-              <!-- Cache-Aside -->
-              <text x="110" y="45" text-anchor="middle" fill="#00d4aa" font-family="sans-serif" font-size="11" font-weight="600">Cache-Aside</text>
-              <rect x="50" y="58" width="52" height="28" rx="4" fill="#1a1d27" stroke="#2d3149"/>
-              <text x="76" y="77" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">Client</text>
-              <rect x="118" y="58" width="52" height="28" rx="4" fill="#1a1d27" stroke="#00d4aa"/>
-              <text x="144" y="77" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="9">Cache</text>
-              <rect x="84" y="120" width="52" height="28" rx="4" fill="#1a1d27" stroke="#2d3149"/>
-              <text x="110" y="139" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">DB</text>
-              <line x1="102" y1="72" x2="118" y2="72" stroke="#8892b0" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr-m2)"/>
-              <text x="110" y="67" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">1. get</text>
-              <line x1="144" y1="86" x2="110" y2="120" stroke="#8892b0" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr-m2)"/>
-              <text x="140" y="108" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">2. miss→DB</text>
-              <line x1="100" y1="130" x2="118" y2="80" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arr-g2)"/>
-              <text x="75" y="108" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="8">3. populate</text>
-              <text x="110" y="175" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">Lazy — graceful on failure</text>
-
-              <!-- Divider -->
-              <line x1="230" y1="40" x2="230" y2="200" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,4"/>
-
-              <!-- Write-Through -->
-              <text x="350" y="45" text-anchor="middle" fill="#00d4aa" font-family="sans-serif" font-size="11" font-weight="600">Write-Through</text>
-              <rect x="290" y="58" width="52" height="28" rx="4" fill="#1a1d27" stroke="#2d3149"/>
-              <text x="316" y="77" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">Client</text>
-              <rect x="358" y="58" width="52" height="28" rx="4" fill="#1a1d27" stroke="#00d4aa"/>
-              <text x="384" y="77" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="9">Cache</text>
-              <rect x="358" y="120" width="52" height="28" rx="4" fill="#1a1d27" stroke="#2d3149"/>
-              <text x="384" y="139" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">DB</text>
-              <line x1="342" y1="72" x2="358" y2="72" stroke="#00d4aa" stroke-width="2" marker-end="url(#arr-g2)"/>
-              <text x="350" y="67" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="8">write</text>
-              <line x1="384" y1="86" x2="384" y2="120" stroke="#00d4aa" stroke-width="2" marker-end="url(#arr-g2)"/>
-              <text x="400" y="108" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="8">sync</text>
-              <text x="350" y="175" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">Consistent, slower writes</text>
-
-              <!-- Divider -->
-              <line x1="470" y1="40" x2="470" y2="200" stroke="#2d3149" stroke-width="1" stroke-dasharray="4,4"/>
-
-              <!-- Write-Behind -->
-              <text x="590" y="45" text-anchor="middle" fill="#00d4aa" font-family="sans-serif" font-size="11" font-weight="600">Write-Behind</text>
-              <rect x="530" y="58" width="52" height="28" rx="4" fill="#1a1d27" stroke="#2d3149"/>
-              <text x="556" y="77" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">Client</text>
-              <rect x="598" y="58" width="52" height="28" rx="4" fill="#1a1d27" stroke="#00d4aa"/>
-              <text x="624" y="77" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="9">Cache</text>
-              <rect x="598" y="130" width="52" height="28" rx="4" fill="#1a1d27" stroke="#2d3149"/>
-              <text x="624" y="149" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">DB</text>
-              <line x1="582" y1="72" x2="598" y2="72" stroke="#00d4aa" stroke-width="2" marker-end="url(#arr-g2)"/>
-              <text x="590" y="67" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="8">ack immediately</text>
-              <line x1="624" y1="86" x2="624" y2="130" stroke="#8892b0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-m2)"/>
-              <text x="645" y="112" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">async</text>
-              <text x="590" y="175" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">Fast writes, risk of data loss</text>
-            </svg>
+            <div style="display:flex;flex-direction:column;gap:1.25rem;">
+              <div>
+                <p style="text-align:center;color:#00d4aa;font-family:sans-serif;font-size:12px;font-weight:600;margin:0 0 0.5rem;">Cache-Aside</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!OfIo!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F44c83d70-123c-4e46-b4e5-73bb4b5cbcd3_1536x1024.png"
+                     alt="Cache-Aside pattern diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p style="text-align:center;color:#00d4aa;font-family:sans-serif;font-size:12px;font-weight:600;margin:0 0 0.5rem;">Write-Through</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!wX_k!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9c9aa4c0-dbee-45ee-9733-578b70033e6f_1448x698.png"
+                     alt="Write-Through caching diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p style="text-align:center;color:#00d4aa;font-family:sans-serif;font-size:12px;font-weight:600;margin:0 0 0.5rem;">Write-Behind</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!6PGg!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7be96ff8-f029-4da3-a43c-a457dfe6fd1a_1536x653.png"
+                     alt="Write-Behind caching diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+            </div>
             <figcaption>
               <span class="lang-es">Las tres estrategias de cache: Cache-Aside (lazy, tolerante a fallos), Write-Through (siempre consistente) y Write-Behind (rápido pero arriesgado).</span>
               <span class="lang-en">The three cache strategies: Cache-Aside (lazy, fault-tolerant), Write-Through (always consistent), and Write-Behind (fast but risky).</span>
@@ -694,6 +723,32 @@
             </figcaption>
           </figure>
 
+          <!-- Reference images: Section 3 — Eventual Consistency, Leader Election, Idempotency, 2PC, Saga -->
+          <figure class="diagram">
+            <div class="ref-img-grid">
+              <div>
+                <p class="ref-img-label">29. Eventual Consistency</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!arqN!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd785d861-31b6-46ec-9bee-9de1ed8b246b_1536x896.png" alt="Eventual Consistency diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">31. Leader Election</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!RSs6!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F245c0636-bb50-4a7e-b17c-d40ad6285393_1536x858.png" alt="Leader Election diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">32. Idempotency</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!M27D!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc68734d0-e66a-4a3d-841a-795695357ff4_1448x1086.png" alt="Idempotency diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">34. Two-Phase Commit (2PC)</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!kvv3!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff1da5d5f-c018-4202-84a2-c1a530d5aeac_1536x1024.png" alt="Two-Phase Commit diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+            </div>
+            <div style="margin-top:1rem;">
+              <p class="ref-img-label">35. Saga Pattern</p>
+              <img src="https://substackcdn.com/image/fetch/$s_!bRkd!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcfb43407-f22c-452e-82d3-f286060d01b8_1448x972.png" alt="Saga Pattern diagram" style="width:100%;border-radius:8px;display:block;"/>
+            </div>
+          </figure>
+
           <!-- ─── SECTION 4: MESSAGING ─── -->
           <div class="lang-es">
             <h2>4. Mensajería y Comunicación</h2>
@@ -773,6 +828,36 @@
               </div>
             </div>
           </div>
+
+          <!-- Reference images: Section 4 — Message Queue, Pub/Sub, DLQ, Backpressure, WebSocket, SSE -->
+          <figure class="diagram">
+            <div class="ref-img-grid">
+              <div>
+                <p class="ref-img-label">39. Message Queue</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!D6wt!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb06df94b-4b1b-4947-b004-056a6302a8b9_1448x956.png" alt="Message Queue diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">40. Pub/Sub</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!ei4h!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa687de8-45b2-492c-b98c-8dde047d7076_1448x1005.png" alt="Pub/Sub diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">41. Dead-Letter Queue (DLQ)</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!7bZC!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4469d5b4-775d-4526-87aa-1c444bf1e5ae_1448x1086.png" alt="Dead-Letter Queue diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">42. Backpressure</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!Frhc!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdea689a3-88f6-452f-93de-cb9bb5cdb39a_1536x1024.png" alt="Backpressure diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">43. WebSocket</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!yMxL!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0e9a411b-e5af-444e-bc2f-8e38340f2890_1536x1024.png" alt="WebSocket diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">44. Server-Sent Events (SSE)</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!s_iV!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Feea59e51-28f6-4bd4-8d2a-404c308f4c6f_1536x1024.png" alt="Server-Sent Events diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+            </div>
+          </figure>
 
           <!-- ─── SECTION 5: RELIABILITY & MODERN ─── -->
           <div class="lang-es">
@@ -854,55 +939,32 @@
             </div>
           </div>
 
+          <!-- Reference images: Section 5 — Rate Limiting, Load Shedding, Bloom Filter, RAG -->
+          <figure class="diagram">
+            <div class="ref-img-grid">
+              <div>
+                <p class="ref-img-label">46. Rate Limiting</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!xKNi!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F201f077a-7fa6-4b66-8d34-0a47c7804399_1448x933.png" alt="Rate Limiting diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">47. Load Shedding</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!djPT!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff8221803-5f0e-495e-9465-dfc2b090ccfe_1536x1024.png" alt="Load Shedding diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">48. Bloom Filter</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!9eS3!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8d7b76d3-b0fa-4295-977b-2e8415099b40_1448x1086.png" alt="Bloom Filter diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+              <div>
+                <p class="ref-img-label">50. RAG</p>
+                <img src="https://substackcdn.com/image/fetch/$s_!co0o!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F05d9223c-666b-4c3f-bd47-db0065412277_1448x1086.png" alt="RAG diagram" style="width:100%;border-radius:8px;display:block;"/>
+              </div>
+            </div>
+          </figure>
+
           <!-- Diagram 4: Circuit Breaker -->
           <figure class="diagram">
-            <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" style="background:#0f1117;border-radius:8px;">
-              <defs>
-                <marker id="arr-r4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                  <path d="M0,0 L0,6 L8,3 z" fill="#e05252"/>
-                </marker>
-                <marker id="arr-o4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                  <path d="M0,0 L0,6 L8,3 z" fill="#f0a500"/>
-                </marker>
-                <marker id="arr-g4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                  <path d="M0,0 L0,6 L8,3 z" fill="#00d4aa"/>
-                </marker>
-              </defs>
-              <text x="350" y="26" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="12">Circuit Breaker — State Machine</text>
-
-              <!-- CLOSED -->
-              <circle cx="168" cy="135" r="52" fill="#1a1d27" stroke="#00d4aa" stroke-width="2"/>
-              <text x="168" y="128" text-anchor="middle" fill="#00d4aa" font-family="sans-serif" font-size="12" font-weight="700">CLOSED</text>
-              <text x="168" y="144" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">Normal operation</text>
-              <text x="168" y="157" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">Requests pass through</text>
-
-              <!-- OPEN -->
-              <circle cx="532" cy="135" r="52" fill="#1a1d27" stroke="#e05252" stroke-width="2"/>
-              <text x="532" y="128" text-anchor="middle" fill="#e05252" font-family="sans-serif" font-size="12" font-weight="700">OPEN</text>
-              <text x="532" y="144" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">Failures ≥ threshold</text>
-              <text x="532" y="157" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">Fast-fail, reject requests</text>
-
-              <!-- HALF-OPEN -->
-              <circle cx="350" cy="210" r="36" fill="#1a1d27" stroke="#f0a500" stroke-width="2"/>
-              <text x="350" y="205" text-anchor="middle" fill="#f0a500" font-family="sans-serif" font-size="10" font-weight="700">HALF-OPEN</text>
-              <text x="350" y="220" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="8">Testing recovery</text>
-
-              <!-- CLOSED → OPEN -->
-              <line x1="220" y1="108" x2="480" y2="108" stroke="#e05252" stroke-width="1.5" marker-end="url(#arr-r4)"/>
-              <text x="350" y="102" text-anchor="middle" fill="#e05252" font-family="monospace" font-size="9">failure rate ≥ threshold</text>
-
-              <!-- OPEN → HALF-OPEN -->
-              <line x1="502" y1="183" x2="382" y2="204" stroke="#f0a500" stroke-width="1.5" marker-end="url(#arr-o4)"/>
-              <text x="456" y="204" text-anchor="middle" fill="#f0a500" font-family="monospace" font-size="8">timeout expires</text>
-
-              <!-- HALF-OPEN → CLOSED (success) -->
-              <line x1="318" y1="195" x2="208" y2="173" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arr-g4)"/>
-              <text x="248" y="199" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="8">probe success</text>
-
-              <!-- HALF-OPEN → OPEN (fail again) -->
-              <line x1="382" y1="181" x2="502" y2="162" stroke="#e05252" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-r4)"/>
-              <text x="452" y="169" text-anchor="middle" fill="#e05252" font-family="monospace" font-size="8">probe fails</text>
-            </svg>
+            <img src="https://substackcdn.com/image/fetch/$s_!n1ig!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F018ae772-a560-45cf-8f6d-6c507e11fe61_1448x1086.png"
+                 alt="Circuit Breaker state machine diagram" style="width:100%;border-radius:8px;display:block;"/>
             <figcaption>
               <span class="lang-es">El Circuit Breaker tiene tres estados: Closed (operación normal), Open (rechaza requests al instante) y Half-Open (prueba si la dependencia se recuperó).</span>
               <span class="lang-en">The Circuit Breaker has three states: Closed (normal operation), Open (instant request rejection), and Half-Open (tests if the dependency has recovered).</span>
