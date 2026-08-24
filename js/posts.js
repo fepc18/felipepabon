@@ -110,6 +110,17 @@ const POSTS = [
     published: true,
   },
 
+  {
+    id: '50-system-design-concepts',
+    titleEs: '50 Conceptos de System Design que Todo Arquitecto Debe Conocer',
+    titleEn: '50 System Design Concepts Every Architect Should Know',
+    tags: ['Architecture', 'Design', 'Microservices'],
+    date: 'August 2026',
+    href: '50-system-design-concepts.html',
+    external: false,
+    published: true,
+  },
+
   /* ── Previous site posts (coming soon) ────────────────────── */
   {
     id: 'ddd-intro',
