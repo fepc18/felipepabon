@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="es" data-lang="es">
+
+<html data-lang="es" lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="50 conceptos esenciales de System Design con sus trade-offs prácticos, desde escalabilidad hasta RAG." />
-  <meta name="author" content="Felipe Pabón" />
-  <title>50 Conceptos de System Design — Felipe Pabón</title>
-  <link rel="stylesheet" href="../css/style.css" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="50 conceptos esenciales de System Design con sus trade-offs prácticos, desde escalabilidad hasta RAG." name="description"/>
+<meta content="Felipe Pabón" name="author"/>
+<title>50 Conceptos de System Design — Felipe Pabón</title>
+<link href="../css/style.css" rel="stylesheet"/>
+<style>
     .concept-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -78,954 +79,764 @@
       margin: 0 0 0.4rem;
       font-family: sans-serif;
     }
+    .concept-img {
+      width: 100%;
+      border-radius: 6px;
+      margin-top: 0.85rem;
+      display: block;
+    }
   </style>
 </head>
 <body>
-
-  <nav>
-    <div class="nav-inner">
-      <a href="../" class="nav-logo">fp.</a>
-      <div class="nav-links">
-        <a href="../blog/" data-es="Blog" data-en="Blog">Blog</a>
-        <button class="lang-btn" onclick="toggleLang()">EN</button>
-      </div>
-    </div>
-  </nav>
-
-  <main>
-    <article class="article-container">
-      <div class="container">
-
-        <header class="article-header">
-          <div class="lang-es">
-            <div class="article-tags">
-              <span class="card-tag">Architecture</span>
-              <span class="card-tag">Design</span>
-              <span class="card-tag">Microservices</span>
-            </div>
-            <h1>50 Conceptos de System Design que Todo Arquitecto Debe Conocer</h1>
-            <p class="article-subtitle">Una guía de referencia con los trade-offs prácticos de cada concepto — desde escalabilidad hasta RAG.</p>
-            <div class="article-meta">
-              <span>August 2026</span>
-              <span>Felipe Pabón</span>
-            </div>
-          </div>
-          <div class="lang-en">
-            <div class="article-tags">
-              <span class="card-tag">Architecture</span>
-              <span class="card-tag">Design</span>
-              <span class="card-tag">Microservices</span>
-            </div>
-            <h1>50 System Design Concepts Every Architect Should Know</h1>
-            <p class="article-subtitle">A reference guide with practical trade-offs for each concept — from scalability to RAG.</p>
-            <div class="article-meta">
-              <span>August 2026</span>
-              <span>Felipe Pabón</span>
-            </div>
-          </div>
-        </header>
-
-        <div class="article-body">
-
-          <div class="lang-es">
-            <p>En system design, conocer el nombre de un concepto no es suficiente. Lo que importa es entender <em>por qué existe</em> y cuál es su trade-off real. Este artículo es una guía de referencia rápida de los 50 conceptos más importantes, organizados en cinco categorías, con énfasis en sus implicaciones prácticas.</p>
-          </div>
-          <div class="lang-en">
-            <p>In system design, knowing the name of a concept is not enough. What matters is understanding <em>why it exists</em> and what its real trade-off is. This article is a quick reference guide for the 50 most important concepts, organized into five categories, with emphasis on their practical implications.</p>
-          </div>
-
-          <!-- ─── SECTION 1: CORE INFRASTRUCTURE ─── -->
-          <div class="lang-es">
-            <h2>1. Infraestructura Core</h2>
-            <div class="section-intro">Los primeros diez conceptos describen cómo el tráfico fluye a través de tu sistema y cómo este crece ante la demanda.</div>
-          </div>
-          <div class="lang-en">
-            <h2>1. Core Infrastructure</h2>
-            <div class="section-intro">The first ten concepts describe how traffic flows through your system and how it grows under demand.</div>
-          </div>
-
-          <div class="lang-es">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>1. Scalability</h3>
-                <p>La capacidad del sistema para manejar crecimiento en usuarios, datos o requests manteniendo rendimiento aceptable. El sistema es tan escalable como su componente menos escalable.</p>
-                <div class="tradeoff">Escalar una parte sin las demás crea nuevos cuellos de botella.</div>
-              </div>
-              <div class="concept-card">
-                <h3>2. Vertical Scaling (Scale Up)</h3>
-                <p>Agregar más poder a una sola máquina: más CPU, más RAM, más almacenamiento. Simple de implementar pero tiene un límite físico y de costo.</p>
-                <div class="tradeoff">Máquinas más grandes cuestan exponencialmente más y representan un único punto de fallo.</div>
-              </div>
-              <div class="concept-card">
-                <h3>3. Horizontal Scaling (Scale Out)</h3>
-                <p>Agregar más máquinas para distribuir la carga. Requiere que los servidores sean stateless para que cualquier instancia pueda responder cualquier request sin dependencia de sesión.</p>
-                <div class="tradeoff">Mayor complejidad operacional: necesitas un load balancer y gestión de estado externo.</div>
-              </div>
-              <div class="concept-card">
-                <h3>4. Load Balancer</h3>
-                <p>Distribuye los requests entrantes entre múltiples servidores, redirigiendo automáticamente el tráfico alrededor de instancias caídas. Es transparente para el cliente.</p>
-                <div class="tradeoff">El load balancer mismo puede convertirse en un punto único de fallo si no está replicado.</div>
-              </div>
-              <div class="concept-card">
-                <h3>5. Latency</h3>
-                <p>El tiempo que experimenta un usuario individual desde que envía un request hasta que recibe la respuesta. Múltiples fuentes se suman: red, procesamiento del servidor, queries a la BD.</p>
-                <div class="tradeoff">Optimizar solo el promedio deja a los peores usuarios (p99) invisibles y desatendidos.</div>
-              </div>
-              <div class="concept-card">
-                <h3>6. Throughput</h3>
-                <p>El trabajo total completado por unidad de tiempo (requests/segundo). Distinto a latency: requests individuales rápidos no garantizan alto throughput si se procesan secuencialmente.</p>
-                <div class="tradeoff">Aumentar throughput con concurrencia introduce complejidad de sincronización y race conditions.</div>
-              </div>
-              <div class="concept-card">
-                <h3>7. CDN (Content Delivery Network)</h3>
-                <p>Red de servidores distribuidos globalmente que cachea contenido estático cerca de los usuarios. Reduce dramáticamente la latencia para imágenes, videos y scripts.</p>
-                <div class="tradeoff">Introduce riesgo de staleness: el contenido puede quedar desactualizado si la invalidación no está bien configurada.</div>
-              </div>
-              <div class="concept-card">
-                <h3>8. DNS (Domain Name System)</h3>
-                <p>Traduce nombres de dominio a direcciones IP. Se usa para routing de tráfico por geografía o salud del servidor mediante GeoDNS o DNS failover automático.</p>
-                <div class="tradeoff">El cacheo DNS retrasa la propagación de cambios; un TTL bajo aumenta la carga en los servidores DNS.</div>
-              </div>
-              <div class="concept-card">
-                <h3>9. API Gateway</h3>
-                <p>Punto de entrada único que maneja autenticación, rate limiting, SSL y routing antes de que los requests lleguen a los servicios backend. Centraliza las preocupaciones transversales.</p>
-                <div class="tradeoff">Se convierte en un componente crítico; si falla, todo el sistema deja de ser accesible desde el exterior.</div>
-              </div>
-              <div class="concept-card">
-                <h3>10. Reverse Proxy</h3>
-                <p>Recibe requests en nombre de los servidores, manejando cacheo, compresión, SSL y balanceo de carga. Los load balancers son reverse proxies especializados.</p>
-                <div class="tradeoff">Agrega un hop extra en la red; debe ser de alta disponibilidad para no ser él mismo el cuello de botella.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lang-en">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>1. Scalability</h3>
-                <p>The ability of a system to handle growth in users, data, or requests while maintaining acceptable performance. The system is only as scalable as its least scalable part.</p>
-                <div class="tradeoff">Scaling one component without the others creates new bottlenecks elsewhere.</div>
-              </div>
-              <div class="concept-card">
-                <h3>2. Vertical Scaling (Scale Up)</h3>
-                <p>Adding more power to a single machine: more CPU, RAM, or storage. Simple to implement but has a physical and cost ceiling.</p>
-                <div class="tradeoff">Larger machines cost exponentially more and represent a single point of failure.</div>
-              </div>
-              <div class="concept-card">
-                <h3>3. Horizontal Scaling (Scale Out)</h3>
-                <p>Adding more machines to distribute load. Requires stateless servers so any instance can handle any request without session dependency.</p>
-                <div class="tradeoff">Greater operational complexity: you need a load balancer and external state management.</div>
-              </div>
-              <div class="concept-card">
-                <h3>4. Load Balancer</h3>
-                <p>Distributes incoming requests across multiple servers, automatically routing around failed instances. Appears transparent to clients while managing traffic internally.</p>
-                <div class="tradeoff">The load balancer itself can become a single point of failure if not replicated.</div>
-              </div>
-              <div class="concept-card">
-                <h3>5. Latency</h3>
-                <p>The delay experienced by an individual user from request to response. Multiple sources stack: network travel, server processing, database queries.</p>
-                <div class="tradeoff">Optimizing only the average leaves p99 users invisible and underserved.</div>
-              </div>
-              <div class="concept-card">
-                <h3>6. Throughput</h3>
-                <p>Total work completed per unit of time (requests/second). Distinct from latency — fast individual requests don't guarantee high throughput if processed sequentially.</p>
-                <div class="tradeoff">Increasing throughput with concurrency introduces synchronization complexity and race conditions.</div>
-              </div>
-              <div class="concept-card">
-                <h3>7. CDN (Content Delivery Network)</h3>
-                <p>Globally distributed servers caching static content near users. Dramatically reduces latency for images, videos, and scripts.</p>
-                <div class="tradeoff">Introduces staleness risk: content can become outdated if cache invalidation is not properly configured.</div>
-              </div>
-              <div class="concept-card">
-                <h3>8. DNS (Domain Name System)</h3>
-                <p>Translates domain names to IP addresses. Used for traffic routing by geography or server health through GeoDNS or automatic DNS failover.</p>
-                <div class="tradeoff">DNS caching delays propagation of changes; low TTL increases load on DNS servers.</div>
-              </div>
-              <div class="concept-card">
-                <h3>9. API Gateway</h3>
-                <p>Single entry point handling authentication, rate limiting, SSL, and routing before requests reach backend services. Centralizes cross-cutting concerns.</p>
-                <div class="tradeoff">Becomes a critical component — if it fails, the entire system becomes unreachable from the outside.</div>
-              </div>
-              <div class="concept-card">
-                <h3>10. Reverse Proxy</h3>
-                <p>Receives requests on behalf of servers, handling caching, compression, SSL, and load balancing. Load balancers are specialized reverse proxies.</p>
-                <div class="tradeoff">Adds an extra network hop; must be highly available to avoid becoming a bottleneck itself.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Diagram 1: Vertical vs Horizontal Scaling -->
-          <figure class="diagram">
-            <svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg" style="background:#0f1117;border-radius:8px;">
-              <defs>
-                <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                  <path d="M0,0 L0,6 L8,3 z" fill="#00d4aa"/>
-                </marker>
-              </defs>
-              <text x="350" y="26" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="12">Vertical Scaling vs Horizontal Scaling</text>
-
-              <!-- VERTICAL side -->
-              <text x="175" y="52" text-anchor="middle" fill="#00d4aa" font-family="sans-serif" font-size="12" font-weight="600">Vertical Scaling</text>
-              <rect x="95" y="68" width="60" height="76" rx="6" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="125" y="100" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="10">Server</text>
-              <text x="125" y="115" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">4 vCPU</text>
-              <text x="125" y="128" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">8 GB RAM</text>
-              <line x1="162" y1="106" x2="185" y2="106" stroke="#00d4aa" stroke-width="2" marker-end="url(#arr-green)"/>
-              <rect x="192" y="58" width="72" height="96" rx="6" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
-              <text x="228" y="94" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="10">Server</text>
-              <text x="228" y="110" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="9">32 vCPU</text>
-              <text x="228" y="124" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="9">128 GB RAM</text>
-              <text x="175" y="182" text-anchor="middle" fill="#8892b0" font-family="sans-serif" font-size="10">⚠ Physical &amp; cost ceiling</text>
-
-              <!-- Divider -->
-              <line x1="350" y1="45" x2="350" y2="220" stroke="#2d3149" stroke-width="1" stroke-dasharray="5,4"/>
-
-              <!-- HORIZONTAL side -->
-              <text x="525" y="52" text-anchor="middle" fill="#00d4aa" font-family="sans-serif" font-size="12" font-weight="600">Horizontal Scaling</text>
-              <rect x="490" y="62" width="72" height="34" rx="6" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
-              <text x="526" y="84" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="9">Load Balancer</text>
-              <line x1="526" y1="96" x2="455" y2="130" stroke="#2d3149" stroke-width="1.5"/>
-              <line x1="526" y1="96" x2="526" y2="130" stroke="#2d3149" stroke-width="1.5"/>
-              <line x1="526" y1="96" x2="597" y2="130" stroke="#2d3149" stroke-width="1.5"/>
-              <rect x="425" y="130" width="58" height="46" rx="6" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="454" y="157" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">Server 1</text>
-              <rect x="497" y="130" width="58" height="46" rx="6" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="526" y="157" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">Server 2</text>
-              <rect x="569" y="130" width="58" height="46" rx="6" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
-              <text x="598" y="152" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="9">Server</text>
-              <text x="598" y="165" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="9">+N</text>
-              <text x="525" y="200" text-anchor="middle" fill="#8892b0" font-family="sans-serif" font-size="10">∞ Add nodes as needed</text>
-            </svg>
-            <figcaption>
-              <span class="lang-es">Escalado vertical (agregar poder a una máquina) vs horizontal (agregar máquinas). El horizontal escala ilimitadamente pero requiere servidores stateless.</span>
-              <span class="lang-en">Vertical scaling (adding power to one machine) vs horizontal (adding machines). Horizontal scales without limit but requires stateless servers.</span>
-            </figcaption>
-          </figure>
-
-          <!-- Reference images: Section 1 — Load Balancer, Latency, CDN, API Gateway, Reverse Proxy -->
-          <figure class="diagram">
-            <div class="ref-img-grid">
-              <div>
-                <p class="ref-img-label">4. Load Balancer</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!wKsb!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffd3e0243-a537-4d7e-95e2-56caa1ff0d98_1448x1086.png" alt="Load Balancer diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">5. Latency</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!2Yir!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F66c74354-8651-46dc-bd81-b4ac4f4daeb2_1200x750.jpeg" alt="Latency concept diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">7. CDN</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!1_54!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F19113e00-60dc-4efb-8a0a-3b52e1f9191c_1536x1024.png" alt="CDN diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">9. API Gateway</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!RRcr!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F78296589-b3c6-451b-99ac-41c5d5585d27_1448x1086.png" alt="API Gateway diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-            </div>
-            <div style="margin-top:1rem;">
-              <p class="ref-img-label">10. Reverse Proxy</p>
-              <img src="https://substackcdn.com/image/fetch/$s_!Acsj!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F85c249eb-3561-48e7-9348-f5d8a53308b5_1536x880.png" alt="Reverse Proxy diagram" style="width:100%;border-radius:8px;display:block;"/>
-            </div>
-          </figure>
-
-          <!-- ─── SECTION 2: DATA & STORAGE ─── -->
-          <div class="lang-es">
-            <h2>2. Datos y Almacenamiento</h2>
-            <div class="section-intro">Quince conceptos que determinan cómo tu sistema persiste, accede y organiza los datos a escala.</div>
-          </div>
-          <div class="lang-en">
-            <h2>2. Data &amp; Storage</h2>
-            <div class="section-intro">Fifteen concepts that determine how your system persists, accesses, and organizes data at scale.</div>
-          </div>
-
-          <div class="lang-es">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>11. Database</h3>
-                <p>Sistema de almacenamiento persistente que permite recuperar datos más allá del ciclo de vida de un solo request. La elección de la BD impacta significativamente la arquitectura global.</p>
-                <div class="tradeoff">No existe una BD "universal"; cada tipo optimiza para ciertos patrones de acceso sacrificando otros.</div>
-              </div>
-              <div class="concept-card">
-                <h3>12. SQL Database</h3>
-                <p>Bases de datos relacionales con tablas estructuradas y garantías ACID. Ideales para datos estructurados y transacciones complejas. Lenguaje de consulta maduro y estandarizado (SQL).</p>
-                <div class="tradeoff">Escalar escrituras más allá de un solo servidor requiere sharding, que aumenta la complejidad considerablemente.</div>
-              </div>
-              <div class="concept-card">
-                <h3>13. NoSQL Database</h3>
-                <p>Categoría amplia: key-value, document, wide-column y graph stores. Cada uno optimiza para ventajas específicas de escala o flexibilidad sobre las garantías de consistencia de SQL.</p>
-                <div class="tradeoff">La flexibilidad de esquema facilita el inicio rápido pero puede generar inconsistencias de datos a largo plazo.</div>
-              </div>
-              <div class="concept-card">
-                <h3>14. ACID</h3>
-                <p>Atomicidad (todo o nada), Consistencia (transiciones de estado válidas), Aislamiento (transacciones concurrentes independientes) y Durabilidad (sobreviven crashes). Crítico para sistemas financieros.</p>
-                <div class="tradeoff">Las garantías ACID requieren coordination y locks, limitando el throughput en sistemas de alta concurrencia.</div>
-              </div>
-              <div class="concept-card">
-                <h3>15. Index</h3>
-                <p>Estructura de datos separada que permite búsquedas rápidas. Sin índices, las consultas escanean toda la tabla. Con índices, el motor va directo al dato en tiempo O(log n).</p>
-                <div class="tradeoff">Los índices aceleran lecturas pero ralentizan escrituras, ya que deben mantenerse actualizados en cada modificación.</div>
-              </div>
-              <div class="concept-card">
-                <h3>16. Sharding</h3>
-                <p>División de datos entre múltiples bases de datos por una shard key. Escala las escrituras y el almacenamiento cuando una sola BD no alcanza. Popular en sistemas de gran escala como Twitter o Stripe.</p>
-                <div class="tradeoff">Una shard key mal elegida crea hot partitions. Las queries cross-shard son costosas y complejas de implementar.</div>
-              </div>
-              <div class="concept-card">
-                <h3>17. Replication</h3>
-                <p>Mantener copias de datos en múltiples máquinas, típicamente mediante un modelo leader-follower. Permite escalar lecturas distribuyendo queries entre réplicas. Mejora también la resiliencia ante fallos.</p>
-                <div class="tradeoff">Introduce replication lag: las réplicas pueden tener datos brevemente desactualizados respecto al leader.</div>
-              </div>
-              <div class="concept-card">
-                <h3>18. Cache</h3>
-                <p>Almacenamiento rápido en memoria que guarda copias de datos frecuentemente accedidos. Reduce dramáticamente la latencia y la carga en la base de datos primaria. Ejemplos: Redis, Memcached.</p>
-                <div class="tradeoff">Los datos pueden quedar stale cuando cambia la fuente original. Requiere estrategias de expiración e invalidación deliberadas.</div>
-              </div>
-              <div class="concept-card">
-                <h3>19. Cache-Aside</h3>
-                <p>La aplicación revisa el cache primero; si hay miss, busca en la BD y almacena el resultado en cache. Población lazy con degradación graceful si el cache falla.</p>
-                <div class="tradeoff">Cache misses son caros (dos operaciones: BD + escritura en cache). Los primeros requests siempre son lentos (cold start).</div>
-              </div>
-              <div class="concept-card">
-                <h3>20. Write-Through</h3>
-                <p>Cada escritura va simultáneamente al cache y a la BD. Garantiza consistencia entre ambas capas; el cache siempre refleja el estado actual de la BD.</p>
-                <div class="tradeoff">Aumenta la latencia de escritura ya que ambas operaciones deben completarse antes de confirmar al cliente.</div>
-              </div>
-              <div class="concept-card">
-                <h3>21. Write-Behind</h3>
-                <p>Las escrituras se confirman inmediatamente al cache y luego se sincronizan asincrónicamente con la BD. Escrituras ultrarrápidas desde la perspectiva del cliente.</p>
-                <div class="tradeoff">Riesgo de pérdida de datos: si el cache falla antes de sincronizar con la BD, las escrituras pendientes se pierden.</div>
-              </div>
-              <div class="concept-card">
-                <h3>22. Consistent Hashing</h3>
-                <p>Distribuye datos entre nodos minimizando la redistribución al escalar. Agregar un nodo a diez requiere mover ~10% de los datos, no ~90% como con hashing tradicional.</p>
-                <div class="tradeoff">La distribución puede ser desigual sin virtual nodes. Implementación más compleja que hashing estándar.</div>
-              </div>
-              <div class="concept-card">
-                <h3>23. Object Storage</h3>
-                <p>Sistema infinitamente escalable para archivos no estructurados (imágenes, videos, documentos). Barato y durable. Ejemplos: Amazon S3, Google Cloud Storage.</p>
-                <div class="tradeoff">Inadecuado para bases de datos que requieren transacciones o acceso aleatorio de baja latencia.</div>
-              </div>
-              <div class="concept-card">
-                <h3>24. Data Partitioning</h3>
-                <p>División de datos en unidades de almacenamiento separadas por criterios como ID, rango de fechas o región geográfica. Mejora el rendimiento reduciendo los datos escaneados por query.</p>
-                <div class="tradeoff">Una partición incorrecta puede resultar en full-table scans o particiones desbalanceadas con hot spots de acceso.</div>
-              </div>
-              <div class="concept-card">
-                <h3>25. Event Sourcing</h3>
-                <p>Almacena secuencias de eventos que producen el estado, en lugar del estado actual. Habilita auditoría completa y queries de "time-travel". Muy útil en sistemas financieros y de compliance.</p>
-                <div class="tradeoff">Reproducir eventos para obtener el estado actual es lento sin snapshots periódicos. El event store crece indefinidamente.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lang-en">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>11. Database</h3>
-                <p>Persistent storage system enabling data retrieval beyond a single request lifecycle. The choice of database significantly impacts the overall architecture.</p>
-                <div class="tradeoff">No "universal" database exists; each type optimizes for certain access patterns at the expense of others.</div>
-              </div>
-              <div class="concept-card">
-                <h3>12. SQL Database</h3>
-                <p>Relational databases with structured tables and ACID guarantees. Ideal for structured data and complex transactions. Their query language is mature and standardized (SQL).</p>
-                <div class="tradeoff">Scaling writes beyond a single server requires sharding, which adds considerable complexity.</div>
-              </div>
-              <div class="concept-card">
-                <h3>13. NoSQL Database</h3>
-                <p>Broad category: key-value, document, wide-column, and graph stores. Each optimizes for specific scale or flexibility advantages over SQL's consistency guarantees.</p>
-                <div class="tradeoff">Schema flexibility speeds up early development but can create data inconsistencies over time.</div>
-              </div>
-              <div class="concept-card">
-                <h3>14. ACID</h3>
-                <p>Atomicity (all-or-nothing), Consistency (valid state transitions), Isolation (concurrent transactions are independent), Durability (data survives crashes). Critical for financial systems.</p>
-                <div class="tradeoff">ACID guarantees require coordination and locks, limiting throughput in high-concurrency systems.</div>
-              </div>
-              <div class="concept-card">
-                <h3>15. Index</h3>
-                <p>A separate data structure enabling fast query lookup. Without indexes, queries scan the full table. With indexes, the engine jumps to the data in O(log n) time.</p>
-                <div class="tradeoff">Indexes speed up reads but slow down writes, since they must be maintained on every modification.</div>
-              </div>
-              <div class="concept-card">
-                <h3>16. Sharding</h3>
-                <p>Splitting data across multiple databases by a shard key. Scales writes and storage when a single DB can't keep up. Common in large-scale systems like Twitter or Stripe.</p>
-                <div class="tradeoff">A poorly chosen shard key creates hot partitions. Cross-shard queries are expensive and complex to implement.</div>
-              </div>
-              <div class="concept-card">
-                <h3>17. Replication</h3>
-                <p>Keeping data copies across multiple machines, typically via a leader-follower model. Scales reads by distributing queries among replicas. Also improves resilience to failures.</p>
-                <div class="tradeoff">Introduces replication lag: replicas may briefly have stale data compared to the leader.</div>
-              </div>
-              <div class="concept-card">
-                <h3>18. Cache</h3>
-                <p>Fast in-memory storage holding copies of frequently accessed data. Dramatically reduces latency and load on the primary database. Examples: Redis, Memcached.</p>
-                <div class="tradeoff">Data can become stale when the source changes. Requires intentional expiry and invalidation strategies.</div>
-              </div>
-              <div class="concept-card">
-                <h3>19. Cache-Aside</h3>
-                <p>The application checks cache first; on a miss, fetches from DB and stores the result in cache. Lazy population with graceful degradation if cache fails.</p>
-                <div class="tradeoff">Cache misses are expensive (two operations: DB read + cache write). First requests are always slow (cold start).</div>
-              </div>
-              <div class="concept-card">
-                <h3>20. Write-Through</h3>
-                <p>Every write goes simultaneously to cache and DB. Guarantees consistency between both layers; the cache always reflects the current DB state.</p>
-                <div class="tradeoff">Increases write latency since both operations must complete before confirming to the client.</div>
-              </div>
-              <div class="concept-card">
-                <h3>21. Write-Behind</h3>
-                <p>Writes are immediately acknowledged to cache, then asynchronously synced to DB. Ultra-fast writes from the client's perspective.</p>
-                <div class="tradeoff">Risk of data loss: if the cache fails before syncing with the DB, pending writes are lost.</div>
-              </div>
-              <div class="concept-card">
-                <h3>22. Consistent Hashing</h3>
-                <p>Distributes data across nodes minimizing reshuffling when scaling. Adding one node to ten requires moving ~10% of data, not ~90% as with traditional hashing.</p>
-                <div class="tradeoff">Distribution can be uneven without virtual nodes. More complex to implement than standard hashing.</div>
-              </div>
-              <div class="concept-card">
-                <h3>23. Object Storage</h3>
-                <p>Infinitely scalable system for unstructured files (images, videos, documents). Cheap and durable. Examples: Amazon S3, Google Cloud Storage.</p>
-                <div class="tradeoff">Unsuitable for databases requiring transactions or low-latency random access.</div>
-              </div>
-              <div class="concept-card">
-                <h3>24. Data Partitioning</h3>
-                <p>Dividing data into separate storage units by ID range, date, or region. Improves query performance by reducing the amount of data scanned per query.</p>
-                <div class="tradeoff">Wrong partitioning can result in full-table scans or unbalanced partitions with access hot spots.</div>
-              </div>
-              <div class="concept-card">
-                <h3>25. Event Sourcing</h3>
-                <p>Stores sequences of events producing state instead of the current state. Enables complete audit trails and time-travel queries. Very useful in financial and compliance systems.</p>
-                <div class="tradeoff">Replaying events to get the current state is slow without periodic snapshots. The event store grows indefinitely.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Reference images: Section 2 — SQL, NoSQL, Sharding, Replication, Data Partitioning -->
-          <figure class="diagram">
-            <div class="ref-img-grid">
-              <div>
-                <p class="ref-img-label">12. SQL Database</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!8WO9!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe73a416a-f004-4828-a86d-2a83bb7b5554_1536x1024.png" alt="SQL Database diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">13. NoSQL Database</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!J2-s!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F15bf78e0-beee-4c61-ad37-337bbc5f2b61_1448x1086.png" alt="NoSQL Database diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">16. Sharding</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!0NfW!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9ba0ea2c-f287-4dd4-b49c-ff772999fcdc_1448x1086.png" alt="Sharding diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">17. Replication</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!KDb1!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcd86a955-bfd6-44a6-9bd2-e7739a5d98fc_1536x1024.png" alt="Replication diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-            </div>
-            <div style="margin-top:1rem;">
-              <p class="ref-img-label">24. Data Partitioning</p>
-              <img src="https://substackcdn.com/image/fetch/$s_!lPAe!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5e804db5-bd21-4df1-8ba4-576c0b5b3439_1536x1024.png" alt="Data Partitioning diagram" style="width:100%;border-radius:8px;display:block;"/>
-            </div>
-          </figure>
-
-          <!-- Diagram 2: Cache Strategies -->
-          <figure class="diagram">
-            <div style="display:flex;flex-direction:column;gap:1.25rem;">
-              <div>
-                <p style="text-align:center;color:#00d4aa;font-family:sans-serif;font-size:12px;font-weight:600;margin:0 0 0.5rem;">Cache-Aside</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!OfIo!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F44c83d70-123c-4e46-b4e5-73bb4b5cbcd3_1536x1024.png"
-                     alt="Cache-Aside pattern diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p style="text-align:center;color:#00d4aa;font-family:sans-serif;font-size:12px;font-weight:600;margin:0 0 0.5rem;">Write-Through</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!wX_k!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9c9aa4c0-dbee-45ee-9733-578b70033e6f_1448x698.png"
-                     alt="Write-Through caching diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p style="text-align:center;color:#00d4aa;font-family:sans-serif;font-size:12px;font-weight:600;margin:0 0 0.5rem;">Write-Behind</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!6PGg!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7be96ff8-f029-4da3-a43c-a457dfe6fd1a_1536x653.png"
-                     alt="Write-Behind caching diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-            </div>
-            <figcaption>
-              <span class="lang-es">Las tres estrategias de cache: Cache-Aside (lazy, tolerante a fallos), Write-Through (siempre consistente) y Write-Behind (rápido pero arriesgado).</span>
-              <span class="lang-en">The three cache strategies: Cache-Aside (lazy, fault-tolerant), Write-Through (always consistent), and Write-Behind (fast but risky).</span>
-            </figcaption>
-          </figure>
-
-          <!-- ─── SECTION 3: DISTRIBUTED SYSTEMS ─── -->
-          <div class="lang-es">
-            <h2>3. Sistemas Distribuidos</h2>
-            <div class="section-intro">Trece conceptos que abordan los desafíos fundamentales cuando múltiples máquinas deben coordinarse: fallos parciales, consistencia y consenso.</div>
-          </div>
-          <div class="lang-en">
-            <h2>3. Distributed Systems</h2>
-            <div class="section-intro">Thirteen concepts addressing the fundamental challenges when multiple machines must coordinate: partial failures, consistency, and consensus.</div>
-          </div>
-
-          <div class="lang-es">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>26. Distributed System</h3>
-                <p>Múltiples máquinas comunicándose por red para lograr objetivos compartidos. Introduce desafíos únicos: fallos de red, fallos parciales y consistencia entre copias de datos.</p>
-                <div class="tradeoff">Los sistemas distribuidos traen complejidad que los monolitos no tienen; justifícalos con necesidad real de escala.</div>
-              </div>
-              <div class="concept-card">
-                <h3>27. CAP Theorem</h3>
-                <p>Un sistema distribuido puede garantizar solo dos de tres propiedades: Consistency, Availability, Partition tolerance. Como las particiones son inevitables, la elección real durante fallos es entre C o A.</p>
-                <div class="tradeoff">No existe un sistema que sea 100% consistente Y 100% disponible ante particiones de red simultáneas.</div>
-              </div>
-              <div class="concept-card">
-                <h3>28. Strong Consistency</h3>
-                <p>Cada lectura refleja la última escritura sin importar qué nodo responde. Requiere coordinación entre nodos antes de responder. Apropiado para datos financieros e inventario crítico.</p>
-                <div class="tradeoff">El overhead de coordinación reduce throughput y aumenta latencia en comparación con eventual consistency.</div>
-              </div>
-              <div class="concept-card">
-                <h3>29. Eventual Consistency</h3>
-                <p>Las réplicas convergen al mismo estado con el tiempo pero pueden diferir brevemente. Más barato y más disponible. Adecuado para contadores de likes, feeds y recomendaciones.</p>
-                <div class="tradeoff">Los clientes pueden leer datos stale temporalmente; inaceptable para sistemas donde la precisión es crítica.</div>
-              </div>
-              <div class="concept-card">
-                <h3>30. Consensus</h3>
-                <p>Múltiples nodos acuerdan un único valor a pesar de fallos individuales. Algoritmos como Raft y Paxos requieren acuerdo de la mayoría, previniendo escenarios split-brain.</p>
-                <div class="tradeoff">El consenso es costoso en latencia y tráfico de red; se usa selectivamente para decisiones críticas.</div>
-              </div>
-              <div class="concept-card">
-                <h3>31. Leader Election</h3>
-                <p>Nodos distribuidos acuerdan cuál coordina el trabajo. Requiere consenso para prevenir líderes duales. Usado en bases de datos distribuidas como etcd o coordinadores de tareas.</p>
-                <div class="tradeoff">La ventana de tiempo entre que un líder falla y uno nuevo se elige reduce temporalmente la capacidad del sistema.</div>
-              </div>
-              <div class="concept-card">
-                <h3>32. Idempotency</h3>
-                <p>Operaciones que producen el mismo resultado si se ejecutan una o múltiples veces. Los sistemas distribuidos no pueden garantizar entrega exactamente-una-vez, haciendo esto esencial para retries seguros.</p>
-                <div class="tradeoff">Implementar idempotencia requiere rastrear operaciones ya ejecutadas, lo que añade overhead de estado y storage.</div>
-              </div>
-              <div class="concept-card">
-                <h3>33. Idempotency Key</h3>
-                <p>Identificador único generado por el cliente que permite al servidor detectar y rechazar requests duplicados. Estándar en APIs de pago (Stripe, PayPal) para prevenir cobros dobles al reintentar.</p>
-                <div class="tradeoff">El servidor debe almacenar y consultar las keys procesadas; requiere TTL o cleanup para no crecer indefinidamente.</div>
-              </div>
-              <div class="concept-card">
-                <h3>34. Two-Phase Commit (2PC)</h3>
-                <p>Protocolo para hacer transacciones atómicas entre múltiples bases de datos. Fase 1: el coordinador pregunta si pueden commitear. Fase 2: todos commitean o abortan.</p>
-                <div class="tradeoff">Los participantes mantienen locks entre fases. Si el coordinador falla, el sistema queda bloqueado indefinidamente.</div>
-              </div>
-              <div class="concept-card">
-                <h3>35. Saga Pattern</h3>
-                <p>Alternativa a transacciones distribuidas: divide operaciones en transacciones locales con acciones compensatorias. Si un paso falla, los pasos anteriores se compensan (undo).</p>
-                <div class="tradeoff">La lógica de compensación es compleja. El sistema es eventualmente consistente; pueden existir estados intermedios visibles para otros servicios.</div>
-              </div>
-              <div class="concept-card">
-                <h3>36. Consistent Hashing Ring</h3>
-                <p>Organiza valores hash en un anillo donde cada nodo es responsable de rangos. Los virtual nodes (múltiples posiciones por nodo físico) mejoran la distribución. Estándar en Redis Cluster y Cassandra.</p>
-                <div class="tradeoff">Sin virtual nodes la distribución es desigual. La configuración de vnodes requiere tuning cuidadoso según la capacidad de cada nodo.</div>
-              </div>
-              <div class="concept-card">
-                <h3>37. Clock Skew</h3>
-                <p>Diferencias en los relojes entre máquinas a pesar de la sincronización NTP. Rompe la lógica de ordenamiento basada en timestamps wall-clock. Los sistemas usan relojes lógicos en su lugar.</p>
-                <div class="tradeoff">Confiar en wall-clock time para ordenar eventos en sistemas distribuidos es un bug de diseño extremadamente común.</div>
-              </div>
-              <div class="concept-card">
-                <h3>38. Vector Clock</h3>
-                <p>Rastrea el ordenamiento causal de eventos sin relojes sincronizados. Cada nodo mantiene un contador; los mensajes incluyen el vector clock, permitiendo determinar causalidad en lugar de tiempo absoluto.</p>
-                <div class="tradeoff">El tamaño del vector crece con el número de nodos, volviéndose costoso de mantener en sistemas con miles de nodos.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lang-en">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>26. Distributed System</h3>
-                <p>Multiple machines communicating over networks to achieve shared goals. Introduces unique challenges: network failures, partial failures, and consistency across data copies.</p>
-                <div class="tradeoff">Distributed systems bring complexity that monoliths don't have; justify them with a real scale requirement.</div>
-              </div>
-              <div class="concept-card">
-                <h3>27. CAP Theorem</h3>
-                <p>A distributed system can guarantee only two of three: Consistency, Availability, Partition tolerance. Since partitions are inevitable, the real choice during failures is between C and A.</p>
-                <div class="tradeoff">No system can be 100% consistent AND 100% available under simultaneous network partitions.</div>
-              </div>
-              <div class="concept-card">
-                <h3>28. Strong Consistency</h3>
-                <p>Every read reflects the latest write regardless of which node responds. Requires coordination before responding. Appropriate for financial data and critical inventory.</p>
-                <div class="tradeoff">Coordination overhead reduces throughput and increases latency compared to eventual consistency.</div>
-              </div>
-              <div class="concept-card">
-                <h3>29. Eventual Consistency</h3>
-                <p>Replicas converge to the same state over time but may briefly differ. Cheaper and more available. Suitable for like counts, feeds, and recommendations.</p>
-                <div class="tradeoff">Clients may temporarily read stale data; unacceptable for systems where precision is critical.</div>
-              </div>
-              <div class="concept-card">
-                <h3>30. Consensus</h3>
-                <p>Multiple nodes agree on a single value despite individual failures. Algorithms like Raft and Paxos require majority agreement, preventing split-brain scenarios.</p>
-                <div class="tradeoff">Consensus is expensive in latency and network traffic; used selectively for critical decisions.</div>
-              </div>
-              <div class="concept-card">
-                <h3>31. Leader Election</h3>
-                <p>Distributed nodes agree which one coordinates work. Requires consensus to prevent dual leaders (split-brain). Used in distributed databases like etcd or task coordinators.</p>
-                <div class="tradeoff">The window between a leader failing and a new one being elected temporarily reduces system capacity.</div>
-              </div>
-              <div class="concept-card">
-                <h3>32. Idempotency</h3>
-                <p>Operations that produce the same result whether executed once or multiple times. Distributed systems can't guarantee exactly-once delivery, making this essential for safe retries.</p>
-                <div class="tradeoff">Implementing idempotency requires tracking already-executed operations, adding state management and storage overhead.</div>
-              </div>
-              <div class="concept-card">
-                <h3>33. Idempotency Key</h3>
-                <p>A unique client-generated identifier enabling server detection and rejection of duplicate requests. Standard in payment APIs (Stripe, PayPal) to prevent double charges on retries.</p>
-                <div class="tradeoff">The server must store and query processed keys; requires TTL or cleanup to prevent unbounded growth.</div>
-              </div>
-              <div class="concept-card">
-                <h3>34. Two-Phase Commit (2PC)</h3>
-                <p>Protocol making transactions atomic across multiple databases. Phase 1: coordinator asks if participants can commit. Phase 2: all commit or abort together.</p>
-                <div class="tradeoff">Participants hold locks between phases. If the coordinator crashes, the system blocks indefinitely.</div>
-              </div>
-              <div class="concept-card">
-                <h3>35. Saga Pattern</h3>
-                <p>Alternative to distributed transactions: breaks operations into local transactions with compensating actions. If a step fails, earlier steps are compensated (undone).</p>
-                <div class="tradeoff">Compensation logic is complex. The system reaches eventual consistency; intermediate states can be visible to other services.</div>
-              </div>
-              <div class="concept-card">
-                <h3>36. Consistent Hashing Ring</h3>
-                <p>Arranges hash values in a ring where each node is responsible for ranges. Virtual nodes (multiple positions per physical node) improve distribution. Standard in Redis Cluster and Cassandra.</p>
-                <div class="tradeoff">Without virtual nodes distribution is uneven. Vnode configuration requires careful tuning based on each node's capacity.</div>
-              </div>
-              <div class="concept-card">
-                <h3>37. Clock Skew</h3>
-                <p>Time differences between machine clocks despite NTP synchronization. Breaks timestamp-based ordering logic. Systems use logical clocks instead of wall-clock time.</p>
-                <div class="tradeoff">Relying on wall-clock time to order events in distributed systems is an extremely common design bug.</div>
-              </div>
-              <div class="concept-card">
-                <h3>38. Vector Clock</h3>
-                <p>Tracks causal event ordering without synchronized clocks. Each node maintains a counter; messages include the vector clock, allowing causality (not just timing) to be determined.</p>
-                <div class="tradeoff">The vector size grows with the number of nodes, becoming expensive to maintain in systems with thousands of nodes.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Diagram 3: CAP Theorem -->
-          <figure class="diagram">
-            <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="background:#0f1117;border-radius:8px;">
-              <text x="350" y="26" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="12">CAP Theorem — Pick Two</text>
-              <polygon points="350,52 165,228 535,228" fill="none" stroke="#2d3149" stroke-width="2"/>
-              <!-- Vertices -->
-              <text x="350" y="46" text-anchor="middle" fill="#00d4aa" font-family="sans-serif" font-size="13" font-weight="700">Consistency</text>
-              <text x="142" y="244" text-anchor="middle" fill="#00d4aa" font-family="sans-serif" font-size="13" font-weight="700">Availability</text>
-              <text x="558" y="244" text-anchor="middle" fill="#00d4aa" font-family="sans-serif" font-size="13" font-weight="700">Partition Tolerance</text>
-              <!-- Edge labels -->
-              <text x="236" y="137" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="10" transform="rotate(-53,236,137)">CA: Single-node SQL</text>
-              <text x="464" y="137" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="10" transform="rotate(53,464,137)">CP: HBase, Zookeeper</text>
-              <text x="350" y="222" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="10">AP: Cassandra, DynamoDB, CouchDB</text>
-              <!-- Center note -->
-              <text x="350" y="158" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="10">Network partitions are</text>
-              <text x="350" y="173" text-anchor="middle" fill="#8892b0" font-family="monospace" font-size="10">inevitable in production →</text>
-              <text x="350" y="188" text-anchor="middle" fill="#00d4aa" font-family="monospace" font-size="10">Choose C or A during failures</text>
-            </svg>
-            <figcaption>
-              <span class="lang-es">El teorema CAP: en presencia de una partición de red (inevitable en producción), debes elegir entre Consistencia o Disponibilidad.</span>
-              <span class="lang-en">The CAP theorem: when a network partition occurs (inevitable in production), you must choose between Consistency or Availability.</span>
-            </figcaption>
-          </figure>
-
-          <!-- Reference images: Section 3 — Eventual Consistency, Leader Election, Idempotency, 2PC, Saga -->
-          <figure class="diagram">
-            <div class="ref-img-grid">
-              <div>
-                <p class="ref-img-label">29. Eventual Consistency</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!arqN!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd785d861-31b6-46ec-9bee-9de1ed8b246b_1536x896.png" alt="Eventual Consistency diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">31. Leader Election</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!RSs6!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F245c0636-bb50-4a7e-b17c-d40ad6285393_1536x858.png" alt="Leader Election diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">32. Idempotency</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!M27D!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc68734d0-e66a-4a3d-841a-795695357ff4_1448x1086.png" alt="Idempotency diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">34. Two-Phase Commit (2PC)</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!kvv3!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff1da5d5f-c018-4202-84a2-c1a530d5aeac_1536x1024.png" alt="Two-Phase Commit diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-            </div>
-            <div style="margin-top:1rem;">
-              <p class="ref-img-label">35. Saga Pattern</p>
-              <img src="https://substackcdn.com/image/fetch/$s_!bRkd!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcfb43407-f22c-452e-82d3-f286060d01b8_1448x972.png" alt="Saga Pattern diagram" style="width:100%;border-radius:8px;display:block;"/>
-            </div>
-          </figure>
-
-          <!-- ─── SECTION 4: MESSAGING ─── -->
-          <div class="lang-es">
-            <h2>4. Mensajería y Comunicación</h2>
-            <div class="section-intro">Seis conceptos que habilitan la comunicación asincrónica entre componentes y las funcionalidades en tiempo real.</div>
-          </div>
-          <div class="lang-en">
-            <h2>4. Messaging &amp; Communication</h2>
-            <div class="section-intro">Six concepts enabling asynchronous communication between components and real-time features.</div>
-          </div>
-
-          <div class="lang-es">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>39. Message Queue</h3>
-                <p>Retiene mensajes de productores hasta que los consumidores los procesen. Desacopla componentes temporalmente y absorbe picos de tráfico sin perder datos. Ejemplos: RabbitMQ, Amazon SQS.</p>
-                <div class="tradeoff">Los resultados no están disponibles inmediatamente; no es adecuado para operaciones que requieren respuesta síncrona al cliente.</div>
-              </div>
-              <div class="concept-card">
-                <h3>40. Pub/Sub</h3>
-                <p>Múltiples suscriptores reciben copias de los mensajes publicados. A diferencia de las queues donde un solo consumidor maneja cada mensaje. Ideal cuando múltiples servicios reaccionan al mismo evento.</p>
-                <div class="tradeoff">Si no hay suscriptores activos, los mensajes se pierden a menos que uses retención de log (como Apache Kafka).</div>
-              </div>
-              <div class="concept-card">
-                <h3>41. Dead-Letter Queue (DLQ)</h3>
-                <p>Retiene mensajes que fallaron después del límite de reintentos configurado. Previene que mensajes "venenosos" bloqueen la queue principal. Monitorearla es esencial para la salud del sistema.</p>
-                <div class="tradeoff">Los mensajes en DLQ requieren intervención manual o automatización de diagnóstico; ignorarlos produce pérdida de datos silenciosa.</div>
-              </div>
-              <div class="concept-card">
-                <h3>42. Backpressure</h3>
-                <p>El consumidor señala al productor que reduzca la velocidad de envío cuando está sobrecargado. Sin backpressure, las queues crecen sin límite hasta agotar la memoria disponible.</p>
-                <div class="tradeoff">Implementar backpressure requiere coordinación entre productor y consumidor; puede añadir latencia al pipeline de procesamiento.</div>
-              </div>
-              <div class="concept-card">
-                <h3>43. WebSocket</h3>
-                <p>Conexión bidireccional persistente entre cliente y servidor. Menor overhead que abrir conexiones HTTP repetidas. Esencial para chat en tiempo real, juegos multijugador y dashboards en vivo.</p>
-                <div class="tradeoff">Requiere conexiones stateful y un pub/sub backplane para escalar horizontalmente entre múltiples instancias del servidor.</div>
-              </div>
-              <div class="concept-card">
-                <h3>44. Server-Sent Events (SSE)</h3>
-                <p>Streaming unidireccional del servidor al cliente sobre una conexión HTTP persistente. Más simple que WebSockets con reconexión automática incorporada. Ideal para notificaciones y streaming de respuestas de LLMs.</p>
-                <div class="tradeoff">Solo funciona de servidor a cliente. Si necesitas comunicación bidireccional, WebSockets es la alternativa necesaria.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lang-en">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>39. Message Queue</h3>
-                <p>Holds messages from producers until consumers process them. Temporally decouples components and absorbs traffic spikes without data loss. Examples: RabbitMQ, Amazon SQS.</p>
-                <div class="tradeoff">Results are not immediately available; not suitable for operations requiring a synchronous client response.</div>
-              </div>
-              <div class="concept-card">
-                <h3>40. Pub/Sub</h3>
-                <p>Multiple subscribers receive copies of published messages. Unlike queues where one consumer handles each message. Ideal when multiple services react to the same event.</p>
-                <div class="tradeoff">If no active subscribers exist, messages are lost unless you use log retention (like Apache Kafka).</div>
-              </div>
-              <div class="concept-card">
-                <h3>41. Dead-Letter Queue (DLQ)</h3>
-                <p>Holds messages that failed after the configured retry limit. Prevents "poison" messages from blocking the main queue. Monitoring it is essential for system health.</p>
-                <div class="tradeoff">Messages in DLQ require manual intervention or diagnostic automation; ignoring them causes silent data loss.</div>
-              </div>
-              <div class="concept-card">
-                <h3>42. Backpressure</h3>
-                <p>Consumer signals producer to slow down when overwhelmed. Without backpressure, queues grow without bound until the system runs out of memory.</p>
-                <div class="tradeoff">Implementing backpressure requires coordination between producer and consumer; can add latency to the processing pipeline.</div>
-              </div>
-              <div class="concept-card">
-                <h3>43. WebSocket</h3>
-                <p>Persistent bidirectional connection between client and server. Lower overhead than repeated HTTP connections. Essential for real-time chat, multiplayer games, and live dashboards.</p>
-                <div class="tradeoff">Requires stateful connections and a pub/sub backplane to scale horizontally across multiple server instances.</div>
-              </div>
-              <div class="concept-card">
-                <h3>44. Server-Sent Events (SSE)</h3>
-                <p>One-way streaming from server to client over a persistent HTTP connection. Simpler than WebSockets with built-in reconnection. Ideal for notifications and LLM response streaming.</p>
-                <div class="tradeoff">Only works server-to-client. If you need bidirectional communication, WebSockets is the necessary alternative.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Reference images: Section 4 — Message Queue, Pub/Sub, DLQ, Backpressure, WebSocket, SSE -->
-          <figure class="diagram">
-            <div class="ref-img-grid">
-              <div>
-                <p class="ref-img-label">39. Message Queue</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!D6wt!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb06df94b-4b1b-4947-b004-056a6302a8b9_1448x956.png" alt="Message Queue diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">40. Pub/Sub</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!ei4h!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa687de8-45b2-492c-b98c-8dde047d7076_1448x1005.png" alt="Pub/Sub diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">41. Dead-Letter Queue (DLQ)</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!7bZC!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4469d5b4-775d-4526-87aa-1c444bf1e5ae_1448x1086.png" alt="Dead-Letter Queue diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">42. Backpressure</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!Frhc!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdea689a3-88f6-452f-93de-cb9bb5cdb39a_1536x1024.png" alt="Backpressure diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">43. WebSocket</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!yMxL!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0e9a411b-e5af-444e-bc2f-8e38340f2890_1536x1024.png" alt="WebSocket diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">44. Server-Sent Events (SSE)</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!s_iV!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Feea59e51-28f6-4bd4-8d2a-404c308f4c6f_1536x1024.png" alt="Server-Sent Events diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-            </div>
-          </figure>
-
-          <!-- ─── SECTION 5: RELIABILITY & MODERN ─── -->
-          <div class="lang-es">
-            <h2>5. Confiabilidad y Conceptos Modernos</h2>
-            <div class="section-intro">Los últimos seis conceptos: cómo mantener la disponibilidad bajo estrés extremo y cómo la IA se integra con la infraestructura moderna.</div>
-          </div>
-          <div class="lang-en">
-            <h2>5. Reliability &amp; Modern Concepts</h2>
-            <div class="section-intro">The final six concepts: how to maintain availability under extreme stress and how AI integrates with modern infrastructure.</div>
-          </div>
-
-          <div class="lang-es">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>45. Circuit Breaker</h3>
-                <p>Monitorea llamadas a dependencias y las detiene cuando la tasa de fallo supera un umbral. Tres estados: Closed (normal), Open (rechaza inmediatamente), Half-Open (prueba recuperación). Previene fallos en cascada.</p>
-                <div class="tradeoff">Puede rechazar requests válidos durante la ventana "open". Requiere implementar una respuesta degradada o fallback explícito.</div>
-              </div>
-              <div class="concept-card">
-                <h3>46. Rate Limiting</h3>
-                <p>Limita los requests por cliente por período de tiempo. El algoritmo Token Bucket es el más común: el bucket se llena a tasa fija y se vacía con cada request. Protege de sobrecarga y abuso.</p>
-                <div class="tradeoff">Clientes legítimos bajo picos de tráfico pueden ser bloqueados. Los límites deben comunicarse claramente con headers HTTP (Retry-After, X-RateLimit-*).</div>
-              </div>
-              <div class="concept-card">
-                <h3>47. Load Shedding</h3>
-                <p>Rechaza deliberadamente requests en exceso durante sobrecarga. "La disponibilidad parcial es mejor que el fallo total": servir el 80% bien es mejor que intentar todos y fallar todos.</p>
-                <div class="tradeoff">Decidir cuáles requests rechazar requiere priorización inteligente; rechazar los incorrectos puede romper SLAs críticos.</div>
-              </div>
-              <div class="concept-card">
-                <h3>48. Bloom Filter</h3>
-                <p>Probador probabilístico de membresía eficiente en espacio. Puede confirmar con certeza que un elemento NO está en el conjunto; puede falsamente afirmar que SÍ está (false positive, nunca false negative).</p>
-                <div class="tradeoff">Los false positives son aceptables solo cuando el costo de procesarlos es bajo. Las implementaciones básicas no soportan eliminaciones.</div>
-              </div>
-              <div class="concept-card">
-                <h3>49. Embedding</h3>
-                <p>Representaciones vectoriales numéricas que capturan el significado semántico de texto o imágenes. Elementos similares tienen vectores próximos en el espacio vectorial. Base de la búsqueda semántica moderna.</p>
-                <div class="tradeoff">Los embeddings grandes (1536+ dimensiones) son costosos de almacenar y buscar; requieren bases de datos vectoriales especializadas como Pinecone o pgvector.</div>
-              </div>
-              <div class="concept-card">
-                <h3>50. RAG (Retrieval-Augmented Generation)</h3>
-                <p>Arquitectura de LLM que recupera conocimiento externo relevante como contexto en tiempo de query. Dos fases: ingestión (docs→chunks→embeddings→vector DB) y retrieval (busca contexto relevante para fundamentar la respuesta).</p>
-                <div class="tradeoff">La calidad del chunking y la estrategia de retrieval determinan el 80% de la calidad del sistema. No es una solución plug-and-play.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lang-en">
-            <div class="concept-grid">
-              <div class="concept-card">
-                <h3>45. Circuit Breaker</h3>
-                <p>Monitors dependency calls and stops them when the failure rate exceeds a threshold. Three states: Closed (normal), Open (reject immediately), Half-Open (test recovery). Prevents cascading failures.</p>
-                <div class="tradeoff">May reject valid requests during the "open" window. Requires implementing a degraded response or explicit fallback strategy.</div>
-              </div>
-              <div class="concept-card">
-                <h3>46. Rate Limiting</h3>
-                <p>Caps requests per client per time period. The Token Bucket algorithm is most common: the bucket fills at a fixed rate and empties with each request. Protects against overload and abuse.</p>
-                <div class="tradeoff">Legitimate clients under traffic spikes may be blocked. Limits must be communicated clearly via HTTP headers (Retry-After, X-RateLimit-*).</div>
-              </div>
-              <div class="concept-card">
-                <h3>47. Load Shedding</h3>
-                <p>Deliberately rejects excess requests during overload. "Partial availability beats total failure": serving 80% well beats attempting all requests and failing all of them.</p>
-                <div class="tradeoff">Deciding which requests to reject requires smart prioritization; rejecting the wrong ones can break critical SLAs.</div>
-              </div>
-              <div class="concept-card">
-                <h3>48. Bloom Filter</h3>
-                <p>Space-efficient probabilistic membership tester. Can confirm with certainty that an item is NOT in the set; may falsely claim it IS (false positives only, never false negatives).</p>
-                <div class="tradeoff">False positives are acceptable only when their processing cost is low. Basic implementations don't support deletions.</div>
-              </div>
-              <div class="concept-card">
-                <h3>49. Embedding</h3>
-                <p>Numerical vector representations capturing the semantic meaning of text or images. Similar items have proximate vectors in vector space. Foundation of modern semantic search.</p>
-                <div class="tradeoff">Large embeddings (1536+ dimensions) are expensive to store and search; require specialized vector databases like Pinecone or pgvector.</div>
-              </div>
-              <div class="concept-card">
-                <h3>50. RAG (Retrieval-Augmented Generation)</h3>
-                <p>LLM architecture that retrieves relevant external knowledge as context at query time. Two phases: ingestion (docs→chunks→embeddings→vector DB) and retrieval (finds relevant context to ground the response).</p>
-                <div class="tradeoff">The quality of chunking and retrieval strategy determines 80% of system quality. It is not a plug-and-play solution.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Reference images: Section 5 — Rate Limiting, Load Shedding, Bloom Filter, RAG -->
-          <figure class="diagram">
-            <div class="ref-img-grid">
-              <div>
-                <p class="ref-img-label">46. Rate Limiting</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!xKNi!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F201f077a-7fa6-4b66-8d34-0a47c7804399_1448x933.png" alt="Rate Limiting diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">47. Load Shedding</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!djPT!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff8221803-5f0e-495e-9465-dfc2b090ccfe_1536x1024.png" alt="Load Shedding diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">48. Bloom Filter</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!9eS3!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8d7b76d3-b0fa-4295-977b-2e8415099b40_1448x1086.png" alt="Bloom Filter diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-              <div>
-                <p class="ref-img-label">50. RAG</p>
-                <img src="https://substackcdn.com/image/fetch/$s_!co0o!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F05d9223c-666b-4c3f-bd47-db0065412277_1448x1086.png" alt="RAG diagram" style="width:100%;border-radius:8px;display:block;"/>
-              </div>
-            </div>
-          </figure>
-
-          <!-- Diagram 4: Circuit Breaker -->
-          <figure class="diagram">
-            <img src="https://substackcdn.com/image/fetch/$s_!n1ig!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F018ae772-a560-45cf-8f6d-6c507e11fe61_1448x1086.png"
-                 alt="Circuit Breaker state machine diagram" style="width:100%;border-radius:8px;display:block;"/>
-            <figcaption>
-              <span class="lang-es">El Circuit Breaker tiene tres estados: Closed (operación normal), Open (rechaza requests al instante) y Half-Open (prueba si la dependencia se recuperó).</span>
-              <span class="lang-en">The Circuit Breaker has three states: Closed (normal operation), Open (instant request rejection), and Half-Open (tests if the dependency has recovered).</span>
-            </figcaption>
-          </figure>
-
-          <!-- Conclusion -->
-          <div class="lang-es">
-            <h2>Conclusión</h2>
-            <p>Estos 50 conceptos no son un checklist que debes implementar — son un vocabulario. El valor real está en saber cuándo aplicar cada uno y, más importante, cuándo <em>no</em> aplicarlo. Un sistema sobrediseñado con consistent hashing, 2PC y vector clocks para 100 usuarios es tan problemático como uno subdiseñado que colapsa bajo carga real.</p>
-            <blockquote>La arquitectura no es sobre patrones. Es sobre trade-offs deliberados en función del problema real que tienes hoy.</blockquote>
-            <p>La próxima vez que diseñes un sistema, pregúntate: ¿cuál es el trade-off que estoy aceptando con esta decisión, y vale la pena? Esa pregunta es la diferencia entre un arquitecto que conoce los conceptos y uno que sabe diseñar sistemas reales.</p>
-          </div>
-          <div class="lang-en">
-            <h2>Conclusion</h2>
-            <p>These 50 concepts are not a checklist to implement — they are a vocabulary. The real value lies in knowing when to apply each one and, more importantly, when <em>not</em> to. An over-engineered system with consistent hashing, 2PC, and vector clocks for 100 users is just as problematic as an under-engineered one that collapses under real load.</p>
-            <blockquote>Architecture is not about patterns. It's about deliberate trade-offs based on the real problem you have today.</blockquote>
-            <p>The next time you design a system, ask yourself: what trade-off am I accepting with this decision, and is it worth it? That question is the difference between an architect who knows the concepts and one who knows how to design real systems.</p>
-          </div>
-
-        </div><!-- /.article-body -->
-      </div>
-    </article>
-  </main>
-
-  <section class="newsletter-section">
-    <div class="container">
-      <div class="newsletter-box">
-        <span class="newsletter-eyebrow">Newsletter</span>
-        <h2 data-es="¿Te gustó el contenido?" data-en="Enjoying the content?">¿Te gustó el contenido?</h2>
-        <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo."
-           data-en="Subscribe to get new software architecture articles delivered to your inbox.">
+<nav>
+<div class="nav-inner">
+<a class="nav-logo" href="../">fp.</a>
+<div class="nav-links">
+<a data-en="Blog" data-es="Blog" href="../blog/">Blog</a>
+<button class="lang-btn" onclick="toggleLang()">EN</button>
+</div>
+</div>
+</nav>
+<main>
+<article class="article-container">
+<div class="container">
+<header class="article-header">
+<div class="lang-es">
+<div class="article-tags">
+<span class="card-tag">Architecture</span>
+<span class="card-tag">Design</span>
+<span class="card-tag">Microservices</span>
+</div>
+<h1>50 Conceptos de System Design que Todo Arquitecto Debe Conocer</h1>
+<p class="article-subtitle">Una guía de referencia con los trade-offs prácticos de cada concepto — desde escalabilidad hasta RAG.</p>
+<div class="article-meta">
+<span>August 2026</span>
+<span>Felipe Pabón</span>
+</div>
+</div>
+<div class="lang-en">
+<div class="article-tags">
+<span class="card-tag">Architecture</span>
+<span class="card-tag">Design</span>
+<span class="card-tag">Microservices</span>
+</div>
+<h1>50 System Design Concepts Every Architect Should Know</h1>
+<p class="article-subtitle">A reference guide with practical trade-offs for each concept — from scalability to RAG.</p>
+<div class="article-meta">
+<span>August 2026</span>
+<span>Felipe Pabón</span>
+</div>
+</div>
+</header>
+<div class="article-body">
+<div class="lang-es">
+<p>En system design, conocer el nombre de un concepto no es suficiente. Lo que importa es entender <em>por qué existe</em> y cuál es su trade-off real. Este artículo es una guía de referencia rápida de los 50 conceptos más importantes, organizados en cinco categorías, con énfasis en sus implicaciones prácticas.</p>
+</div>
+<div class="lang-en">
+<p>In system design, knowing the name of a concept is not enough. What matters is understanding <em>why it exists</em> and what its real trade-off is. This article is a quick reference guide for the 50 most important concepts, organized into five categories, with emphasis on their practical implications.</p>
+</div>
+<!-- ─── SECTION 1: CORE INFRASTRUCTURE ─── -->
+<div class="lang-es">
+<h2>1. Infraestructura Core</h2>
+<div class="section-intro">Los primeros diez conceptos describen cómo el tráfico fluye a través de tu sistema y cómo este crece ante la demanda.</div>
+</div>
+<div class="lang-en">
+<h2>1. Core Infrastructure</h2>
+<div class="section-intro">The first ten concepts describe how traffic flows through your system and how it grows under demand.</div>
+</div>
+<div class="lang-es">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>1. Scalability</h3>
+<p>La capacidad del sistema para manejar crecimiento en usuarios, datos o requests manteniendo rendimiento aceptable. El sistema es tan escalable como su componente menos escalable.</p>
+<div class="tradeoff">Escalar una parte sin las demás crea nuevos cuellos de botella.</div>
+</div>
+<div class="concept-card">
+<h3>2. Vertical Scaling (Scale Up)</h3>
+<p>Agregar más poder a una sola máquina: más CPU, más RAM, más almacenamiento. Simple de implementar pero tiene un límite físico y de costo.</p>
+<div class="tradeoff">Máquinas más grandes cuestan exponencialmente más y representan un único punto de fallo.</div>
+</div>
+<div class="concept-card">
+<h3>3. Horizontal Scaling (Scale Out)</h3>
+<p>Agregar más máquinas para distribuir la carga. Requiere que los servidores sean stateless para que cualquier instancia pueda responder cualquier request sin dependencia de sesión.</p>
+<div class="tradeoff">Mayor complejidad operacional: necesitas un load balancer y gestión de estado externo.</div>
+</div>
+<div class="concept-card">
+<h3>4. Load Balancer</h3>
+<p>Distribuye los requests entrantes entre múltiples servidores, redirigiendo automáticamente el tráfico alrededor de instancias caídas. Es transparente para el cliente.</p>
+<div class="tradeoff">El load balancer mismo puede convertirse en un punto único de fallo si no está replicado.</div><img alt="Load Balancer diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!wKsb!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffd3e0243-a537-4d7e-95e2-56caa1ff0d98_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>5. Latency</h3>
+<p>El tiempo que experimenta un usuario individual desde que envía un request hasta que recibe la respuesta. Múltiples fuentes se suman: red, procesamiento del servidor, queries a la BD.</p>
+<div class="tradeoff">Optimizar solo el promedio deja a los peores usuarios (p99) invisibles y desatendidos.</div><img alt="Latency diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!2Yir!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F66c74354-8651-46dc-bd81-b4ac4f4daeb2_1200x750.jpeg" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>6. Throughput</h3>
+<p>El trabajo total completado por unidad de tiempo (requests/segundo). Distinto a latency: requests individuales rápidos no garantizan alto throughput si se procesan secuencialmente.</p>
+<div class="tradeoff">Aumentar throughput con concurrencia introduce complejidad de sincronización y race conditions.</div>
+</div>
+<div class="concept-card">
+<h3>7. CDN (Content Delivery Network)</h3>
+<p>Red de servidores distribuidos globalmente que cachea contenido estático cerca de los usuarios. Reduce dramáticamente la latencia para imágenes, videos y scripts.</p>
+<div class="tradeoff">Introduce riesgo de staleness: el contenido puede quedar desactualizado si la invalidación no está bien configurada.</div><img alt="CDN diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!1_54!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F19113e00-60dc-4efb-8a0a-3b52e1f9191c_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>8. DNS (Domain Name System)</h3>
+<p>Traduce nombres de dominio a direcciones IP. Se usa para routing de tráfico por geografía o salud del servidor mediante GeoDNS o DNS failover automático.</p>
+<div class="tradeoff">El cacheo DNS retrasa la propagación de cambios; un TTL bajo aumenta la carga en los servidores DNS.</div>
+</div>
+<div class="concept-card">
+<h3>9. API Gateway</h3>
+<p>Punto de entrada único que maneja autenticación, rate limiting, SSL y routing antes de que los requests lleguen a los servicios backend. Centraliza las preocupaciones transversales.</p>
+<div class="tradeoff">Se convierte en un componente crítico; si falla, todo el sistema deja de ser accesible desde el exterior.</div><img alt="API Gateway diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!RRcr!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F78296589-b3c6-451b-99ac-41c5d5585d27_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>10. Reverse Proxy</h3>
+<p>Recibe requests en nombre de los servidores, manejando cacheo, compresión, SSL y balanceo de carga. Los load balancers son reverse proxies especializados.</p>
+<div class="tradeoff">Agrega un hop extra en la red; debe ser de alta disponibilidad para no ser él mismo el cuello de botella.</div><img alt="Reverse Proxy diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!Acsj!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F85c249eb-3561-48e7-9348-f5d8a53308b5_1536x880.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+</div>
+</div>
+<div class="lang-en">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>1. Scalability</h3>
+<p>The ability of a system to handle growth in users, data, or requests while maintaining acceptable performance. The system is only as scalable as its least scalable part.</p>
+<div class="tradeoff">Scaling one component without the others creates new bottlenecks elsewhere.</div>
+</div>
+<div class="concept-card">
+<h3>2. Vertical Scaling (Scale Up)</h3>
+<p>Adding more power to a single machine: more CPU, RAM, or storage. Simple to implement but has a physical and cost ceiling.</p>
+<div class="tradeoff">Larger machines cost exponentially more and represent a single point of failure.</div>
+</div>
+<div class="concept-card">
+<h3>3. Horizontal Scaling (Scale Out)</h3>
+<p>Adding more machines to distribute load. Requires stateless servers so any instance can handle any request without session dependency.</p>
+<div class="tradeoff">Greater operational complexity: you need a load balancer and external state management.</div>
+</div>
+<div class="concept-card">
+<h3>4. Load Balancer</h3>
+<p>Distributes incoming requests across multiple servers, automatically routing around failed instances. Appears transparent to clients while managing traffic internally.</p>
+<div class="tradeoff">The load balancer itself can become a single point of failure if not replicated.</div><img alt="Load Balancer diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!wKsb!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffd3e0243-a537-4d7e-95e2-56caa1ff0d98_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>5. Latency</h3>
+<p>The delay experienced by an individual user from request to response. Multiple sources stack: network travel, server processing, database queries.</p>
+<div class="tradeoff">Optimizing only the average leaves p99 users invisible and underserved.</div><img alt="Latency diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!2Yir!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F66c74354-8651-46dc-bd81-b4ac4f4daeb2_1200x750.jpeg" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>6. Throughput</h3>
+<p>Total work completed per unit of time (requests/second). Distinct from latency — fast individual requests don't guarantee high throughput if processed sequentially.</p>
+<div class="tradeoff">Increasing throughput with concurrency introduces synchronization complexity and race conditions.</div>
+</div>
+<div class="concept-card">
+<h3>7. CDN (Content Delivery Network)</h3>
+<p>Globally distributed servers caching static content near users. Dramatically reduces latency for images, videos, and scripts.</p>
+<div class="tradeoff">Introduces staleness risk: content can become outdated if cache invalidation is not properly configured.</div><img alt="CDN diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!1_54!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F19113e00-60dc-4efb-8a0a-3b52e1f9191c_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>8. DNS (Domain Name System)</h3>
+<p>Translates domain names to IP addresses. Used for traffic routing by geography or server health through GeoDNS or automatic DNS failover.</p>
+<div class="tradeoff">DNS caching delays propagation of changes; low TTL increases load on DNS servers.</div>
+</div>
+<div class="concept-card">
+<h3>9. API Gateway</h3>
+<p>Single entry point handling authentication, rate limiting, SSL, and routing before requests reach backend services. Centralizes cross-cutting concerns.</p>
+<div class="tradeoff">Becomes a critical component — if it fails, the entire system becomes unreachable from the outside.</div><img alt="API Gateway diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!RRcr!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F78296589-b3c6-451b-99ac-41c5d5585d27_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>10. Reverse Proxy</h3>
+<p>Receives requests on behalf of servers, handling caching, compression, SSL, and load balancing. Load balancers are specialized reverse proxies.</p>
+<div class="tradeoff">Adds an extra network hop; must be highly available to avoid becoming a bottleneck itself.</div><img alt="Reverse Proxy diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!Acsj!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F85c249eb-3561-48e7-9348-f5d8a53308b5_1536x880.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+</div>
+</div>
+<!-- Diagram 1: Vertical vs Horizontal Scaling -->
+<figure class="diagram">
+<svg style="background:#0f1117;border-radius:8px;" viewbox="0 0 700 270" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arr-green" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="3">
+<path d="M0,0 L0,6 L8,3 z" fill="#00d4aa"></path>
+</marker>
+</defs>
+<text fill="#8892b0" font-family="monospace" font-size="12" text-anchor="middle" x="350" y="26">Vertical Scaling vs Horizontal Scaling</text>
+<!-- VERTICAL side -->
+<text fill="#00d4aa" font-family="sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="175" y="52">Vertical Scaling</text>
+<rect fill="#1a1d27" height="76" rx="6" stroke="#2d3149" stroke-width="1.5" width="60" x="95" y="68"></rect>
+<text fill="#8892b0" font-family="monospace" font-size="10" text-anchor="middle" x="125" y="100">Server</text>
+<text fill="#8892b0" font-family="monospace" font-size="9" text-anchor="middle" x="125" y="115">4 vCPU</text>
+<text fill="#8892b0" font-family="monospace" font-size="9" text-anchor="middle" x="125" y="128">8 GB RAM</text>
+<line marker-end="url(#arr-green)" stroke="#00d4aa" stroke-width="2" x1="162" x2="185" y1="106" y2="106"></line>
+<rect fill="#1a1d27" height="96" rx="6" stroke="#00d4aa" stroke-width="1.5" width="72" x="192" y="58"></rect>
+<text fill="#e2e8f0" font-family="monospace" font-size="10" text-anchor="middle" x="228" y="94">Server</text>
+<text fill="#00d4aa" font-family="monospace" font-size="9" text-anchor="middle" x="228" y="110">32 vCPU</text>
+<text fill="#00d4aa" font-family="monospace" font-size="9" text-anchor="middle" x="228" y="124">128 GB RAM</text>
+<text fill="#8892b0" font-family="sans-serif" font-size="10" text-anchor="middle" x="175" y="182">⚠ Physical &amp; cost ceiling</text>
+<!-- Divider -->
+<line stroke="#2d3149" stroke-dasharray="5,4" stroke-width="1" x1="350" x2="350" y1="45" y2="220"></line>
+<!-- HORIZONTAL side -->
+<text fill="#00d4aa" font-family="sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="525" y="52">Horizontal Scaling</text>
+<rect fill="#1a1d27" height="34" rx="6" stroke="#00d4aa" stroke-width="1.5" width="72" x="490" y="62"></rect>
+<text fill="#e2e8f0" font-family="monospace" font-size="9" text-anchor="middle" x="526" y="84">Load Balancer</text>
+<line stroke="#2d3149" stroke-width="1.5" x1="526" x2="455" y1="96" y2="130"></line>
+<line stroke="#2d3149" stroke-width="1.5" x1="526" x2="526" y1="96" y2="130"></line>
+<line stroke="#2d3149" stroke-width="1.5" x1="526" x2="597" y1="96" y2="130"></line>
+<rect fill="#1a1d27" height="46" rx="6" stroke="#2d3149" stroke-width="1.5" width="58" x="425" y="130"></rect>
+<text fill="#8892b0" font-family="monospace" font-size="9" text-anchor="middle" x="454" y="157">Server 1</text>
+<rect fill="#1a1d27" height="46" rx="6" stroke="#2d3149" stroke-width="1.5" width="58" x="497" y="130"></rect>
+<text fill="#8892b0" font-family="monospace" font-size="9" text-anchor="middle" x="526" y="157">Server 2</text>
+<rect fill="#1a1d27" height="46" rx="6" stroke="#2d3149" stroke-width="1.5" width="58" x="569" y="130"></rect>
+<text fill="#8892b0" font-family="monospace" font-size="9" text-anchor="middle" x="598" y="152">Server</text>
+<text fill="#00d4aa" font-family="monospace" font-size="9" text-anchor="middle" x="598" y="165">+N</text>
+<text fill="#8892b0" font-family="sans-serif" font-size="10" text-anchor="middle" x="525" y="200">∞ Add nodes as needed</text>
+</svg>
+<figcaption>
+<span class="lang-es">Escalado vertical (agregar poder a una máquina) vs horizontal (agregar máquinas). El horizontal escala ilimitadamente pero requiere servidores stateless.</span>
+<span class="lang-en">Vertical scaling (adding power to one machine) vs horizontal (adding machines). Horizontal scales without limit but requires stateless servers.</span>
+</figcaption>
+</figure>
+<!-- ─── SECTION 2: DATA & STORAGE ─── -->
+<div class="lang-es">
+<h2>2. Datos y Almacenamiento</h2>
+<div class="section-intro">Quince conceptos que determinan cómo tu sistema persiste, accede y organiza los datos a escala.</div>
+</div>
+<div class="lang-en">
+<h2>2. Data &amp; Storage</h2>
+<div class="section-intro">Fifteen concepts that determine how your system persists, accesses, and organizes data at scale.</div>
+</div>
+<div class="lang-es">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>11. Database</h3>
+<p>Sistema de almacenamiento persistente que permite recuperar datos más allá del ciclo de vida de un solo request. La elección de la BD impacta significativamente la arquitectura global.</p>
+<div class="tradeoff">No existe una BD "universal"; cada tipo optimiza para ciertos patrones de acceso sacrificando otros.</div>
+</div>
+<div class="concept-card">
+<h3>12. SQL Database</h3>
+<p>Bases de datos relacionales con tablas estructuradas y garantías ACID. Ideales para datos estructurados y transacciones complejas. Lenguaje de consulta maduro y estandarizado (SQL).</p>
+<div class="tradeoff">Escalar escrituras más allá de un solo servidor requiere sharding, que aumenta la complejidad considerablemente.</div><img alt="SQL Database diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!8WO9!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe73a416a-f004-4828-a86d-2a83bb7b5554_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>13. NoSQL Database</h3>
+<p>Categoría amplia: key-value, document, wide-column y graph stores. Cada uno optimiza para ventajas específicas de escala o flexibilidad sobre las garantías de consistencia de SQL.</p>
+<div class="tradeoff">La flexibilidad de esquema facilita el inicio rápido pero puede generar inconsistencias de datos a largo plazo.</div><img alt="NoSQL Database diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!J2-s!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F15bf78e0-beee-4c61-ad37-337bbc5f2b61_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>14. ACID</h3>
+<p>Atomicidad (todo o nada), Consistencia (transiciones de estado válidas), Aislamiento (transacciones concurrentes independientes) y Durabilidad (sobreviven crashes). Crítico para sistemas financieros.</p>
+<div class="tradeoff">Las garantías ACID requieren coordination y locks, limitando el throughput en sistemas de alta concurrencia.</div>
+</div>
+<div class="concept-card">
+<h3>15. Index</h3>
+<p>Estructura de datos separada que permite búsquedas rápidas. Sin índices, las consultas escanean toda la tabla. Con índices, el motor va directo al dato en tiempo O(log n).</p>
+<div class="tradeoff">Los índices aceleran lecturas pero ralentizan escrituras, ya que deben mantenerse actualizados en cada modificación.</div>
+</div>
+<div class="concept-card">
+<h3>16. Sharding</h3>
+<p>División de datos entre múltiples bases de datos por una shard key. Escala las escrituras y el almacenamiento cuando una sola BD no alcanza. Popular en sistemas de gran escala como Twitter o Stripe.</p>
+<div class="tradeoff">Una shard key mal elegida crea hot partitions. Las queries cross-shard son costosas y complejas de implementar.</div><img alt="Sharding diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!0NfW!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9ba0ea2c-f287-4dd4-b49c-ff772999fcdc_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>17. Replication</h3>
+<p>Mantener copias de datos en múltiples máquinas, típicamente mediante un modelo leader-follower. Permite escalar lecturas distribuyendo queries entre réplicas. Mejora también la resiliencia ante fallos.</p>
+<div class="tradeoff">Introduce replication lag: las réplicas pueden tener datos brevemente desactualizados respecto al leader.</div><img alt="Replication diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!KDb1!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcd86a955-bfd6-44a6-9bd2-e7739a5d98fc_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>18. Cache</h3>
+<p>Almacenamiento rápido en memoria que guarda copias de datos frecuentemente accedidos. Reduce dramáticamente la latencia y la carga en la base de datos primaria. Ejemplos: Redis, Memcached.</p>
+<div class="tradeoff">Los datos pueden quedar stale cuando cambia la fuente original. Requiere estrategias de expiración e invalidación deliberadas.</div>
+</div>
+<div class="concept-card">
+<h3>19. Cache-Aside</h3>
+<p>La aplicación revisa el cache primero; si hay miss, busca en la BD y almacena el resultado en cache. Población lazy con degradación graceful si el cache falla.</p>
+<div class="tradeoff">Cache misses son caros (dos operaciones: BD + escritura en cache). Los primeros requests siempre son lentos (cold start).</div><img alt="Cache-Aside diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!OfIo!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F44c83d70-123c-4e46-b4e5-73bb4b5cbcd3_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>20. Write-Through</h3>
+<p>Cada escritura va simultáneamente al cache y a la BD. Garantiza consistencia entre ambas capas; el cache siempre refleja el estado actual de la BD.</p>
+<div class="tradeoff">Aumenta la latencia de escritura ya que ambas operaciones deben completarse antes de confirmar al cliente.</div><img alt="Write-Through diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!wX_k!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9c9aa4c0-dbee-45ee-9733-578b70033e6f_1448x698.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>21. Write-Behind</h3>
+<p>Las escrituras se confirman inmediatamente al cache y luego se sincronizan asincrónicamente con la BD. Escrituras ultrarrápidas desde la perspectiva del cliente.</p>
+<div class="tradeoff">Riesgo de pérdida de datos: si el cache falla antes de sincronizar con la BD, las escrituras pendientes se pierden.</div><img alt="Write-Behind diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!6PGg!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7be96ff8-f029-4da3-a43c-a457dfe6fd1a_1536x653.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>22. Consistent Hashing</h3>
+<p>Distribuye datos entre nodos minimizando la redistribución al escalar. Agregar un nodo a diez requiere mover ~10% de los datos, no ~90% como con hashing tradicional.</p>
+<div class="tradeoff">La distribución puede ser desigual sin virtual nodes. Implementación más compleja que hashing estándar.</div>
+</div>
+<div class="concept-card">
+<h3>23. Object Storage</h3>
+<p>Sistema infinitamente escalable para archivos no estructurados (imágenes, videos, documentos). Barato y durable. Ejemplos: Amazon S3, Google Cloud Storage.</p>
+<div class="tradeoff">Inadecuado para bases de datos que requieren transacciones o acceso aleatorio de baja latencia.</div>
+</div>
+<div class="concept-card">
+<h3>24. Data Partitioning</h3>
+<p>División de datos en unidades de almacenamiento separadas por criterios como ID, rango de fechas o región geográfica. Mejora el rendimiento reduciendo los datos escaneados por query.</p>
+<div class="tradeoff">Una partición incorrecta puede resultar en full-table scans o particiones desbalanceadas con hot spots de acceso.</div><img alt="Data Partitioning diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!lPAe!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5e804db5-bd21-4df1-8ba4-576c0b5b3439_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>25. Event Sourcing</h3>
+<p>Almacena secuencias de eventos que producen el estado, en lugar del estado actual. Habilita auditoría completa y queries de "time-travel". Muy útil en sistemas financieros y de compliance.</p>
+<div class="tradeoff">Reproducir eventos para obtener el estado actual es lento sin snapshots periódicos. El event store crece indefinidamente.</div>
+</div>
+</div>
+</div>
+<div class="lang-en">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>11. Database</h3>
+<p>Persistent storage system enabling data retrieval beyond a single request lifecycle. The choice of database significantly impacts the overall architecture.</p>
+<div class="tradeoff">No "universal" database exists; each type optimizes for certain access patterns at the expense of others.</div>
+</div>
+<div class="concept-card">
+<h3>12. SQL Database</h3>
+<p>Relational databases with structured tables and ACID guarantees. Ideal for structured data and complex transactions. Their query language is mature and standardized (SQL).</p>
+<div class="tradeoff">Scaling writes beyond a single server requires sharding, which adds considerable complexity.</div><img alt="SQL Database diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!8WO9!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe73a416a-f004-4828-a86d-2a83bb7b5554_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>13. NoSQL Database</h3>
+<p>Broad category: key-value, document, wide-column, and graph stores. Each optimizes for specific scale or flexibility advantages over SQL's consistency guarantees.</p>
+<div class="tradeoff">Schema flexibility speeds up early development but can create data inconsistencies over time.</div><img alt="NoSQL Database diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!J2-s!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F15bf78e0-beee-4c61-ad37-337bbc5f2b61_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>14. ACID</h3>
+<p>Atomicity (all-or-nothing), Consistency (valid state transitions), Isolation (concurrent transactions are independent), Durability (data survives crashes). Critical for financial systems.</p>
+<div class="tradeoff">ACID guarantees require coordination and locks, limiting throughput in high-concurrency systems.</div>
+</div>
+<div class="concept-card">
+<h3>15. Index</h3>
+<p>A separate data structure enabling fast query lookup. Without indexes, queries scan the full table. With indexes, the engine jumps to the data in O(log n) time.</p>
+<div class="tradeoff">Indexes speed up reads but slow down writes, since they must be maintained on every modification.</div>
+</div>
+<div class="concept-card">
+<h3>16. Sharding</h3>
+<p>Splitting data across multiple databases by a shard key. Scales writes and storage when a single DB can't keep up. Common in large-scale systems like Twitter or Stripe.</p>
+<div class="tradeoff">A poorly chosen shard key creates hot partitions. Cross-shard queries are expensive and complex to implement.</div><img alt="Sharding diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!0NfW!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9ba0ea2c-f287-4dd4-b49c-ff772999fcdc_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>17. Replication</h3>
+<p>Keeping data copies across multiple machines, typically via a leader-follower model. Scales reads by distributing queries among replicas. Also improves resilience to failures.</p>
+<div class="tradeoff">Introduces replication lag: replicas may briefly have stale data compared to the leader.</div><img alt="Replication diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!KDb1!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcd86a955-bfd6-44a6-9bd2-e7739a5d98fc_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>18. Cache</h3>
+<p>Fast in-memory storage holding copies of frequently accessed data. Dramatically reduces latency and load on the primary database. Examples: Redis, Memcached.</p>
+<div class="tradeoff">Data can become stale when the source changes. Requires intentional expiry and invalidation strategies.</div>
+</div>
+<div class="concept-card">
+<h3>19. Cache-Aside</h3>
+<p>The application checks cache first; on a miss, fetches from DB and stores the result in cache. Lazy population with graceful degradation if cache fails.</p>
+<div class="tradeoff">Cache misses are expensive (two operations: DB read + cache write). First requests are always slow (cold start).</div><img alt="Cache-Aside diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!OfIo!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F44c83d70-123c-4e46-b4e5-73bb4b5cbcd3_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>20. Write-Through</h3>
+<p>Every write goes simultaneously to cache and DB. Guarantees consistency between both layers; the cache always reflects the current DB state.</p>
+<div class="tradeoff">Increases write latency since both operations must complete before confirming to the client.</div><img alt="Write-Through diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!wX_k!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9c9aa4c0-dbee-45ee-9733-578b70033e6f_1448x698.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>21. Write-Behind</h3>
+<p>Writes are immediately acknowledged to cache, then asynchronously synced to DB. Ultra-fast writes from the client's perspective.</p>
+<div class="tradeoff">Risk of data loss: if the cache fails before syncing with the DB, pending writes are lost.</div><img alt="Write-Behind diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!6PGg!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7be96ff8-f029-4da3-a43c-a457dfe6fd1a_1536x653.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>22. Consistent Hashing</h3>
+<p>Distributes data across nodes minimizing reshuffling when scaling. Adding one node to ten requires moving ~10% of data, not ~90% as with traditional hashing.</p>
+<div class="tradeoff">Distribution can be uneven without virtual nodes. More complex to implement than standard hashing.</div>
+</div>
+<div class="concept-card">
+<h3>23. Object Storage</h3>
+<p>Infinitely scalable system for unstructured files (images, videos, documents). Cheap and durable. Examples: Amazon S3, Google Cloud Storage.</p>
+<div class="tradeoff">Unsuitable for databases requiring transactions or low-latency random access.</div>
+</div>
+<div class="concept-card">
+<h3>24. Data Partitioning</h3>
+<p>Dividing data into separate storage units by ID range, date, or region. Improves query performance by reducing the amount of data scanned per query.</p>
+<div class="tradeoff">Wrong partitioning can result in full-table scans or unbalanced partitions with access hot spots.</div><img alt="Data Partitioning diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!lPAe!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5e804db5-bd21-4df1-8ba4-576c0b5b3439_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>25. Event Sourcing</h3>
+<p>Stores sequences of events producing state instead of the current state. Enables complete audit trails and time-travel queries. Very useful in financial and compliance systems.</p>
+<div class="tradeoff">Replaying events to get the current state is slow without periodic snapshots. The event store grows indefinitely.</div>
+</div>
+</div>
+</div>
+<!-- ─── SECTION 3: DISTRIBUTED SYSTEMS ─── -->
+<div class="lang-es">
+<h2>3. Sistemas Distribuidos</h2>
+<div class="section-intro">Trece conceptos que abordan los desafíos fundamentales cuando múltiples máquinas deben coordinarse: fallos parciales, consistencia y consenso.</div>
+</div>
+<div class="lang-en">
+<h2>3. Distributed Systems</h2>
+<div class="section-intro">Thirteen concepts addressing the fundamental challenges when multiple machines must coordinate: partial failures, consistency, and consensus.</div>
+</div>
+<div class="lang-es">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>26. Distributed System</h3>
+<p>Múltiples máquinas comunicándose por red para lograr objetivos compartidos. Introduce desafíos únicos: fallos de red, fallos parciales y consistencia entre copias de datos.</p>
+<div class="tradeoff">Los sistemas distribuidos traen complejidad que los monolitos no tienen; justifícalos con necesidad real de escala.</div>
+</div>
+<div class="concept-card">
+<h3>27. CAP Theorem</h3>
+<p>Un sistema distribuido puede garantizar solo dos de tres propiedades: Consistency, Availability, Partition tolerance. Como las particiones son inevitables, la elección real durante fallos es entre C o A.</p>
+<div class="tradeoff">No existe un sistema que sea 100% consistente Y 100% disponible ante particiones de red simultáneas.</div>
+</div>
+<div class="concept-card">
+<h3>28. Strong Consistency</h3>
+<p>Cada lectura refleja la última escritura sin importar qué nodo responde. Requiere coordinación entre nodos antes de responder. Apropiado para datos financieros e inventario crítico.</p>
+<div class="tradeoff">El overhead de coordinación reduce throughput y aumenta latencia en comparación con eventual consistency.</div>
+</div>
+<div class="concept-card">
+<h3>29. Eventual Consistency</h3>
+<p>Las réplicas convergen al mismo estado con el tiempo pero pueden diferir brevemente. Más barato y más disponible. Adecuado para contadores de likes, feeds y recomendaciones.</p>
+<div class="tradeoff">Los clientes pueden leer datos stale temporalmente; inaceptable para sistemas donde la precisión es crítica.</div><img alt="Eventual Consistency diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!arqN!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd785d861-31b6-46ec-9bee-9de1ed8b246b_1536x896.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>30. Consensus</h3>
+<p>Múltiples nodos acuerdan un único valor a pesar de fallos individuales. Algoritmos como Raft y Paxos requieren acuerdo de la mayoría, previniendo escenarios split-brain.</p>
+<div class="tradeoff">El consenso es costoso en latencia y tráfico de red; se usa selectivamente para decisiones críticas.</div>
+</div>
+<div class="concept-card">
+<h3>31. Leader Election</h3>
+<p>Nodos distribuidos acuerdan cuál coordina el trabajo. Requiere consenso para prevenir líderes duales. Usado en bases de datos distribuidas como etcd o coordinadores de tareas.</p>
+<div class="tradeoff">La ventana de tiempo entre que un líder falla y uno nuevo se elige reduce temporalmente la capacidad del sistema.</div><img alt="Leader Election diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!RSs6!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F245c0636-bb50-4a7e-b17c-d40ad6285393_1536x858.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>32. Idempotency</h3>
+<p>Operaciones que producen el mismo resultado si se ejecutan una o múltiples veces. Los sistemas distribuidos no pueden garantizar entrega exactamente-una-vez, haciendo esto esencial para retries seguros.</p>
+<div class="tradeoff">Implementar idempotencia requiere rastrear operaciones ya ejecutadas, lo que añade overhead de estado y storage.</div><img alt="Idempotency diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!M27D!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc68734d0-e66a-4a3d-841a-795695357ff4_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>33. Idempotency Key</h3>
+<p>Identificador único generado por el cliente que permite al servidor detectar y rechazar requests duplicados. Estándar en APIs de pago (Stripe, PayPal) para prevenir cobros dobles al reintentar.</p>
+<div class="tradeoff">El servidor debe almacenar y consultar las keys procesadas; requiere TTL o cleanup para no crecer indefinidamente.</div>
+</div>
+<div class="concept-card">
+<h3>34. Two-Phase Commit (2PC)</h3>
+<p>Protocolo para hacer transacciones atómicas entre múltiples bases de datos. Fase 1: el coordinador pregunta si pueden commitear. Fase 2: todos commitean o abortan.</p>
+<div class="tradeoff">Los participantes mantienen locks entre fases. Si el coordinador falla, el sistema queda bloqueado indefinidamente.</div><img alt="Two-Phase Commit diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!kvv3!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff1da5d5f-c018-4202-84a2-c1a530d5aeac_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>35. Saga Pattern</h3>
+<p>Alternativa a transacciones distribuidas: divide operaciones en transacciones locales con acciones compensatorias. Si un paso falla, los pasos anteriores se compensan (undo).</p>
+<div class="tradeoff">La lógica de compensación es compleja. El sistema es eventualmente consistente; pueden existir estados intermedios visibles para otros servicios.</div><img alt="Saga Pattern diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!bRkd!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcfb43407-f22c-452e-82d3-f286060d01b8_1448x972.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>36. Consistent Hashing Ring</h3>
+<p>Organiza valores hash en un anillo donde cada nodo es responsable de rangos. Los virtual nodes (múltiples posiciones por nodo físico) mejoran la distribución. Estándar en Redis Cluster y Cassandra.</p>
+<div class="tradeoff">Sin virtual nodes la distribución es desigual. La configuración de vnodes requiere tuning cuidadoso según la capacidad de cada nodo.</div>
+</div>
+<div class="concept-card">
+<h3>37. Clock Skew</h3>
+<p>Diferencias en los relojes entre máquinas a pesar de la sincronización NTP. Rompe la lógica de ordenamiento basada en timestamps wall-clock. Los sistemas usan relojes lógicos en su lugar.</p>
+<div class="tradeoff">Confiar en wall-clock time para ordenar eventos en sistemas distribuidos es un bug de diseño extremadamente común.</div>
+</div>
+<div class="concept-card">
+<h3>38. Vector Clock</h3>
+<p>Rastrea el ordenamiento causal de eventos sin relojes sincronizados. Cada nodo mantiene un contador; los mensajes incluyen el vector clock, permitiendo determinar causalidad en lugar de tiempo absoluto.</p>
+<div class="tradeoff">El tamaño del vector crece con el número de nodos, volviéndose costoso de mantener en sistemas con miles de nodos.</div>
+</div>
+</div>
+</div>
+<div class="lang-en">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>26. Distributed System</h3>
+<p>Multiple machines communicating over networks to achieve shared goals. Introduces unique challenges: network failures, partial failures, and consistency across data copies.</p>
+<div class="tradeoff">Distributed systems bring complexity that monoliths don't have; justify them with a real scale requirement.</div>
+</div>
+<div class="concept-card">
+<h3>27. CAP Theorem</h3>
+<p>A distributed system can guarantee only two of three: Consistency, Availability, Partition tolerance. Since partitions are inevitable, the real choice during failures is between C and A.</p>
+<div class="tradeoff">No system can be 100% consistent AND 100% available under simultaneous network partitions.</div>
+</div>
+<div class="concept-card">
+<h3>28. Strong Consistency</h3>
+<p>Every read reflects the latest write regardless of which node responds. Requires coordination before responding. Appropriate for financial data and critical inventory.</p>
+<div class="tradeoff">Coordination overhead reduces throughput and increases latency compared to eventual consistency.</div>
+</div>
+<div class="concept-card">
+<h3>29. Eventual Consistency</h3>
+<p>Replicas converge to the same state over time but may briefly differ. Cheaper and more available. Suitable for like counts, feeds, and recommendations.</p>
+<div class="tradeoff">Clients may temporarily read stale data; unacceptable for systems where precision is critical.</div><img alt="Eventual Consistency diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!arqN!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd785d861-31b6-46ec-9bee-9de1ed8b246b_1536x896.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>30. Consensus</h3>
+<p>Multiple nodes agree on a single value despite individual failures. Algorithms like Raft and Paxos require majority agreement, preventing split-brain scenarios.</p>
+<div class="tradeoff">Consensus is expensive in latency and network traffic; used selectively for critical decisions.</div>
+</div>
+<div class="concept-card">
+<h3>31. Leader Election</h3>
+<p>Distributed nodes agree which one coordinates work. Requires consensus to prevent dual leaders (split-brain). Used in distributed databases like etcd or task coordinators.</p>
+<div class="tradeoff">The window between a leader failing and a new one being elected temporarily reduces system capacity.</div><img alt="Leader Election diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!RSs6!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F245c0636-bb50-4a7e-b17c-d40ad6285393_1536x858.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>32. Idempotency</h3>
+<p>Operations that produce the same result whether executed once or multiple times. Distributed systems can't guarantee exactly-once delivery, making this essential for safe retries.</p>
+<div class="tradeoff">Implementing idempotency requires tracking already-executed operations, adding state management and storage overhead.</div><img alt="Idempotency diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!M27D!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc68734d0-e66a-4a3d-841a-795695357ff4_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>33. Idempotency Key</h3>
+<p>A unique client-generated identifier enabling server detection and rejection of duplicate requests. Standard in payment APIs (Stripe, PayPal) to prevent double charges on retries.</p>
+<div class="tradeoff">The server must store and query processed keys; requires TTL or cleanup to prevent unbounded growth.</div>
+</div>
+<div class="concept-card">
+<h3>34. Two-Phase Commit (2PC)</h3>
+<p>Protocol making transactions atomic across multiple databases. Phase 1: coordinator asks if participants can commit. Phase 2: all commit or abort together.</p>
+<div class="tradeoff">Participants hold locks between phases. If the coordinator crashes, the system blocks indefinitely.</div><img alt="Two-Phase Commit diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!kvv3!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff1da5d5f-c018-4202-84a2-c1a530d5aeac_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>35. Saga Pattern</h3>
+<p>Alternative to distributed transactions: breaks operations into local transactions with compensating actions. If a step fails, earlier steps are compensated (undone).</p>
+<div class="tradeoff">Compensation logic is complex. The system reaches eventual consistency; intermediate states can be visible to other services.</div><img alt="Saga Pattern diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!bRkd!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcfb43407-f22c-452e-82d3-f286060d01b8_1448x972.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>36. Consistent Hashing Ring</h3>
+<p>Arranges hash values in a ring where each node is responsible for ranges. Virtual nodes (multiple positions per physical node) improve distribution. Standard in Redis Cluster and Cassandra.</p>
+<div class="tradeoff">Without virtual nodes distribution is uneven. Vnode configuration requires careful tuning based on each node's capacity.</div>
+</div>
+<div class="concept-card">
+<h3>37. Clock Skew</h3>
+<p>Time differences between machine clocks despite NTP synchronization. Breaks timestamp-based ordering logic. Systems use logical clocks instead of wall-clock time.</p>
+<div class="tradeoff">Relying on wall-clock time to order events in distributed systems is an extremely common design bug.</div>
+</div>
+<div class="concept-card">
+<h3>38. Vector Clock</h3>
+<p>Tracks causal event ordering without synchronized clocks. Each node maintains a counter; messages include the vector clock, allowing causality (not just timing) to be determined.</p>
+<div class="tradeoff">The vector size grows with the number of nodes, becoming expensive to maintain in systems with thousands of nodes.</div>
+</div>
+</div>
+</div>
+<!-- Diagram 3: CAP Theorem -->
+<figure class="diagram">
+<svg style="background:#0f1117;border-radius:8px;" viewbox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+<text fill="#8892b0" font-family="monospace" font-size="12" text-anchor="middle" x="350" y="26">CAP Theorem — Pick Two</text>
+<polygon fill="none" points="350,52 165,228 535,228" stroke="#2d3149" stroke-width="2"></polygon>
+<!-- Vertices -->
+<text fill="#00d4aa" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="350" y="46">Consistency</text>
+<text fill="#00d4aa" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="142" y="244">Availability</text>
+<text fill="#00d4aa" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="558" y="244">Partition Tolerance</text>
+<!-- Edge labels -->
+<text fill="#e2e8f0" font-family="monospace" font-size="10" text-anchor="middle" transform="rotate(-53,236,137)" x="236" y="137">CA: Single-node SQL</text>
+<text fill="#e2e8f0" font-family="monospace" font-size="10" text-anchor="middle" transform="rotate(53,464,137)" x="464" y="137">CP: HBase, Zookeeper</text>
+<text fill="#e2e8f0" font-family="monospace" font-size="10" text-anchor="middle" x="350" y="222">AP: Cassandra, DynamoDB, CouchDB</text>
+<!-- Center note -->
+<text fill="#8892b0" font-family="monospace" font-size="10" text-anchor="middle" x="350" y="158">Network partitions are</text>
+<text fill="#8892b0" font-family="monospace" font-size="10" text-anchor="middle" x="350" y="173">inevitable in production →</text>
+<text fill="#00d4aa" font-family="monospace" font-size="10" text-anchor="middle" x="350" y="188">Choose C or A during failures</text>
+</svg>
+<figcaption>
+<span class="lang-es">El teorema CAP: en presencia de una partición de red (inevitable en producción), debes elegir entre Consistencia o Disponibilidad.</span>
+<span class="lang-en">The CAP theorem: when a network partition occurs (inevitable in production), you must choose between Consistency or Availability.</span>
+</figcaption>
+</figure>
+<!-- ─── SECTION 4: MESSAGING ─── -->
+<div class="lang-es">
+<h2>4. Mensajería y Comunicación</h2>
+<div class="section-intro">Seis conceptos que habilitan la comunicación asincrónica entre componentes y las funcionalidades en tiempo real.</div>
+</div>
+<div class="lang-en">
+<h2>4. Messaging &amp; Communication</h2>
+<div class="section-intro">Six concepts enabling asynchronous communication between components and real-time features.</div>
+</div>
+<div class="lang-es">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>39. Message Queue</h3>
+<p>Retiene mensajes de productores hasta que los consumidores los procesen. Desacopla componentes temporalmente y absorbe picos de tráfico sin perder datos. Ejemplos: RabbitMQ, Amazon SQS.</p>
+<div class="tradeoff">Los resultados no están disponibles inmediatamente; no es adecuado para operaciones que requieren respuesta síncrona al cliente.</div><img alt="Message Queue diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!D6wt!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb06df94b-4b1b-4947-b004-056a6302a8b9_1448x956.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>40. Pub/Sub</h3>
+<p>Múltiples suscriptores reciben copias de los mensajes publicados. A diferencia de las queues donde un solo consumidor maneja cada mensaje. Ideal cuando múltiples servicios reaccionan al mismo evento.</p>
+<div class="tradeoff">Si no hay suscriptores activos, los mensajes se pierden a menos que uses retención de log (como Apache Kafka).</div><img alt="Pub/Sub diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!ei4h!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa687de8-45b2-492c-b98c-8dde047d7076_1448x1005.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>41. Dead-Letter Queue (DLQ)</h3>
+<p>Retiene mensajes que fallaron después del límite de reintentos configurado. Previene que mensajes "venenosos" bloqueen la queue principal. Monitorearla es esencial para la salud del sistema.</p>
+<div class="tradeoff">Los mensajes en DLQ requieren intervención manual o automatización de diagnóstico; ignorarlos produce pérdida de datos silenciosa.</div><img alt="Dead-Letter Queue diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!7bZC!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4469d5b4-775d-4526-87aa-1c444bf1e5ae_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>42. Backpressure</h3>
+<p>El consumidor señala al productor que reduzca la velocidad de envío cuando está sobrecargado. Sin backpressure, las queues crecen sin límite hasta agotar la memoria disponible.</p>
+<div class="tradeoff">Implementar backpressure requiere coordinación entre productor y consumidor; puede añadir latencia al pipeline de procesamiento.</div><img alt="Backpressure diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!Frhc!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdea689a3-88f6-452f-93de-cb9bb5cdb39a_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>43. WebSocket</h3>
+<p>Conexión bidireccional persistente entre cliente y servidor. Menor overhead que abrir conexiones HTTP repetidas. Esencial para chat en tiempo real, juegos multijugador y dashboards en vivo.</p>
+<div class="tradeoff">Requiere conexiones stateful y un pub/sub backplane para escalar horizontalmente entre múltiples instancias del servidor.</div><img alt="WebSocket diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!yMxL!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0e9a411b-e5af-444e-bc2f-8e38340f2890_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>44. Server-Sent Events (SSE)</h3>
+<p>Streaming unidireccional del servidor al cliente sobre una conexión HTTP persistente. Más simple que WebSockets con reconexión automática incorporada. Ideal para notificaciones y streaming de respuestas de LLMs.</p>
+<div class="tradeoff">Solo funciona de servidor a cliente. Si necesitas comunicación bidireccional, WebSockets es la alternativa necesaria.</div><img alt="Server-Sent Events diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!s_iV!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Feea59e51-28f6-4bd4-8d2a-404c308f4c6f_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+</div>
+</div>
+<div class="lang-en">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>39. Message Queue</h3>
+<p>Holds messages from producers until consumers process them. Temporally decouples components and absorbs traffic spikes without data loss. Examples: RabbitMQ, Amazon SQS.</p>
+<div class="tradeoff">Results are not immediately available; not suitable for operations requiring a synchronous client response.</div><img alt="Message Queue diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!D6wt!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb06df94b-4b1b-4947-b004-056a6302a8b9_1448x956.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>40. Pub/Sub</h3>
+<p>Multiple subscribers receive copies of published messages. Unlike queues where one consumer handles each message. Ideal when multiple services react to the same event.</p>
+<div class="tradeoff">If no active subscribers exist, messages are lost unless you use log retention (like Apache Kafka).</div><img alt="Pub/Sub diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!ei4h!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa687de8-45b2-492c-b98c-8dde047d7076_1448x1005.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>41. Dead-Letter Queue (DLQ)</h3>
+<p>Holds messages that failed after the configured retry limit. Prevents "poison" messages from blocking the main queue. Monitoring it is essential for system health.</p>
+<div class="tradeoff">Messages in DLQ require manual intervention or diagnostic automation; ignoring them causes silent data loss.</div><img alt="Dead-Letter Queue diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!7bZC!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4469d5b4-775d-4526-87aa-1c444bf1e5ae_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>42. Backpressure</h3>
+<p>Consumer signals producer to slow down when overwhelmed. Without backpressure, queues grow without bound until the system runs out of memory.</p>
+<div class="tradeoff">Implementing backpressure requires coordination between producer and consumer; can add latency to the processing pipeline.</div><img alt="Backpressure diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!Frhc!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdea689a3-88f6-452f-93de-cb9bb5cdb39a_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>43. WebSocket</h3>
+<p>Persistent bidirectional connection between client and server. Lower overhead than repeated HTTP connections. Essential for real-time chat, multiplayer games, and live dashboards.</p>
+<div class="tradeoff">Requires stateful connections and a pub/sub backplane to scale horizontally across multiple server instances.</div><img alt="WebSocket diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!yMxL!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0e9a411b-e5af-444e-bc2f-8e38340f2890_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>44. Server-Sent Events (SSE)</h3>
+<p>One-way streaming from server to client over a persistent HTTP connection. Simpler than WebSockets with built-in reconnection. Ideal for notifications and LLM response streaming.</p>
+<div class="tradeoff">Only works server-to-client. If you need bidirectional communication, WebSockets is the necessary alternative.</div><img alt="Server-Sent Events diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!s_iV!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Feea59e51-28f6-4bd4-8d2a-404c308f4c6f_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+</div>
+</div>
+<!-- ─── SECTION 5: RELIABILITY & MODERN ─── -->
+<div class="lang-es">
+<h2>5. Confiabilidad y Conceptos Modernos</h2>
+<div class="section-intro">Los últimos seis conceptos: cómo mantener la disponibilidad bajo estrés extremo y cómo la IA se integra con la infraestructura moderna.</div>
+</div>
+<div class="lang-en">
+<h2>5. Reliability &amp; Modern Concepts</h2>
+<div class="section-intro">The final six concepts: how to maintain availability under extreme stress and how AI integrates with modern infrastructure.</div>
+</div>
+<div class="lang-es">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>45. Circuit Breaker</h3>
+<p>Monitorea llamadas a dependencias y las detiene cuando la tasa de fallo supera un umbral. Tres estados: Closed (normal), Open (rechaza inmediatamente), Half-Open (prueba recuperación). Previene fallos en cascada.</p>
+<div class="tradeoff">Puede rechazar requests válidos durante la ventana "open". Requiere implementar una respuesta degradada o fallback explícito.</div><img alt="Circuit Breaker diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!n1ig!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F018ae772-a560-45cf-8f6d-6c507e11fe61_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>46. Rate Limiting</h3>
+<p>Limita los requests por cliente por período de tiempo. El algoritmo Token Bucket es el más común: el bucket se llena a tasa fija y se vacía con cada request. Protege de sobrecarga y abuso.</p>
+<div class="tradeoff">Clientes legítimos bajo picos de tráfico pueden ser bloqueados. Los límites deben comunicarse claramente con headers HTTP (Retry-After, X-RateLimit-*).</div><img alt="Rate Limiting diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!xKNi!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F201f077a-7fa6-4b66-8d34-0a47c7804399_1448x933.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>47. Load Shedding</h3>
+<p>Rechaza deliberadamente requests en exceso durante sobrecarga. "La disponibilidad parcial es mejor que el fallo total": servir el 80% bien es mejor que intentar todos y fallar todos.</p>
+<div class="tradeoff">Decidir cuáles requests rechazar requiere priorización inteligente; rechazar los incorrectos puede romper SLAs críticos.</div><img alt="Load Shedding diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!djPT!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff8221803-5f0e-495e-9465-dfc2b090ccfe_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>48. Bloom Filter</h3>
+<p>Probador probabilístico de membresía eficiente en espacio. Puede confirmar con certeza que un elemento NO está en el conjunto; puede falsamente afirmar que SÍ está (false positive, nunca false negative).</p>
+<div class="tradeoff">Los false positives son aceptables solo cuando el costo de procesarlos es bajo. Las implementaciones básicas no soportan eliminaciones.</div><img alt="Bloom Filter diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!9eS3!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8d7b76d3-b0fa-4295-977b-2e8415099b40_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>49. Embedding</h3>
+<p>Representaciones vectoriales numéricas que capturan el significado semántico de texto o imágenes. Elementos similares tienen vectores próximos en el espacio vectorial. Base de la búsqueda semántica moderna.</p>
+<div class="tradeoff">Los embeddings grandes (1536+ dimensiones) son costosos de almacenar y buscar; requieren bases de datos vectoriales especializadas como Pinecone o pgvector.</div>
+</div>
+<div class="concept-card">
+<h3>50. RAG (Retrieval-Augmented Generation)</h3>
+<p>Arquitectura de LLM que recupera conocimiento externo relevante como contexto en tiempo de query. Dos fases: ingestión (docs→chunks→embeddings→vector DB) y retrieval (busca contexto relevante para fundamentar la respuesta).</p>
+<div class="tradeoff">La calidad del chunking y la estrategia de retrieval determinan el 80% de la calidad del sistema. No es una solución plug-and-play.</div><img alt="RAG diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!co0o!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F05d9223c-666b-4c3f-bd47-db0065412277_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+</div>
+</div>
+<div class="lang-en">
+<div class="concept-grid">
+<div class="concept-card">
+<h3>45. Circuit Breaker</h3>
+<p>Monitors dependency calls and stops them when the failure rate exceeds a threshold. Three states: Closed (normal), Open (reject immediately), Half-Open (test recovery). Prevents cascading failures.</p>
+<div class="tradeoff">May reject valid requests during the "open" window. Requires implementing a degraded response or explicit fallback strategy.</div><img alt="Circuit Breaker diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!n1ig!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F018ae772-a560-45cf-8f6d-6c507e11fe61_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>46. Rate Limiting</h3>
+<p>Caps requests per client per time period. The Token Bucket algorithm is most common: the bucket fills at a fixed rate and empties with each request. Protects against overload and abuse.</p>
+<div class="tradeoff">Legitimate clients under traffic spikes may be blocked. Limits must be communicated clearly via HTTP headers (Retry-After, X-RateLimit-*).</div><img alt="Rate Limiting diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!xKNi!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F201f077a-7fa6-4b66-8d34-0a47c7804399_1448x933.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>47. Load Shedding</h3>
+<p>Deliberately rejects excess requests during overload. "Partial availability beats total failure": serving 80% well beats attempting all requests and failing all of them.</p>
+<div class="tradeoff">Deciding which requests to reject requires smart prioritization; rejecting the wrong ones can break critical SLAs.</div><img alt="Load Shedding diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!djPT!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff8221803-5f0e-495e-9465-dfc2b090ccfe_1536x1024.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>48. Bloom Filter</h3>
+<p>Space-efficient probabilistic membership tester. Can confirm with certainty that an item is NOT in the set; may falsely claim it IS (false positives only, never false negatives).</p>
+<div class="tradeoff">False positives are acceptable only when their processing cost is low. Basic implementations don't support deletions.</div><img alt="Bloom Filter diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!9eS3!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8d7b76d3-b0fa-4295-977b-2e8415099b40_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+<div class="concept-card">
+<h3>49. Embedding</h3>
+<p>Numerical vector representations capturing the semantic meaning of text or images. Similar items have proximate vectors in vector space. Foundation of modern semantic search.</p>
+<div class="tradeoff">Large embeddings (1536+ dimensions) are expensive to store and search; require specialized vector databases like Pinecone or pgvector.</div>
+</div>
+<div class="concept-card">
+<h3>50. RAG (Retrieval-Augmented Generation)</h3>
+<p>LLM architecture that retrieves relevant external knowledge as context at query time. Two phases: ingestion (docs→chunks→embeddings→vector DB) and retrieval (finds relevant context to ground the response).</p>
+<div class="tradeoff">The quality of chunking and retrieval strategy determines 80% of system quality. It is not a plug-and-play solution.</div><img alt="RAG diagram" class="concept-img" src="https://substackcdn.com/image/fetch/$s_!co0o!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F05d9223c-666b-4c3f-bd47-db0065412277_1448x1086.png" style="width:100%;border-radius:6px;margin-top:0.85rem;display:block;"/>
+</div>
+</div>
+</div>
+<!-- Conclusion -->
+<div class="lang-es">
+<h2>Conclusión</h2>
+<p>Estos 50 conceptos no son un checklist que debes implementar — son un vocabulario. El valor real está en saber cuándo aplicar cada uno y, más importante, cuándo <em>no</em> aplicarlo. Un sistema sobrediseñado con consistent hashing, 2PC y vector clocks para 100 usuarios es tan problemático como uno subdiseñado que colapsa bajo carga real.</p>
+<blockquote>La arquitectura no es sobre patrones. Es sobre trade-offs deliberados en función del problema real que tienes hoy.</blockquote>
+<p>La próxima vez que diseñes un sistema, pregúntate: ¿cuál es el trade-off que estoy aceptando con esta decisión, y vale la pena? Esa pregunta es la diferencia entre un arquitecto que conoce los conceptos y uno que sabe diseñar sistemas reales.</p>
+</div>
+<div class="lang-en">
+<h2>Conclusion</h2>
+<p>These 50 concepts are not a checklist to implement — they are a vocabulary. The real value lies in knowing when to apply each one and, more importantly, when <em>not</em> to. An over-engineered system with consistent hashing, 2PC, and vector clocks for 100 users is just as problematic as an under-engineered one that collapses under real load.</p>
+<blockquote>Architecture is not about patterns. It's about deliberate trade-offs based on the real problem you have today.</blockquote>
+<p>The next time you design a system, ask yourself: what trade-off am I accepting with this decision, and is it worth it? That question is the difference between an architect who knows the concepts and one who knows how to design real systems.</p>
+</div>
+</div><!-- /.article-body -->
+</div>
+</article>
+</main>
+<section class="newsletter-section">
+<div class="container">
+<div class="newsletter-box">
+<span class="newsletter-eyebrow">Newsletter</span>
+<h2 data-en="Enjoying the content?" data-es="¿Te gustó el contenido?">¿Te gustó el contenido?</h2>
+<p data-en="Subscribe to get new software architecture articles delivered to your inbox." data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo.">
           Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo.
         </p>
-        <form class="subscribe-form" onsubmit="handleSubscribe(event)">
-          <input type="email" class="email-input" placeholder="tu@email.com" required />
-          <button type="submit" class="btn" data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
-        </form>
-        <p class="newsletter-note">
-          <span data-es="Publicado en" data-en="Published on">Publicado en</span>
-          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <span class="footer-copy">Felipe Pabón © 2026</span>
-        <div class="footer-links">
-          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
-          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
-          <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="../js/posts.js"></script>
-  <script src="../js/main.js"></script>
+<form class="subscribe-form" onsubmit="handleSubscribe(event)">
+<input class="email-input" placeholder="tu@email.com" required="" type="email"/>
+<button class="btn" data-en="Subscribe" data-es="Suscribirse" type="submit">Suscribirse</button>
+</form>
+<p class="newsletter-note">
+<span data-en="Published on" data-es="Publicado en">Publicado en</span>
+<a href="https://substack.com/@felipepabon" rel="noopener" target="_blank">Substack</a>
+</p>
+</div>
+</div>
+</section>
+<footer>
+<div class="container">
+<div class="footer-inner">
+<span class="footer-copy">Felipe Pabón © 2026</span>
+<div class="footer-links">
+<a href="https://substack.com/@felipepabon" rel="noopener" target="_blank">Substack</a>
+<a href="https://felipepabon.medium.com" rel="noopener" target="_blank">Medium</a>
+<a href="https://github.com/felipepabon" rel="noopener" target="_blank">GitHub</a>
+<a href="https://linkedin.com/in/felipepabon" rel="noopener" target="_blank">LinkedIn</a>
+</div>
+</div>
+</div>
+</footer>
+<script src="../js/posts.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>
