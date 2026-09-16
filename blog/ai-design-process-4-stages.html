@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Un framework de MIT xPRO para diseñar productos de IA en 4 etapas y 8 decisiones clave, ilustrado con un caso real de recomendador de e-commerce." />
+  <meta name="author" content="Felipe Pabón" />
+  <title>El proceso de diseño de la IA: 4 etapas y 8 decisiones clave — Felipe Pabón</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">fp.</a>
+      <div class="nav-links">
+        <a href="../blog/" data-es="Blog" data-en="Blog">Blog</a>
+        <button class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <article class="article-container">
+      <div class="container">
+
+        <!-- Article header -->
+        <header class="article-header">
+          <div class="lang-es">
+            <div class="article-tags">
+              <span class="card-tag">AI</span>
+              <span class="card-tag">Architecture</span>
+            </div>
+            <h1>El proceso de diseño de la IA: 4 etapas y 8 decisiones clave</h1>
+            <p class="article-subtitle">Un framework de MIT xPRO para pasar de "queremos meterle IA al producto" a un plan estructurado — con un recomendador de e-commerce como hilo conductor.</p>
+            <div class="article-meta">
+              <span>Septiembre 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+          <div class="lang-en">
+            <div class="article-tags">
+              <span class="card-tag">AI</span>
+              <span class="card-tag">Architecture</span>
+            </div>
+            <h1>Designing AI Products: The 4-Stage Framework Behind 8 Key Decisions</h1>
+            <p class="article-subtitle">An MIT xPRO framework for moving from "let's add AI to the product" to a structured plan — illustrated with an e-commerce recommender engine.</p>
+            <div class="article-meta">
+              <span>September 2026</span>
+              <span>Felipe Pabón</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article body -->
+        <div class="article-body">
+
+          <!-- Intro -->
+          <div class="lang-es">
+            <p>"Meterle IA a un producto" suena simple hasta que te sientas a diseñarlo. ¿Qué tan inteligente necesita ser? ¿Dónde le agrega valor real al negocio? ¿Construyes tu propio modelo o usas uno de terceros? ¿Cómo evitas que se convierta en un dolor de cabeza en producción?</p>
+            <p>El framework <em>"Stages of the AI Design Process"</em> de MIT xPRO organiza estas preguntas en 4 etapas —<strong>Intelligence, Business process, AI technology</strong> y <strong>Tinkering</strong>— y dentro de cada una, 2 decisiones clave. En total, 8 decisiones que determinan si tu producto de IA tiene sentido o es una solución en busca de un problema.</p>
+            <p>Para que no se quede en teoría, voy a recorrer las 4 etapas con un caso concreto: un <strong>motor de recomendaciones de productos para un e-commerce</strong>, el tipo de sistema que empuja buena parte del revenue de Amazon o Netflix.</p>
+          </div>
+          <div class="lang-en">
+            <p>"Let's add AI to the product" sounds simple — until you actually sit down to design it. How smart does it need to be? Where does it really move the needle for the business? Do you build your own model or lean on someone else's? How do you keep it from becoming a production headache six months in?</p>
+            <p>MIT xPRO's <em>"Stages of the AI Design Process"</em> framework organizes these questions into 4 stages — <strong>Intelligence, Business process, AI technology</strong>, and <strong>Tinkering</strong> — each with 2 key decisions. Eight decisions total, and they determine whether your AI product actually makes sense or is a solution looking for a problem.</p>
+            <p>To keep this concrete, I'll walk through all four stages with one running example: a <strong>product recommendation engine for an e-commerce store</strong> — the kind of system that quietly drives a big chunk of Amazon's or Netflix's revenue.</p>
+          </div>
+
+          <!-- Diagram 1: Overview -->
+          <figure class="diagram lang-es">
+            <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0" y="0" width="760" height="320" fill="#0f1117"/>
+              <text x="380" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Las 4 etapas y las 8 decisiones</text>
+              <defs>
+                <marker id="arrowEs1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                  <path d="M0,0 L8,4 L0,8 z" fill="#8892b0"/>
+                </marker>
+              </defs>
+              <line x1="180" y1="175" x2="200" y2="175" stroke="#8892b0" stroke-width="2" marker-end="url(#arrowEs1)"/>
+              <line x1="360" y1="175" x2="380" y2="175" stroke="#8892b0" stroke-width="2" marker-end="url(#arrowEs1)"/>
+              <line x1="540" y1="175" x2="560" y2="175" stroke="#8892b0" stroke-width="2" marker-end="url(#arrowEs1)"/>
+
+              <!-- Stage 1 -->
+              <rect x="20" y="60" width="160" height="230" rx="12" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <circle cx="100" cy="95" r="18" fill="#00d4aa"/>
+              <text x="100" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">1</text>
+              <text x="100" y="132" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Inteligencia</text>
+              <rect x="30" y="145" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="100" y="172" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif">Métricas</text>
+              <rect x="30" y="201" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="100" y="228" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif">Alcance</text>
+
+              <!-- Stage 2 -->
+              <rect x="200" y="60" width="160" height="230" rx="12" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <circle cx="280" cy="95" r="18" fill="#00d4aa"/>
+              <text x="280" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">2</text>
+              <text x="280" y="132" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Negocio</text>
+              <rect x="210" y="145" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="280" y="163" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="280">Función</tspan><tspan x="280" dy="14">estratégica</tspan></text>
+              <rect x="210" y="201" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="280" y="219" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="280">Función</tspan><tspan x="280" dy="14">operacional</tspan></text>
+
+              <!-- Stage 3 -->
+              <rect x="380" y="60" width="160" height="230" rx="12" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <circle cx="460" cy="95" r="18" fill="#00d4aa"/>
+              <text x="460" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">3</text>
+              <text x="460" y="132" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Tecnología IA</text>
+              <rect x="390" y="145" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="460" y="163" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="460">Propiedad</tspan><tspan x="460" dy="14">intelectual (IP)</tspan></text>
+              <rect x="390" y="201" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="460" y="219" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="460">Estrategia</tspan><tspan x="460" dy="14">de datos</tspan></text>
+
+              <!-- Stage 4 -->
+              <rect x="560" y="60" width="160" height="230" rx="12" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <circle cx="640" cy="95" r="18" fill="#00d4aa"/>
+              <text x="640" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">4</text>
+              <text x="640" y="132" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Tinkering</text>
+              <rect x="570" y="145" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="640" y="163" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="640">Desarrollo</tspan><tspan x="640" dy="14">de software</tspan></text>
+              <rect x="570" y="201" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="640" y="219" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="640">Cánceres</tspan><tspan x="640" dy="14">de la IA</tspan></text>
+            </svg>
+            <figcaption>Las 4 etapas del proceso de diseño de la IA y sus 8 decisiones clave.</figcaption>
+          </figure>
+
+          <figure class="diagram lang-en">
+            <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0" y="0" width="760" height="320" fill="#0f1117"/>
+              <text x="380" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#e2e8f0" font-family="sans-serif">The 4 stages and 8 decisions</text>
+              <defs>
+                <marker id="arrowEn1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                  <path d="M0,0 L8,4 L0,8 z" fill="#8892b0"/>
+                </marker>
+              </defs>
+              <line x1="180" y1="175" x2="200" y2="175" stroke="#8892b0" stroke-width="2" marker-end="url(#arrowEn1)"/>
+              <line x1="360" y1="175" x2="380" y2="175" stroke="#8892b0" stroke-width="2" marker-end="url(#arrowEn1)"/>
+              <line x1="540" y1="175" x2="560" y2="175" stroke="#8892b0" stroke-width="2" marker-end="url(#arrowEn1)"/>
+
+              <!-- Stage 1 -->
+              <rect x="20" y="60" width="160" height="230" rx="12" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <circle cx="100" cy="95" r="18" fill="#00d4aa"/>
+              <text x="100" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">1</text>
+              <text x="100" y="132" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Intelligence</text>
+              <rect x="30" y="145" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="100" y="172" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif">Metrics</text>
+              <rect x="30" y="201" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="100" y="228" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif">Scope</text>
+
+              <!-- Stage 2 -->
+              <rect x="200" y="60" width="160" height="230" rx="12" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <circle cx="280" cy="95" r="18" fill="#00d4aa"/>
+              <text x="280" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">2</text>
+              <text x="280" y="132" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Business process</text>
+              <rect x="210" y="145" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="280" y="163" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="280">Strategic</tspan><tspan x="280" dy="14">function</tspan></text>
+              <rect x="210" y="201" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="280" y="219" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="280">Operational</tspan><tspan x="280" dy="14">function</tspan></text>
+
+              <!-- Stage 3 -->
+              <rect x="380" y="60" width="160" height="230" rx="12" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <circle cx="460" cy="95" r="18" fill="#00d4aa"/>
+              <text x="460" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">3</text>
+              <text x="460" y="132" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">AI technology</text>
+              <rect x="390" y="145" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="460" y="163" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="460">Intellectual</tspan><tspan x="460" dy="14">property (IP)</tspan></text>
+              <rect x="390" y="201" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="460" y="228" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif">Data strategy</text>
+
+              <!-- Stage 4 -->
+              <rect x="560" y="60" width="160" height="230" rx="12" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <circle cx="640" cy="95" r="18" fill="#00d4aa"/>
+              <text x="640" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">4</text>
+              <text x="640" y="132" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Tinkering</text>
+              <rect x="570" y="145" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="640" y="163" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif"><tspan x="640">Software</tspan><tspan x="640" dy="14">development</tspan></text>
+              <rect x="570" y="201" width="140" height="46" rx="6" fill="#0f1117" stroke="#2d3149"/>
+              <text x="640" y="228" text-anchor="middle" font-size="10.5" fill="#8892b0" font-family="sans-serif">AI cancers</text>
+            </svg>
+            <figcaption>The 4 stages of the AI design process and their 8 key decisions.</figcaption>
+          </figure>
+
+          <!-- Etapa 1: Intelligence -->
+          <div class="lang-es">
+            <h2>Etapa 1 — Intelligence: qué inteligencia vas a incorporar</h2>
+            <p>La primera etapa consiste en decidir qué tipo de inteligencia vas a incorporar, antes de pensar en modelos o herramientas concretas.</p>
+            <p><strong>Decisión 1 — Métricas:</strong> ¿cómo vas a medir que el sistema es "inteligente"? Para el recomendador, esto no es accuracy del modelo a secas: es CTR sobre las recomendaciones, revenue incremental por sesión, o conversión atribuible a los productos sugeridos. Elegir mal la métrica aquí contamina todo lo que viene después.</p>
+            <p><strong>Decisión 2 — Alcance:</strong> ¿dónde tiene que sobresalir esa inteligencia, y dónde no importa tanto? El recomendador no necesita ser brillante prediciendo qué comprará un usuario nuevo sin historial (cold start): ahí bastan reglas simples tipo "más vendidos de la categoría". Donde sí debe ser excelente es prediciendo cross-sell para usuarios con historial de compra — ahí está el valor real.</p>
+          </div>
+          <div class="lang-en">
+            <h2>Stage 1 — Intelligence: what intelligence you're building</h2>
+            <p>The first stage is about deciding what kind of intelligence you're building, before you think about specific models or tools.</p>
+            <p><strong>Decision 1 — Metrics:</strong> how will you measure whether the system is actually "intelligent"? For the recommender, that's not raw model accuracy — it's click-through rate on recommendations, incremental revenue per session, or conversion attributable to suggested products. Getting this wrong poisons every decision downstream.</p>
+            <p><strong>Decision 2 — Scope:</strong> where does the intelligence need to shine, and where doesn't it matter as much? The recommender doesn't need to be brilliant at predicting what a brand-new user with no history will buy (cold start) — simple "bestsellers in this category" rules are fine there. Where it does need to excel is cross-sell for users with purchase history — that's where the real value is.</p>
+          </div>
+
+          <!-- Etapa 2: Business process -->
+          <div class="lang-es">
+            <h2>Etapa 2 — Business process: cómo se conecta con el negocio</h2>
+            <p>Ya sabes qué inteligencia quieres. Ahora hay que decidir cómo se conecta con la actividad empresarial.</p>
+            <p><strong>Decisión 3 — Función estratégica:</strong> aquí entra el <strong>modelo Delta</strong>, con tres estrategias posibles: ser el mejor producto (<em>product player</em>), ofrecer la solución completa al cliente (<em>customer solutions player</em>), o generar externalidades de red (<em>network externalities</em>). Un ejemplo real de MIT xPRO lo ilustra bien: frente al reto de detectar fake news, una estrategia de "mejor producto" sería construir el clasificador de desinformación más preciso del mercado; una de "solución completa" sería integrar esa detección directamente en los sistemas de gestión de contenido de cada medio; y una de "externalidades de red" sería abrir el sistema para que los propios editores lo retroalimenten y lo mejoren colectivamente con el tiempo.</p>
+            <p>Para el recomendador de e-commerce, la apuesta estratégica suele ser de "solución completa para el cliente": no vendes un algoritmo aislado, lo integras en todo el customer journey —home, carrito, email post-compra— para que el cliente compre más y vuelva.</p>
+            <p><strong>Decisión 4 — Función operacional:</strong> ¿en qué proceso de negocio concreto vive esta inteligencia? En este caso, vive en el flujo de checkout y en el email marketing post-compra, no en atención al cliente ni en logística.</p>
+          </div>
+          <div class="lang-en">
+            <h2>Stage 2 — Business process: how it plugs into the business</h2>
+            <p>Now that you know what kind of intelligence you want, you need to decide how it connects to the actual business activity.</p>
+            <p><strong>Decision 3 — Strategic function:</strong> this is where the <strong>Delta Model</strong> comes in, with three possible strategies: best product (<em>product player</em>), complete customer solution (<em>customer solutions player</em>), or network externalities. A real MIT xPRO example illustrates this well: facing the challenge of detecting fake news, a "best product" strategy would mean building the most accurate misinformation classifier on the market; a "complete solution" strategy would integrate that detection directly into each outlet's content management system; and a "network externalities" strategy would open the system so editors themselves feed back into and collectively improve the model over time.</p>
+            <p>For the e-commerce recommender, the strategic bet is usually "complete customer solution": you're not selling an isolated algorithm — you're weaving it into the entire customer journey (homepage, cart, post-purchase email) so the customer buys more and comes back.</p>
+            <p><strong>Decision 4 — Operational function:</strong> which specific business process does this intelligence live in? Here, it lives in checkout and post-purchase email marketing — not customer support, not logistics.</p>
+          </div>
+
+          <!-- Diagram 2: Delta model -->
+          <figure class="diagram lang-es">
+            <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0" y="0" width="760" height="320" fill="#0f1117"/>
+              <text x="380" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Modelo Delta: 3 estrategias posibles</text>
+
+              <rect x="20" y="110" width="190" height="100" rx="10" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="150" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Reto</text>
+              <text x="115" y="172" text-anchor="middle" font-size="11" fill="#8892b0" font-family="sans-serif"><tspan x="115">Detectar</tspan><tspan x="115" dy="16">fake news</tspan></text>
+
+              <line x1="210" y1="160" x2="280" y2="75" stroke="#8892b0" stroke-width="1.5"/>
+              <line x1="210" y1="160" x2="280" y2="160" stroke="#8892b0" stroke-width="1.5"/>
+              <line x1="210" y1="160" x2="280" y2="245" stroke="#8892b0" stroke-width="1.5"/>
+
+              <rect x="280" y="40" width="460" height="70" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <rect x="290" y="53" width="8" height="8" fill="#00d4aa"/>
+              <text x="306" y="61" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Estrategia 1: Mejor producto</text>
+              <text x="306" y="83" font-size="11" fill="#8892b0" font-family="sans-serif">El clasificador de desinformación más preciso del mercado.</text>
+
+              <rect x="280" y="125" width="460" height="70" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <rect x="290" y="138" width="8" height="8" fill="#00d4aa"/>
+              <text x="306" y="146" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Estrategia 2: Solución completa</text>
+              <text x="306" y="168" font-size="11" fill="#8892b0" font-family="sans-serif">Detección integrada en el CMS de cada medio de comunicación.</text>
+
+              <rect x="280" y="210" width="460" height="70" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <rect x="290" y="223" width="8" height="8" fill="#00d4aa"/>
+              <text x="306" y="231" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Estrategia 3: Externalidades de red</text>
+              <text x="306" y="253" font-size="11" fill="#8892b0" font-family="sans-serif">Editores retroalimentan y mejoran el modelo con el tiempo.</text>
+            </svg>
+            <figcaption>El modelo Delta aplicado a un reto real: la detección de fake news (ejemplo de MIT xPRO).</figcaption>
+          </figure>
+
+          <figure class="diagram lang-en">
+            <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0" y="0" width="760" height="320" fill="#0f1117"/>
+              <text x="380" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Delta Model: 3 possible strategies</text>
+
+              <rect x="20" y="110" width="190" height="100" rx="10" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="150" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Challenge</text>
+              <text x="115" y="172" text-anchor="middle" font-size="11" fill="#8892b0" font-family="sans-serif"><tspan x="115">Detecting</tspan><tspan x="115" dy="16">fake news</tspan></text>
+
+              <line x1="210" y1="160" x2="280" y2="75" stroke="#8892b0" stroke-width="1.5"/>
+              <line x1="210" y1="160" x2="280" y2="160" stroke="#8892b0" stroke-width="1.5"/>
+              <line x1="210" y1="160" x2="280" y2="245" stroke="#8892b0" stroke-width="1.5"/>
+
+              <rect x="280" y="40" width="460" height="70" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <rect x="290" y="53" width="8" height="8" fill="#00d4aa"/>
+              <text x="306" y="61" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Strategy 1: Product player</text>
+              <text x="306" y="83" font-size="11" fill="#8892b0" font-family="sans-serif">The most accurate misinformation classifier on the market.</text>
+
+              <rect x="280" y="125" width="460" height="70" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <rect x="290" y="138" width="8" height="8" fill="#00d4aa"/>
+              <text x="306" y="146" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Strategy 2: Customer solutions player</text>
+              <text x="306" y="168" font-size="11" fill="#8892b0" font-family="sans-serif">Detection built directly into each outlet's CMS.</text>
+
+              <rect x="280" y="210" width="460" height="70" rx="8" fill="#1a1d27" stroke="#00d4aa" stroke-width="1.5"/>
+              <rect x="290" y="223" width="8" height="8" fill="#00d4aa"/>
+              <text x="306" y="231" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Strategy 3: Network externalities</text>
+              <text x="306" y="253" font-size="11" fill="#8892b0" font-family="sans-serif">Editors feed back into and improve the model over time.</text>
+            </svg>
+            <figcaption>The Delta Model applied to a real challenge: fake news detection (MIT xPRO example).</figcaption>
+          </figure>
+
+          <!-- Etapa 3: AI technology -->
+          <div class="lang-es">
+            <h2>Etapa 3 — AI technology: las decisiones técnicas de fondo</h2>
+            <p><strong>Decisión 5 — Propiedad intelectual (IP):</strong> ¿desarrollas tu propio modelo de recomendación (y potencialmente patentas la técnica) o usas algoritmos de terceros ya disponibles —colaborative filtering open source, servicios gestionados de AWS o GCP—? La mayoría de e-commerce medianos arrancan con lo segundo y solo invierten en IP propia cuando el recomendador se vuelve una ventaja competitiva central.</p>
+            <p><strong>Decisión 6 — Estrategia de datos:</strong> los modelos a seguir aquí son las FAANG (Facebook, Apple, Amazon, Netflix, Google/Alphabet). Lo que tienen en común no es solo tener mucha data, sino una estrategia de datos que les da externalidades de red: cuantos más usuarios interactúan, mejor se vuelve el sistema para todos. Para tu recomendador, esto se traduce en decidir qué datos propios vas a capturar y explotar —historial de navegación, no solo de compra— para que tu ventaja de datos crezca con el tiempo, en vez de depender de un proveedor externo.</p>
+          </div>
+          <div class="lang-en">
+            <h2>Stage 3 — AI technology: the deep technical decisions</h2>
+            <p><strong>Decision 5 — Intellectual property (IP):</strong> do you build your own recommendation model (and potentially patent the technique), or do you use already-available third-party algorithms — open-source collaborative filtering, managed AWS or GCP recommendation services? Most mid-size e-commerce companies start with the latter and only invest in proprietary IP once the recommender becomes a core competitive advantage.</p>
+            <p><strong>Decision 6 — Data strategy:</strong> the models to follow here are the FAANGs (Facebook, Apple, Amazon, Netflix, Google/Alphabet). What they share isn't just having a lot of data — it's a data strategy that gives them network externalities: the more users interact with the system, the better it gets for everyone. For your recommender, this means deciding what proprietary data you'll capture and exploit — browsing history, not just purchase history — so your data advantage compounds over time instead of depending on a third-party vendor.</p>
+          </div>
+
+          <!-- Etapa 4: Tinkering -->
+          <div class="lang-es">
+            <h2>Etapa 4 — Tinkering: implementar, probar y mejorar</h2>
+            <p>La última etapa es donde tu equipo técnico implementa, prueba y mejora el sistema. Es la que más tiempo real consume, aunque casi no aparece en las presentaciones de estrategia.</p>
+            <p><strong>Decisión 7 — Enfoque de desarrollo de software:</strong> ¿cómo vas a versionar, testear y desplegar el modelo de recomendación? ¿Tienes un pipeline de MLOps separado del pipeline de software tradicional, o los vas a unificar?</p>
+            <p><strong>Decisión 8 — Cánceres de la IA:</strong> son las cinco limitaciones que hay que vigilar activamente: <em>adversarial attacks</em> (usuarios que manipulan el sistema con clics falsos para inflar ciertos productos), <em>lack of generalization</em> (el modelo funciona bien en Black Friday pero falla en temporada baja), <em>bias</em> (recomendar sistemáticamente productos más caros o de ciertas marcas por sesgos en los datos de entrenamiento), <em>explainability</em> (poder explicarle a un cliente —o a un regulador— por qué el sistema le recomendó algo) y <em>unintended behavior</em> (el recomendador empuja al usuario a un "filter bubble" que reduce el descubrimiento de catálogo y termina bajando el ticket promedio).</p>
+            <p>Además de esto, hay activos complementarios —equipo de soporte, catálogo bien etiquetado, infraestructura de datos— que van a consumir más tiempo que el modelo en sí, y que son justamente los que determinan si la implementación es exitosa o no.</p>
+          </div>
+          <div class="lang-en">
+            <h2>Stage 4 — Tinkering: implement, test, and improve</h2>
+            <p>The last stage is where your technical team actually implements, tests, and improves the system. It's the stage that eats the most real time, even though it barely shows up in strategy decks.</p>
+            <p><strong>Decision 7 — Software development approach:</strong> how will you version, test, and deploy the recommendation model? Do you run a separate MLOps pipeline from your regular software pipeline, or unify them?</p>
+            <p><strong>Decision 8 — AI cancers:</strong> five limitations you need to actively watch for: <em>adversarial attacks</em> (users gaming the system with fake clicks to inflate certain products), <em>lack of generalization</em> (the model performs great on Black Friday and falls apart in the off-season), <em>bias</em> (systematically recommending pricier products or certain brands because of skew in training data), <em>explainability</em> (being able to tell a customer — or a regulator — why the system recommended something), and <em>unintended behavior</em> (the recommender pushing users into a filter bubble that shrinks catalog discovery and quietly lowers average order value).</p>
+            <p>On top of this, there are complementary assets — support team, a well-tagged catalog, data infrastructure — that will eat more time than the model itself, and that ultimately decide whether the implementation actually succeeds.</p>
+          </div>
+
+          <!-- Diagram 3: Recommender mapped -->
+          <figure class="diagram lang-es">
+            <svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0" y="0" width="760" height="430" fill="#0f1117"/>
+              <text x="380" y="24" text-anchor="middle" font-size="16" font-weight="700" fill="#e2e8f0" font-family="sans-serif">El recomendador de e-commerce, etapa por etapa</text>
+
+              <line x1="50" y1="97" x2="50" y2="353" stroke="#2d3149" stroke-width="2" stroke-dasharray="4 4"/>
+
+              <circle cx="50" cy="75" r="22" fill="#00d4aa"/>
+              <text x="50" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">1</text>
+              <text x="50" y="112" text-anchor="middle" font-size="10" fill="#8892b0" font-family="sans-serif">Inteligencia</text>
+              <rect x="100" y="40" width="620" height="70" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="68" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Métricas y alcance</text>
+              <text x="115" y="90" font-size="11" fill="#8892b0" font-family="sans-serif">CTR + revenue por sesión; prioriza cross-sell sobre cold start.</text>
+
+              <circle cx="50" cy="175" r="22" fill="#00d4aa"/>
+              <text x="50" y="180" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">2</text>
+              <text x="50" y="212" text-anchor="middle" font-size="10" fill="#8892b0" font-family="sans-serif">Negocio</text>
+              <rect x="100" y="140" width="620" height="70" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="168" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Estrategia y operación</text>
+              <text x="115" y="190" font-size="11" fill="#8892b0" font-family="sans-serif">Solución completa para el cliente; vive en checkout y email post-compra.</text>
+
+              <circle cx="50" cy="275" r="22" fill="#00d4aa"/>
+              <text x="50" y="280" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">3</text>
+              <text x="50" y="312" text-anchor="middle" font-size="10" fill="#8892b0" font-family="sans-serif">Tecnología IA</text>
+              <rect x="100" y="240" width="620" height="70" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="268" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">IP y datos</text>
+              <text x="115" y="290" font-size="11" fill="#8892b0" font-family="sans-serif">Collaborative filtering de terceros; datos propios de navegación.</text>
+
+              <circle cx="50" cy="375" r="22" fill="#00d4aa"/>
+              <text x="50" y="380" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">4</text>
+              <text x="50" y="412" text-anchor="middle" font-size="10" fill="#8892b0" font-family="sans-serif">Tinkering</text>
+              <rect x="100" y="340" width="620" height="70" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="368" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Desarrollo y límites</text>
+              <text x="115" y="390" font-size="11" fill="#8892b0" font-family="sans-serif">Pipeline de MLOps separado; vigilar bias y filter bubbles.</text>
+            </svg>
+            <figcaption>Las 4 etapas aplicadas al caso del recomendador de e-commerce.</figcaption>
+          </figure>
+
+          <figure class="diagram lang-en">
+            <svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0" y="0" width="760" height="430" fill="#0f1117"/>
+              <text x="380" y="24" text-anchor="middle" font-size="16" font-weight="700" fill="#e2e8f0" font-family="sans-serif">The e-commerce recommender, stage by stage</text>
+
+              <line x1="50" y1="97" x2="50" y2="353" stroke="#2d3149" stroke-width="2" stroke-dasharray="4 4"/>
+
+              <circle cx="50" cy="75" r="22" fill="#00d4aa"/>
+              <text x="50" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">1</text>
+              <text x="50" y="112" text-anchor="middle" font-size="10" fill="#8892b0" font-family="sans-serif">Intelligence</text>
+              <rect x="100" y="40" width="620" height="70" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="68" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Metrics &amp; scope</text>
+              <text x="115" y="90" font-size="11" fill="#8892b0" font-family="sans-serif">CTR + revenue per session; prioritize cross-sell over cold start.</text>
+
+              <circle cx="50" cy="175" r="22" fill="#00d4aa"/>
+              <text x="50" y="180" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">2</text>
+              <text x="50" y="212" text-anchor="middle" font-size="10" fill="#8892b0" font-family="sans-serif">Business process</text>
+              <rect x="100" y="140" width="620" height="70" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="168" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Strategy &amp; operations</text>
+              <text x="115" y="190" font-size="11" fill="#8892b0" font-family="sans-serif">Complete customer solution; lives in checkout and post-purchase email.</text>
+
+              <circle cx="50" cy="275" r="22" fill="#00d4aa"/>
+              <text x="50" y="280" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">3</text>
+              <text x="50" y="312" text-anchor="middle" font-size="10" fill="#8892b0" font-family="sans-serif">AI technology</text>
+              <rect x="100" y="240" width="620" height="70" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="268" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">IP &amp; data</text>
+              <text x="115" y="290" font-size="11" fill="#8892b0" font-family="sans-serif">Third-party collaborative filtering; proprietary browsing data.</text>
+
+              <circle cx="50" cy="375" r="22" fill="#00d4aa"/>
+              <text x="50" y="380" text-anchor="middle" font-size="14" font-weight="700" fill="#0f1117" font-family="sans-serif">4</text>
+              <text x="50" y="412" text-anchor="middle" font-size="10" fill="#8892b0" font-family="sans-serif">Tinkering</text>
+              <rect x="100" y="340" width="620" height="70" rx="8" fill="#1a1d27" stroke="#2d3149" stroke-width="1.5"/>
+              <text x="115" y="368" font-size="12.5" font-weight="700" fill="#e2e8f0" font-family="sans-serif">Development &amp; limits</text>
+              <text x="115" y="390" font-size="11" fill="#8892b0" font-family="sans-serif">Separate MLOps pipeline; watch for bias and filter bubbles.</text>
+            </svg>
+            <figcaption>The 4 stages mapped onto the e-commerce recommender case.</figcaption>
+          </figure>
+
+          <!-- Closing -->
+          <div class="lang-es">
+            <blockquote>Las 8 decisiones no se toman una sola vez: cada etapa alimenta a la siguiente, y cuando el recomendador —o cualquier producto de IA— deja de funcionar, casi siempre el problema está en una decisión mal tomada en una etapa anterior, no en el modelo en sí.</blockquote>
+          </div>
+          <div class="lang-en">
+            <blockquote>These 8 decisions aren't a one-time exercise: each stage feeds the next, and when a recommender — or any AI product — stops working, the root cause is almost always a decision made badly in an earlier stage, not the model itself.</blockquote>
+          </div>
+
+        </div><!-- /.article-body -->
+      </div>
+    </article>
+  </main>
+
+  <!-- Newsletter CTA -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box">
+        <span class="newsletter-eyebrow">Newsletter</span>
+        <h2 data-es="¿Te gustó el contenido?" data-en="Enjoying the content?">
+          ¿Te gustó el contenido?
+        </h2>
+        <p data-es="Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo."
+           data-en="Subscribe to get new software architecture articles delivered to your inbox.">
+          Suscríbete para recibir nuevos artículos sobre arquitectura de software en tu correo.
+        </p>
+        <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+          <input type="email" class="email-input" placeholder="tu@email.com" required />
+          <button type="submit" class="btn" data-es="Suscribirse" data-en="Subscribe">Suscribirse</button>
+        </form>
+        <p class="newsletter-note">
+          <span data-es="Publicado en" data-en="Published on">Publicado en</span>
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">Felipe Pabón © 2026</span>
+        <div class="footer-links">
+          <a href="https://substack.com/@felipepabon" target="_blank" rel="noopener">Substack</a>
+          <a href="https://felipepabon.medium.com" target="_blank" rel="noopener">Medium</a>
+          <a href="https://github.com/felipepabon" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/felipepabon" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/posts.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

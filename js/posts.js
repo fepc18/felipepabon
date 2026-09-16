@@ -120,6 +120,16 @@ const POSTS = [
     external: false,
     published: true,
   },
+  {
+  id: 'ai-design-process-4-stages',
+  titleEs: 'El proceso de diseño de la IA: 4 etapas y 8 decisiones clave',
+  titleEn: 'Designing AI Products: The 4-Stage Framework Behind 8 Key Decisions',
+  tags: ['AI', 'Architecture'],
+  date: 'September 2026',
+  href: 'ai-design-process-4-stages.html',
+  external: false,
+  published: true,
+},
 
   /* ── Previous site posts (coming soon) ────────────────────── */
   {
